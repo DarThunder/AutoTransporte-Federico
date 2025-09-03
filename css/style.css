@@ -85,7 +85,7 @@ footer {
 .search-box button {
   padding: 0.4rem 0.8rem;
   border: none;
-  background: #2563eb;
+  background: #388d0d;
   color: white;
   border-radius: 0 20px 20px 0;
   cursor: pointer;
@@ -97,38 +97,39 @@ footer {
   background: #1e40af;
 }
 /* === SIDEBAR DERECHA === */
+/* === SIDEBAR IZQUIERDA === */
 .sidebar {
   position: fixed;
-  top: 0; /* empezamos en la parte superior del header */
-  right: -45%; /* oculto por defecto a la derecha */
+  top: 64px; /* justo debajo del header */
+  left: -45%; /* oculto por defecto a la izquierda */
   width: 40%;
-  height: 100%;
-  max-height: 100vh; /* asegurar que no pase del viewport */
+  height: calc(100% - 60px); /* altura sin cubrir el header */
   background: #ffffff;
-  box-shadow: -2px 0 12px rgba(0, 0, 0, 0.2); /* sombra desde la izquierda */
-  border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.2); /* sombra hacia la derecha */
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
   z-index: 1000;
-  transition: right 0.3s ease;
+  transition: left 0.3s ease;
   padding: 1rem;
 }
 
 /* Clase activa para abrir el sidebar */
 .sidebar.active {
-  right: 0;
+  left: 0;
 }
 
-/* Opcional: dispositivos pequeños */
+/* Dispositivos pequeños */
 @media (max-width: 768px) {
   .sidebar {
     width: 60%;
-    right: -60%;
+    left: -60%;
   }
 
   .sidebar.active {
-    right: 0;
+    left: 0;
   }
 }
+
 
 
 /* === MARCADOR DE USUARIO CON EFECTO PULSE === */
