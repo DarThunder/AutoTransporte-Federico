@@ -1,0 +1,66 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #fafafa;
+  color: #333;
+}
+
+/* === HEADER === */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1.2rem;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+header h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #2c3e50;
+  letter-spacing: 1px;
+}
+
+.menu-btn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  color: #2c3e50;
+  cursor: pointer;
+}
+
+/* === MAPA === */
+main {
+  flex: 1;
+}
+
+#map {
+  width: 100%;
+  height: 80vh;
+  background: #ffffff !important; /* fondo blanco total */
+}
+
+.leaflet-container {
+  background: #ffffff !important; /* evita bordes negros al mover/zoom */
+}
+
+/* === FOOTER === */
+footer {
+  text-align: center;
+  padding: 0.2rem;  /* más pequeño */
+  background: #fff;
+  font-size: 0.7rem; /* letra reducida */
+  color: #666;
+  border-top: 1px solid #eaeaea;
+  height: auto;      /* que no ocupe de más */
+  line-height: 1rem; /* ajusta altura al texto */
+}
