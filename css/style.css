@@ -19,7 +19,7 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 0.8rem 1.2rem;
-  background: #ffffff;
+  background: #dad7c6;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
@@ -45,7 +45,7 @@ main {
 
 #map {
   width: 100%;
-  height: 80vh;
+  height: 88vh;
   background: #ffffff !important; /* fondo blanco total */
 }
 
@@ -57,7 +57,7 @@ main {
 footer {
   text-align: center;
   padding: 0.2rem;  /* más pequeño */
-  background: #fff;
+  background: #e6e4d9;
   font-size: 0.7rem; /* letra reducida */
   color: #666;
   border-top: 1px solid #eaeaea;
@@ -85,7 +85,7 @@ footer {
 .search-box button {
   padding: 0.4rem 0.8rem;
   border: none;
-  background: #388d0d;
+  background: #b9b28a;
   color: white;
   border-radius: 0 20px 20px 0;
   cursor: pointer;
@@ -96,26 +96,91 @@ footer {
 .search-box button:hover {
   background: #1e40af;
 }
-/* === SIDEBAR DERECHA === */
+
 /* === SIDEBAR IZQUIERDA === */
 .sidebar {
   position: fixed;
-  top: 64px; /* justo debajo del header */
-  left: -45%; /* oculto por defecto a la izquierda */
+  top: 64px; /* debajo del header (ajusta si cambia) */
+  left: -45%; /* oculto por defecto */
   width: 40%;
-  height: calc(100% - 60px); /* altura sin cubrir el header */
+  height: calc(100% - 64px); /* ocupa todo menos el header */
   background: #ffffff;
-  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.2); /* sombra hacia la derecha */
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.2);
   border-top-right-radius: 15px;
   border-bottom-right-radius: 15px;
   z-index: 1000;
   transition: left 0.3s ease;
   padding: 1rem;
+
+  display: flex;           /* flexbox para organizar */
+  flex-direction: column;  /* título arriba, lista abajo */
+}
+
+.sidebar-title {
+  font-size: 1.1rem;
+  margin-bottom: .5rem;
+  color: #2c3e50;
+  font-weight: bold;
+}
+
+.route-info {
+  background: #f6f7f2;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: .75rem;
+  font-size: .9rem;
+  color: #374151;
+  margin-bottom: .5rem;
+}
+
+/* la lista se adapta al espacio sobrante */
+.routes-list {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: .25rem;
+}
+
+/* item de ruta */
+.route-item {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  padding: .45rem .6rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+  user-select: none;
+}
+
+.route-item:hover { background: #f1f5f9; }
+.route-item.active {
+  background: #2563eb;
+  color: #fff;
+}
+
+/* bolita de color */
+.color-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.15);
+  flex: 0 0 12px;
+}
+
+/* scroll bonito (opcional) */
+.routes-list::-webkit-scrollbar { width: 8px; }
+.routes-list::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 8px;
 }
 
 /* Clase activa para abrir el sidebar */
-.sidebar.active {
-  left: 0;
+.sidebar.active { left: 0; }
+
+/* Accesibilidad: selección con teclado */
+.route-item:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
 }
 
 /* Dispositivos pequeños */
@@ -125,10 +190,9 @@ footer {
     left: -60%;
   }
 
-  .sidebar.active {
-    left: 0;
-  }
+  .sidebar.active { left: 0; }
 }
+
 
 
 
