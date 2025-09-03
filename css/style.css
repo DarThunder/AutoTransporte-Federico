@@ -96,6 +96,40 @@ footer {
 .search-box button:hover {
   background: #1e40af;
 }
+/* === SIDEBAR DERECHA === */
+.sidebar {
+  position: fixed;
+  top: 0; /* empezamos en la parte superior del header */
+  right: -45%; /* oculto por defecto a la derecha */
+  width: 40%;
+  height: 100%;
+  max-height: 100vh; /* asegurar que no pase del viewport */
+  background: #ffffff;
+  box-shadow: -2px 0 12px rgba(0, 0, 0, 0.2); /* sombra desde la izquierda */
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  z-index: 1000;
+  transition: right 0.3s ease;
+  padding: 1rem;
+}
+
+/* Clase activa para abrir el sidebar */
+.sidebar.active {
+  right: 0;
+}
+
+/* Opcional: dispositivos pequeños */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 60%;
+    right: -60%;
+  }
+
+  .sidebar.active {
+    right: 0;
+  }
+}
+
 
 /* === MARCADOR DE USUARIO CON EFECTO PULSE === */
 .user-location {
