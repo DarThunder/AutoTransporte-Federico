@@ -67,9 +67,13 @@ footer {
 
 /* === MARCADOR DE USUARIO CON EFECTO PULSE === */
 .user-location {
+  background: transparent; /* contenedor invisible */
+}
+
+.user-circle {
   width: 20px;
   height: 20px;
-  background: #3498db; /* azul amigable */
+  background: #3498db;
   border: 3px solid #fff;
   border-radius: 50%;
   box-shadow: 0 0 8px rgba(52, 152, 219, 0.8);
