@@ -1,208 +1,127 @@
-  // Inicializar mapa centrado en Xalapa
-  const map = L.map('map').setView([19.5438, -96.9103], 13);
+// Inicializar mapa centrado en Xalapa
+const map = L.map('map').setView([19.5438, -96.9103], 13);
 
-  // Base map con Stadia Outdoors
-  var Stadia_Outdoors = L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.{ext}', {
-    minZoom: 0,
-    maxZoom: 20,
-    ext: 'png'
-  }).addTo(map);
+// Base map con Stadia Outdoors
+var Stadia_Outdoors = L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.{ext}', {
+  minZoom: 0,
+  maxZoom: 20,
+  ext: 'png'
+}).addTo(map);
 
-  // Marcador en el centro de Xalapa (referencia inicial)
-  L.marker([19.5438, -96.9103]).addTo(map)
-    .bindPopup("Centro de Xalapa")
-    .openPopup();
+// Geolocalización usuario
+let userMarker;
+const userIcon = L.divIcon({
+  className: "user-location",
+  html: '<div class="user-circle"></div>',
+  iconSize: [26, 26],
+  iconAnchor: [13, 13]
+});
+if (navigator.geolocation) {
+  navigator.geolocation.watchPosition(
+    (pos) => {
+      const lat = pos.coords.latitude;
+      const lon = pos.coords.longitude;
+      if (!userMarker) {
+        userMarker = L.marker([lat, lon], { icon: userIcon }).addTo(map)
+          .bindPopup("Tu ubicación en tiempo real").openPopup();
+        map.setView([lat, lon], 15);
+      } else {
+        userMarker.setLatLng([lat, lon]);
+      }
+    },
+    (err) => console.error("Error al obtener ubicación:", err.message),
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+  );
+}
 
-  // === Geolocalización en tiempo real del usuario ===
-  let userMarker;
+// Sidebar
+const menuBtn = document.querySelector('.menu-btn');
+const sidebar = document.getElementById('sidebar');
+menuBtn.addEventListener('click', () => sidebar.classList.toggle('active'));
 
-  // Ícono circular con animación (CSS + divIcon) - DEFINIDO FUERA del callback
-  const userIcon = L.divIcon({
-    className: "user-location",
-    html: '<div class="user-circle"></div>', // Asegúrate de incluir el HTML
-    iconSize: [26, 26], // Tamaño ligeramente mayor para contener la animación
-    iconAnchor: [13, 13] // centro del ícono
+// === RUTAS (solo sidebar) ===
+const routesListEl = document.getElementById('routes-list');
+const routeInfoEl  = document.getElementById('route-info');
+const searchInput  = document.querySelector('.search-box input');
+
+const routesIndex = {};   // { id_ruta: [Feature, Feature, ...] }
+const routeLayers = {};   // { id_ruta: L.LayerGroup }
+let activeRoute = null;
+
+// 1) Cargar e indexar
+fetch('../data/all_routes.geojson')
+  .then(r => r.json())
+  .then(fc => {
+    (fc.features || []).forEach(f => {
+      const props = f.properties || {};
+      const id = props.id_ruta;
+      if (!routesIndex[id]) routesIndex[id] = [];
+      routesIndex[id].push(f);
+    });
+    renderSidebar(Object.keys(routesIndex).sort((a,b)=>a-b));
   });
 
-  // Verificar soporte de geolocalización
-  if (navigator.geolocation) {
-    navigator.geolocation.watchPosition(
-      (pos) => {
-        const lat = pos.coords.latitude;
-        const lon = pos.coords.longitude;
-
-        console.log("Ubicación obtenida:", lat, lon);
-
-        if (!userMarker) {
-          userMarker = L.marker([lat, lon], { icon: userIcon }).addTo(map)
-            .bindPopup("Tu ubicación en tiempo real").openPopup();
-
-          console.log("Marcador añadido al mapa.");
-          
-          // Centrar el mapa
-          map.setView([lat, lon], 15);
-        } else {
-          userMarker.setLatLng([lat, lon]);
-          console.log("Marcador actualizado:", lat, lon);
-        }
-      },
-      (err) => {
-        console.error("Error al obtener ubicación:", err.message);
-        alert("No se pudo obtener tu ubicación. Asegúrate de habilitar los permisos de ubicación.");
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000, // Aumenté el timeout
-        maximumAge: 0
-      }
-    );
-  } else {
-    console.warn("Tu navegador no soporta geolocalización.");
-    alert("Tu navegador no soporta geolocalización.");
-  } 
-
-  // Sidebar toggle
-  const menuBtn = document.querySelector('.menu-btn');
-  const sidebar = document.getElementById('sidebar');
-
-  menuBtn.addEventListener('click', () => {
-    sidebar.classList.toggle('active');
-  });
-
-  // === RUTAS (lista + capas) ===
-  const routesListEl = document.getElementById('routes-list');
-  const routeInfoEl  = document.getElementById('route-info');
-  const searchInput  = document.querySelector('.search-box input');
-
-  const routesIndex = {};   // { id_ruta: [Feature, Feature, ...] }
-  const routeLayers = {};   // { id_ruta: L.LayerGroup }
-  const activeRoutes = new Set();
-  let highlightedLayer = null;
-
-  // 1) Cargar e indexar todas las rutas
-  fetch('../data/all_routes.geojson')
-    .then(r => r.json())
-    .then(fc => {
-      (fc.features || []).forEach(f => {
-        const props = f.properties || {};
-        const id = props.id_ruta || props.id || props.route_id || 'ND';
-        if (!routesIndex[id]) routesIndex[id] = [];
-        routesIndex[id].push(f);
-      });
-
-      const idsOrdenados = Object.keys(routesIndex).sort((a,b)=>a.localeCompare(b, 'es', { numeric: true }));
-      renderSidebar(idsOrdenados);
-    })
-    .catch(err => {
-      console.error('Error cargando all_routes.geojson:', err);
-      routeInfoEl.textContent = 'No se pudieron cargar las rutas.';
-    });
-
-  // 2) Pintar lista en sidebar
-  function renderSidebar(ids) {
-    routesListEl.innerHTML = '';
-    ids.forEach(id => {
-      const color = getColor(id);
-      const item = document.createElement('div');
-      item.className = 'route-item';
-      item.dataset.id = id;
-      item.innerHTML = `
-        <span class="color-dot" style="background:${color}"></span>
-        <span>Ruta ${id}</span>
-      `;
-      item.addEventListener('click', () => toggleRoute(id, item));
-      routesListEl.appendChild(item);
-    });
-  }
-
-  // 3) Activar/Desactivar una ruta
-  function toggleRoute(id, itemEl) {
-    // si está activa, quitar
-    if (activeRoutes.has(id)) {
-      activeRoutes.delete(id);
-      if (routeLayers[id]) {
-        routeLayers[id].remove();
-      }
-      itemEl.classList.remove('active');
-      routeInfoEl.textContent = 'Selecciona una ruta…';
-      return;
-    }
-
-    // activar: crear layerGroup si no existe
-    if (!routeLayers[id]) {
-      const color = getColor(id);
-      const group = L.geoJSON({ type: 'FeatureCollection', features: routesIndex[id] }, {
-        style: { color, weight: 3, opacity: 0.9 },
-        onEachFeature: (feature, layer) => {
-          layer.on('click', () => {
-            highlightLayer(layer);
-            showRouteInfo(id, feature.properties || {});
-            // popup opcional
-            const nombre = feature.properties?.name || feature.properties?.nombre || `Ruta ${id}`;
-            layer.bindPopup(`<b>${nombre}</b><br/>ID: ${id}`).openPopup();
-          });
-        }
-      });
-      routeLayers[id] = group;
-    }
-
-    // añadir al mapa
-    routeLayers[id].addTo(map);
-    activeRoutes.add(id);
-    itemEl.classList.add('active');
-
-    // encuadrar a la ruta
-    try { map.fitBounds(routeLayers[id].getBounds(), { padding: [20, 20] }); } catch {}
-  }
-
-  // 4) Resaltar la línea clickeada
-  function highlightLayer(layer) {
-    // reset a previo
-    if (highlightedLayer && highlightedLayer.setStyle) {
-      highlightedLayer.setStyle({ weight: 3, opacity: 0.9 });
-    }
-    // resaltar actual
-    if (layer.setStyle) {
-      layer.setStyle({ weight: 6, opacity: 1 });
-      if (layer.bringToFront) layer.bringToFront();
-    }
-    highlightedLayer = layer;
-  }
-
-  // 5) Mostrar info en panel (arriba del sidebar)
-  function showRouteInfo(id, props) {
-    const nombre = props.name || props.nombre || `Ruta ${id}`;
-    const extra  = props.description || props.info || '';
-    routeInfoEl.innerHTML = `
-      <div><strong>${nombre}</strong></div>
-      <div>ID: ${id}</div>
-      ${extra ? `<div style="margin-top:.25rem">${extra}</div>` : ''}
-      <button id="btn-centrar" style="
-        margin-top:.5rem; padding:.35rem .6rem; border:none; border-radius:8px;
-        background:#2563eb; color:#fff; cursor:pointer;">Centrar</button>
+// 2) Sidebar con tarjetas
+function renderSidebar(ids) {
+  routesListEl.innerHTML = '';
+  ids.forEach(id => {
+    const props = routesIndex[id][0].properties;
+    const card = document.createElement('div');
+    card.className = 'route-card';
+    card.dataset.id = id;
+    card.innerHTML = `
+      <div class="card-body">
+        <div class="card-title">${props.nombre}</div>
+        <div class="card-sub">🕒 ${props.horario}</div>
+        ${props.notas ? `<div class="card-notes">📝 ${props.notas}</div>` : ""}
+      </div>
     `;
-    const btn = document.getElementById('btn-centrar');
-    btn.onclick = () => {
-      if (routeLayers[id]) {
-        try { map.fitBounds(routeLayers[id].getBounds(), { padding: [20, 20] }); } catch {}
-      }
-    };
-  }
+    card.addEventListener('click', () => selectRoute(id, props, card));
+    routesListEl.appendChild(card);
+  });
+}
 
-  // 6) Búsqueda: filtra lista por texto del input del header
-  if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      const q = e.target.value.trim().toLowerCase();
-      Array.from(routesListEl.children).forEach(item => {
-        const txt = item.textContent.toLowerCase();
-        item.style.display = txt.includes(q) ? '' : 'none';
-      });
+// 3) Selección desde sidebar
+function selectRoute(id, props, cardEl) {
+  if (activeRoute && routeLayers[activeRoute]) {
+    routeLayers[activeRoute].remove();
+    document.querySelector(`.route-card[data-id="${activeRoute}"]`)?.classList.remove('active');
+  }
+  if (!routeLayers[id]) {
+    const group = L.geoJSON({ type: 'FeatureCollection', features: routesIndex[id] }, {
+      style: { color: getColor(id), weight: 3, opacity: 0.9 }
     });
+    routeLayers[id] = group;
   }
+  routeLayers[id].addTo(map);
+  activeRoute = id;
+  cardEl.classList.add('active');
+  map.fitBounds(routeLayers[id].getBounds(), { padding: [20, 20] });
+  showRouteInfo(id, props);
+}
 
-  // paleta determinística por id
-  function getColor(id) {
-    const palette = ['#2563eb','#e74c3c','#27ae60','#8e44ad','#f39c12','#10b981','#d946ef','#ef4444','#0ea5e9','#f59e0b'];
-    let hash = 0; for (let i=0;i<id.length;i++) hash = id.charCodeAt(i) + ((hash<<5)-hash);
-    return palette[Math.abs(hash) % palette.length];
-  }
+// 4) Mostrar info completa
+function showRouteInfo(id, props) {
+  routeInfoEl.innerHTML = `
+    <h2>${props.nombre}</h2>
+    <p><strong>🕒 Horario:</strong> ${props.horario}</p>
+    ${props.notas ? `<p><strong>📝 Notas:</strong> ${props.notas}</p>` : ""}
+    ${props.img ? `<div><img src="${props.img}" alt="Ruta ${id}" style="max-width:100%; border-radius:10px"></div>` : ""}
+  `;
+}
+
+// 5) Búsqueda
+if (searchInput) {
+  searchInput.addEventListener('input', (e) => {
+    const q = e.target.value.trim().toLowerCase();
+    Array.from(routesListEl.children).forEach(card => {
+      card.style.display = card.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+  });
+}
+
+// colores
+function getColor(id) {
+  const palette = ['#2563eb','#e74c3c','#27ae60','#8e44ad','#f39c12','#10b981','#d946ef','#ef4444','#0ea5e9','#f59e0b'];
+  return palette[id % palette.length];
+}

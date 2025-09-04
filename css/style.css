@@ -228,6 +228,85 @@ footer {
   }
 }
 
+.route-card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: .6rem .8rem;
+  margin-bottom: .6rem;
+  cursor: pointer;
+  transition: background .2s ease, transform .1s ease;
+}
+
+.route-card:hover { background: #f9fafb; transform: scale(1.01); }
+.route-card.active { border-color: #2563eb; box-shadow: 0 0 6px rgba(37,99,235,0.4); }
+
+.card-color {
+  width: 14px; height: 100%;
+  border-radius: 8px;
+  margin-right: .7rem;
+}
+
+.card-body {
+  flex: 1;
+}
+
+.card-title {
+  font-weight: 600;
+  color: #111827;
+}
+
+.card-sub {
+  font-size: .8rem;
+  color: #6b7280;
+}
+
+.routes-list .card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      padding: 8px;
+      cursor: pointer;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+    .routes-list .card img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 5px;
+      flex-shrink: 0;
+    }
+    .routes-list .card-body {
+      flex: 1;
+    }
+    .routes-list .card-title {
+      font-weight: bold;
+      font-size: 0.9rem;
+    }
+    .routes-list .card-sub {
+      font-size: 0.8rem;
+      color: #555;
+    }
+    .routes-list .card-notes {
+      font-size: 0.75rem;
+      color: #777;
+      margin-top: 2px;
+    }
+    /* Panel de detalles */
+    .route-info img {
+      width: 300px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-top: 0.5rem;
+    }
+
+
+
 /* Para navegadores WebKit (Chrome, Safari) */
 @-webkit-keyframes pulse {
   0% {
