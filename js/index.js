@@ -123,6 +123,10 @@ if (searchInput) {
   });
 }
 
+searchInput.addEventListener("blur", () =>{
+  sidebar.classList.remove('active');
+})
+
 // colores
 function getColor(id) {
   const palette = ['#2563eb','#e74c3c','#27ae60','#8e44ad','#f39c12','#10b981','#d946ef','#ef4444','#0ea5e9','#f59e0b'];
