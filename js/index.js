@@ -113,6 +113,9 @@ function showRouteInfo(id, props) {
 // 5) Búsqueda
 if (searchInput) {
   searchInput.addEventListener('input', (e) => {
+    if(!sidebar.classList.toggle('active')){
+      sidebar.classList.toggle('active');
+    }
     const q = e.target.value.trim().toLowerCase();
     Array.from(routesListEl.children).forEach(card => {
       card.style.display = card.textContent.toLowerCase().includes(q) ? '' : 'none';
