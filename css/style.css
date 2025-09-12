@@ -102,23 +102,23 @@ footer {
   background: #1e40af;
 }
 
-/* === SIDEBAR IZQUIERDA === */
+/* === SIDEBAR DERECHA === */
 .sidebar {
   position: fixed;
-  top: 64px; /* debajo del header (ajusta si cambia) */
-  left: -45%; /* oculto por defecto */
+  top: 68px; /* debajo del header (ajusta si cambia) */
+  right: -45%; /* oculto por defecto */
   width: 40%;
   height: calc(100% - 64px); /* ocupa todo menos el header */
   background: #ffffff;
-  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.2);
-  border-top-right-radius: 15px;
-  border-bottom-right-radius: 15px;
+  box-shadow: -2px 0 12px rgba(0, 0, 0, 0.2); /* sombra hacia la izquierda */
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
   z-index: 1000;
-  transition: left 0.3s ease;
+  transition: right 0.3s ease;
   padding: 1rem;
 
-  display: flex;           /* flexbox para organizar */
-  flex-direction: column;  /* título arriba, lista abajo */
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar-title {
@@ -138,14 +138,13 @@ footer {
   margin-bottom: .5rem;
 }
 
-/* la lista se adapta al espacio sobrante */
+/* lista adaptable */
 .routes-list {
   flex: 1;
   overflow-y: auto;
   padding-right: .25rem;
 }
 
-/* item de ruta */
 .route-item {
   display: flex;
   align-items: center;
@@ -163,7 +162,6 @@ footer {
   color: #fff;
 }
 
-/* bolita de color */
 .color-dot {
   width: 12px;
   height: 12px;
@@ -172,7 +170,7 @@ footer {
   flex: 0 0 12px;
 }
 
-/* scroll bonito (opcional) */
+/* scroll bonito */
 .routes-list::-webkit-scrollbar { width: 8px; }
 .routes-list::-webkit-scrollbar-thumb {
   background: #d1d5db;
@@ -180,7 +178,8 @@ footer {
 }
 
 /* Clase activa para abrir el sidebar */
-.sidebar.active { left: 0; }
+.sidebar.active { right: 0; }
+
 
 /* Accesibilidad: selección con teclado */
 .route-item:focus {
@@ -416,6 +415,22 @@ footer {
             text-align: center;    
             text-decoration: none; 
             box-sizing: border-box;
+        }
+
+        .btn-return {
+            background-color: white;
+            color: #b6b189;
+            font-weight: bold;
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #b6b189;
+            border-radius: 8px;
+            display: block;        
+            text-align: center;    
+            text-decoration: none; 
+            box-sizing: border-box;
+            margin-top: 10px;
         }
 
         .divider-container {

@@ -113,19 +113,22 @@ function showRouteInfo(id, props) {
 // 5) Búsqueda
 if (searchInput) {
   searchInput.addEventListener('input', (e) => {
-    if(!sidebar.classList.toggle('active')){
-      sidebar.classList.toggle('active');
-    }
     const q = e.target.value.trim().toLowerCase();
+
+    //"q" es el texto que se escribe dentro el input
+    if(q === ''){
+      //Si el input no tiene texto, el sidebar va a ocultarse
+      sidebar.classList.remove('active');
+    } else {
+      //Si, si tiene va a aparecer
+      sidebar.classList.add('active');
+    }
+
     Array.from(routesListEl.children).forEach(card => {
       card.style.display = card.textContent.toLowerCase().includes(q) ? '' : 'none';
     });
   });
 }
-
-searchInput.addEventListener("blur", () =>{
-  sidebar.classList.remove('active');
-})
 
 // colores
 function getColor(id) {
