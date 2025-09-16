@@ -10,29 +10,48 @@ var Stadia_Outdoors = L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{
 
 // Geolocalización usuario
 let userMarker;
+let userCircle; // círculo del radio
+
 const userIcon = L.divIcon({
   className: "user-location",
   html: '<div class="user-circle"></div>',
   iconSize: [26, 26],
   iconAnchor: [13, 13]
 });
+
 if (navigator.geolocation) {
   navigator.geolocation.watchPosition(
     (pos) => {
       const lat = pos.coords.latitude;
       const lon = pos.coords.longitude;
+
       if (!userMarker) {
-        userMarker = L.marker([lat, lon], { icon: userIcon }).addTo(map)
-          .bindPopup("Tu ubicación en tiempo real").openPopup();
+        // marcador del usuario
+        userMarker = L.marker([lat, lon], { icon: userIcon })
+          .addTo(map)
+          .bindPopup("Tu ubicación en tiempo real")
+          .openPopup();
+
+        // círculo alrededor de la ubicación
+        userCircle = L.circle([lat, lon], {
+          radius: 200, // radio en metros (ej: 200m)
+          color: "orange",
+          fillColor: "rgba(255, 174, 0, 0.63)",
+          fillOpacity: 0.4
+        }).addTo(map);
+
         map.setView([lat, lon], 15);
       } else {
+        // actualizar posición del marcador y círculo
         userMarker.setLatLng([lat, lon]);
+        userCircle.setLatLng([lat, lon]);
       }
     },
     (err) => console.error("Error al obtener ubicación:", err.message),
     { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
   );
 }
+
 
 // Sidebar
 const menuBtn = document.querySelector('.menu-btn');
