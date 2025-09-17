@@ -20,15 +20,69 @@
 
     <div>
       <a href="IniciarS.html" class="login-btn">Iniciar sesión</a>
-      <button class="menu-btn"><i class="fas fa-bars"></i></button>
+      <button id="menu-btn" class="menu-btn"><i class="fas fa-bars"></i></button>
     </div>
   </header>
 
-  <div id="sidebar" class="sidebar">
-    <h2 class="sidebar-title">Rutas</h2>
-    <div id="route-info" class="route-info">Selecciona una ruta…</div>
+  <div id="app">
+    <!-- SIDEBAR -->
+    <div id="sidebar" class="sidebar">
+    
+      <div class="sidebar-header">
+        <h2 class="sidebar-title">Rutas</h2>
+        <button id="filter-btn" class="filter-btn">
+          <i class="fas fa-filter"></i> Filtrar
+        </button>
+      </div>
+
+      <!-- PANEL DE FILTROS -->
+      <div id="filter-panel" class="filter-panel">
+        <h3>Filtros de Rutas</h3>
+
+        <label>Origen:</label>
+        <input list="origenes" placeholder="Escribe o selecciona origen">
+        <datalist id="origenes">
+          <option value="Plaza Crystal">
+          <option value="Universidad Veracruzana">
+          <option value="Colonia Revolución">
+          <option value="Zona Centro">
+        </datalist>
+
+        <label>Destino:</label>
+        <input list="destinos" placeholder="Escribe o selecciona destino">
+        <datalist id="destinos">
+          <option value="Zona Centro">
+          <option value="Plaza Américas">
+          <option value="Clavijero">
+          <option value="Terminal ADO">
+        </datalist>
+
+        <div class="filter-options">
+          <label><input type="checkbox"> Solo rutas cercanas</label>
+          <label><input type="checkbox"> Rutas seguras (Mujer Segura)</label>
+        </div>
+
+        <div class="filter-actions">
+          <button class="btn-apply">Aplicar filtros</button>
+          <button class="btn-clear">Limpiar</button>
+        </div>
+      </div>
+
+      <!-- INFO Y LISTA DE RUTAS -->
+      <div id="route-info" class="route-info">Selecciona una ruta…</div>
+      <div id="routes-list" class="routes-list"></div>
+    </div>
+
     <div id="routes-list" class="routes-list"></div>
+
+    <!-- RESULTADOS DE FILTRO -->
+    <div id="filtered-routes" class="routes-list"></div>
+
+    <!-- MAPA -->
+    <div id="map"></div>
   </div>
+
+  
 
   <main>
     <div id="map"></div>

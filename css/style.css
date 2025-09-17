@@ -834,3 +834,121 @@ label {
     height: 45px;
   }
 }
+
+/* === BOTÓN DE FILTRO === */
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .5rem;
+}
+
+.filter-btn {
+  background: #b9b28a;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background 0.3s ease;
+}
+
+.filter-btn:hover {
+  background: #8e8a63;
+}
+
+/* === PANEL DE FILTROS === */
+.filter-panel {
+  background: #f6f7f2;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: none; /* Oculto al inicio */
+  animation: fadeIn 0.3s ease;
+}
+
+.filter-panel h3 {
+  font-size: 1rem;
+  color: #2c3e50;
+  margin-bottom: .8rem;
+  text-align: center;
+}
+
+.filter-panel label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-top: .6rem;
+  display: block;
+}
+
+.filter-panel select {
+  width: 100%;
+  padding: .5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: .6rem;
+}
+
+.filter-options {
+  margin: .8rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  font-size: 0.85rem;
+}
+
+.filter-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: .8rem;
+}
+
+.filter-actions button {
+  flex: 1;
+  margin: 0 4px;
+  padding: .5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-apply {
+  background: #b6b189;
+  color: white;
+}
+
+.btn-apply:hover {
+  background: #8e8a63;
+}
+
+.btn-clear {
+  background: #e5e5e5;
+  color: #333;
+}
+
+.btn-clear:hover {
+  background: #ccc;
+}
+
+/* Animación de aparición */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.filter-panel input[list] {
+  width: 100%;
+  padding: .5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: .6rem;
+  font-size: 0.9rem;
+}
+

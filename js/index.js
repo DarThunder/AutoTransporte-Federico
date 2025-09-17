@@ -154,3 +154,23 @@ function getColor(id) {
   const palette = ['#2563eb','#e74c3c','#27ae60','#8e44ad','#f39c12','#10b981','#d946ef','#ef4444','#0ea5e9','#f59e0b'];
   return palette[id % palette.length];
 }
+
+// === BOTÓN APLICAR FILTROS ===
+
+const filterBtn = document.getElementById("filter-btn");
+const filterPanel = document.getElementById("filter-panel");
+
+filterBtn.addEventListener("click", () => {
+  filterPanel.style.display =
+    filterPanel.style.display === "block" ? "none" : "block";
+});
+
+document.querySelector(".btn-apply").addEventListener("click", () => {
+  alert("Filtros aplicados 🚍");
+});
+
+document.querySelector(".btn-clear").addEventListener("click", () => {
+  filterPanel.querySelectorAll("input[type=checkbox]").forEach(cb => cb.checked = false);
+  filterPanel.querySelectorAll("input[list]").forEach(inp => inp.value = "");
+  document.getElementById("filtered-routes").innerHTML = "";
+});
