@@ -34,7 +34,7 @@ if (navigator.geolocation) {
 
         // círculo alrededor de la ubicación
         userCircle = L.circle([lat, lon], {
-          radius: 200, // radio en metros (ej: 200m)
+          radius: 200,
           color: "orange",
           fillColor: "rgba(255, 174, 0, 0.63)",
           fillOpacity: 0.4
