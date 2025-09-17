@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El Rutero - Admin</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+</head>
+<body>
+  <header>
+    <h1>El Rutero - Admin</h1>
+    <div class="search-box">
+      <input type="text" placeholder="Buscar rutas o paradas...">
+      <button><i class="fas fa-search"></i></button>
+    </div>
+
+    <div>
+      <a href="IniciarS.html" class="login-btn">Iniciar sesión</a>
+      <button id="menu-btn" class="menu-btn"><i class="fas fa-bars"></i></button>
+    </div>
+  </header>
+
+  <div id="app">
+    <!-- SIDEBAR -->
+    <div id="sidebar" class="sidebar">
+    
+      <div class="sidebar-header">
+        <h2 class="sidebar-title">Rutas</h2>
+        <div class="admin-controls">
+          <button id="add-btn" class="admin-btn add-btn" title="Agregar ruta">
+            <i class="fas fa-plus"></i>
+          </button>
+          <button id="edit-btn" class="admin-btn edit-btn" title="Editar ruta">
+            <i class="fas fa-pencil-alt"></i>
+          </button>
+          <button id="delete-btn" class="admin-btn delete-btn" title="Eliminar ruta">
+            <i class="fas fa-trash"></i>
+          </button>
+          <button id="filter-btn" class="filter-btn">
+            <i class="fas fa-filter"></i> Filtrar
+          </button>
+        </div>
+      </div>
+
+      <!-- PANEL DE FILTROS -->
+      <div id="filter-panel" class="filter-panel">
+        <h3>Filtros de Rutas</h3>
+
+        <label>Origen:</label>
+        <input list="origenes" placeholder="Escribe o selecciona origen">
+        <datalist id="origenes">
+          <option value="Plaza Crystal">
+          <option value="Universidad Veracruzana">
+          <option value="Colonia Revolución">
+          <option value="Zona Centro">
+        </datalist>
+
+        <label>Destino:</label>
+        <input list="destinos" placeholder="Escribe o selecciona destino">
+        <datalist id="destinos">
+          <option value="Zona Centro">
+          <option value="Plaza Américas">
+          <option value="Clavijero">
+          <option value="Terminal ADO">
+        </datalist>
+
+        <div class="filter-options">
+          <label><input type="checkbox"> Solo rutas cercanas</label>
+          <label><input type="checkbox"> Rutas seguras (Mujer Segura)</label>
+        </div>
+
+        <div class="filter-actions">
+          <button class="btn-apply">Aplicar filtros</button>
+          <button class="btn-clear">Limpiar</button>
+        </div>
+      </div>
+
+      <!-- INFO Y LISTA DE RUTAS -->
+      <div id="route-info" class="route-info">Selecciona una ruta…</div>
+      <div id="routes-list" class="routes-list"></div>
+    </div>
+
+    <div id="routes-list" class="routes-list"></div>
+
+    <!-- RESULTADOS DE FILTRO -->
+    <div id="filtered-routes" class="routes-list"></div>
+  </div>
+  <main>
+    <div id="map"></div>
+  </main>
+  <footer>
+    <p>© 2025 - Dard's Innovations</p>
+  </footer>
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="../js/admin.js"></script>
+</body>
+</html>
