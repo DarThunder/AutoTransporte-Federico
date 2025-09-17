@@ -46,6 +46,62 @@
         </div>
       </div>
 
+        <!-- PANEL DE AGREGAR RUTA -->
+      <div id="add-panel" class="filter-panel">
+        <h3>Agregar Nueva Ruta</h3>
+
+        <label>Nombre de la ruta:</label>
+        <input type="text" placeholder="Ej: Ruta Centro-UV" id="route-name">
+
+        <label>Horario:</label>
+        <input type="text" placeholder="Ej: 6:00 AM - 10:00 PM" id="route-schedule">
+
+        <label>Origen:</label>
+        <input list="origenes" placeholder="Escribe o selecciona origen" id="route-origin">
+        <datalist id="origenes">
+          <option value="Plaza Crystal">
+          <option value="Universidad Veracruzana">
+          <option value="Colonia Revolución">
+          <option value="Zona Centro">
+        </datalist>
+
+        <label>Destino:</label>
+        <input list="destinos" placeholder="Escribe o selecciona destino" id="route-destination">
+        <datalist id="destinos">
+          <option value="Zona Centro">
+          <option value="Plaza Américas">
+          <option value="Clavijero">
+          <option value="Terminal ADO">
+        </datalist>
+
+        <label>Archivo de ruta (GeoJSON):</label>
+        <div class="file-upload-area" id="file-upload-area">
+          <div class="file-upload-content">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>Arrastra tu archivo aquí o</p>
+            <button type="button" class="btn-select-file" id="btn-select-file">
+              <i class="fas fa-folder-open"></i> Seleccionar archivo
+            </button>
+            <input type="file" id="route-file" accept=".geojson,.json" hidden>
+            <div class="file-info" id="file-info" style="display: none;">
+              <i class="fas fa-file-alt"></i>
+              <span class="file-name" id="file-name">archivo.geojson</span>
+              <button type="button" class="btn-remove-file" id="btn-remove-file">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <label>Notas adicionales:</label>
+        <textarea placeholder="Información adicional sobre la ruta..." id="route-notes" rows="3"></textarea>
+
+        <div class="filter-actions">
+          <button class="btn-apply" id="btn-save-route">Guardar Ruta</button>
+          <button class="btn-clear" id="btn-cancel-add">Cancelar</button>
+        </div>
+      </div>
+
       <!-- PANEL DE FILTROS -->
       <div id="filter-panel" class="filter-panel">
         <h3>Filtros de Rutas</h3>

@@ -173,14 +173,147 @@
       document.getElementById("filtered-routes").innerHTML = "";
     });
 
-    // === BOTONES DE ADMINISTRACIÓN ===
+   // === BOTÓN AGREGAR RUTA ===
     const addBtn = document.getElementById("add-btn");
-    const editBtn = document.getElementById("edit-btn");
-    const deleteBtn = document.getElementById("delete-btn");
+    const addPanel = document.getElementById("add-panel");
 
     addBtn.addEventListener("click", () => {
-      //Funcion de agregar
+      // Ocultar panel de filtros si está abierto
+      filterPanel.style.display = "none";
+      
+      addPanel.style.display =
+        addPanel.style.display === "block" ? "none" : "block";
     });
+
+    // Botón guardar ruta
+    document.getElementById("btn-save-route").addEventListener("click", () => {
+      const routeName = document.getElementById("route-name").value;
+      const routeSchedule = document.getElementById("route-schedule").value;
+      const routeOrigin = document.getElementById("route-origin").value;
+      const routeDestination = document.getElementById("route-destination").value;
+      const routeNotes = document.getElementById("route-notes").value;
+
+      if (routeName && routeSchedule) {
+        alert("Ruta guardada exitosamente 🚌✅");
+        // Aquí irá la lógica para guardar la ruta
+        
+        // Limpiar formulario
+        clearAddForm();
+        // Ocultar panel
+        addPanel.style.display = "none";
+      } else {
+        alert("Por favor completa al menos el nombre y horario de la ruta");
+      }
+    });
+
+    // Botón cancelar agregar
+    document.getElementById("btn-cancel-add").addEventListener("click", () => {
+      clearAddForm();
+      addPanel.style.display = "none";
+    });
+
+     // === FUNCIONALIDAD DE DRAG & DROP PARA ARCHIVOS ===
+    const fileUploadArea = document.getElementById("file-upload-area");
+    const fileInput = document.getElementById("route-file");
+    const btnSelectFile = document.getElementById("btn-select-file");
+    const fileInfo = document.getElementById("file-info");
+    const fileName = document.getElementById("file-name");
+    const btnRemoveFile = document.getElementById("btn-remove-file");
+    let uploadedFile = null;
+
+    // Prevenir comportamiento por defecto del drag & drop
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      fileUploadArea.addEventListener(eventName, preventDefaults, false);
+      document.body.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    // Efectos visuales para drag & drop
+    ['dragenter', 'dragover'].forEach(eventName => {
+      fileUploadArea.addEventListener(eventName, highlight, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      fileUploadArea.addEventListener(eventName, unhighlight, false);
+    });
+
+    function highlight(e) {
+      fileUploadArea.classList.add('drag-over');
+    }
+
+    function unhighlight(e) {
+      fileUploadArea.classList.remove('drag-over');
+    }
+
+    // Manejar el drop
+    fileUploadArea.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      handleFiles(files);
+    }
+
+    // Botón para seleccionar archivo
+    btnSelectFile.addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    // Input file change
+    fileInput.addEventListener('change', (e) => {
+      handleFiles(e.target.files);
+    });
+
+    // Función para manejar archivos
+    function handleFiles(files) {
+      if (files.length > 0) {
+        const file = files[0];
+        
+        // Validar tipo de archivo
+        if (file.type === 'application/json' || file.name.endsWith('.geojson') || file.name.endsWith('.json')) {
+          uploadedFile = file;
+          showFileInfo(file.name);
+        } else {
+          alert('Por favor selecciona un archivo GeoJSON válido (.geojson o .json)');
+        }
+      }
+    }
+
+    // Mostrar información del archivo
+    function showFileInfo(name) {
+      fileName.textContent = name;
+      fileInfo.style.display = 'flex';
+      fileUploadArea.querySelector('.file-upload-content > i').style.display = 'none';
+      fileUploadArea.querySelector('.file-upload-content > p').style.display = 'none';
+      btnSelectFile.style.display = 'none';
+    }
+
+    // Remover archivo
+    btnRemoveFile.addEventListener('click', () => {
+      uploadedFile = null;
+      fileInput.value = '';
+      fileInfo.style.display = 'none';
+      fileUploadArea.querySelector('.file-upload-content > i').style.display = 'block';
+      fileUploadArea.querySelector('.file-upload-content > p').style.display = 'block';
+      btnSelectFile.style.display = 'inline-flex';
+    });
+
+    // Función para limpiar el formulario de agregar
+    function clearAddForm() {
+      document.getElementById("route-name").value = "";
+      document.getElementById("route-schedule").value = "";
+      document.getElementById("route-origin").value = "";
+      document.getElementById("route-destination").value = "";
+      document.getElementById("route-notes").value = "";
+    }
+
+    // === BOTONES DE ADMINISTRACIÓN ===
+    const editBtn = document.getElementById("edit-btn");
+    const deleteBtn = document.getElementById("delete-btn");
 
     editBtn.addEventListener("click", () => {
       if (activeRoute) {
