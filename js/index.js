@@ -34,7 +34,7 @@ if (navigator.geolocation) {
 
         // círculo alrededor de la ubicación
         userCircle = L.circle([lat, lon], {
-          radius: 200,
+          radius: 200, 
           color: "orange",
           fillColor: "rgba(255, 174, 0, 0.63)",
           fillOpacity: 0.4
@@ -51,7 +51,6 @@ if (navigator.geolocation) {
     { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
   );
 }
-
 
 // Sidebar
 const menuBtn = document.querySelector('.menu-btn');
@@ -78,7 +77,7 @@ fetch('../data/all_routes.geojson')
       routesIndex[id].push(f);
     });
     renderSidebar(Object.keys(routesIndex).sort((a,b)=>a-b));
-  });
+  });//*
 
 // 2) Sidebar con tarjetas
 function renderSidebar(ids) {
@@ -161,16 +160,107 @@ const filterBtn = document.getElementById("filter-btn");
 const filterPanel = document.getElementById("filter-panel");
 
 filterBtn.addEventListener("click", () => {
-  filterPanel.style.display =
-    filterPanel.style.display === "block" ? "none" : "block";
+  filterPanel.classList.toggle("active");
 });
 
-document.querySelector(".btn-apply").addEventListener("click", () => {
-  alert("Filtros aplicados 🚍");
-});
+// === FILTRADO DE RUTAS ===
 
-document.querySelector(".btn-clear").addEventListener("click", () => {
-  filterPanel.querySelectorAll("input[type=checkbox]").forEach(cb => cb.checked = false);
-  filterPanel.querySelectorAll("input[list]").forEach(inp => inp.value = "");
-  document.getElementById("filtered-routes").innerHTML = "";
-});
+function filtrarRutas() {
+  const origen = document.getElementById("origen-input").value.trim().toLowerCase();
+  const destino = document.getElementById("destino-input").value.trim().toLowerCase();
+  const rutasSeguras = document.getElementById("rutas-seguras")?.checked || false;
+  const soloCercanas = document.getElementById("rutas-cercanas")?.checked || false;
+
+  const resultados = Object.keys(routesIndex).filter(id => {
+    const props = routesIndex[id][0].properties;
+    const desc = (props.desc || "").toLowerCase();
+
+    if (origen && !desc.includes(origen)) return false;
+    if (destino && !desc.includes(destino)) return false;
+    if (rutasSeguras && !props.segura) return false;
+    if (soloCercanas) {
+      // Aquí lógica para cercanas si luego quieres
+    }
+    return true;
+  });
+
+  // 1. Ocultar todas las rutas del mapa primero
+  Object.keys(routeLayers).forEach(id => {
+    map.removeLayer(routeLayers[id]);
+  });
+
+  // 2. Mostrar solo las rutas que coinciden con el filtro
+  resultados.forEach(id => {
+    if (!routeLayers[id]) {
+      const group = L.geoJSON({ type: 'FeatureCollection', features: routesIndex[id] }, {
+        style: { color: getColor(id), weight: 3, opacity: 0.9 }
+      });
+      routeLayers[id] = group;
+    }
+    routeLayers[id].addTo(map);
+  });
+
+  // 3. Ocultar la lista original de rutas y mostrar solo los resultados filtrados
+  routesListEl.style.display = "none";
+  routeInfoEl.style.display = "none";
+  
+  const resultEl = document.getElementById("filtered-routes");
+  resultEl.innerHTML = ""; // limpiar resultados anteriores
+  resultEl.style.display = "block";
+
+  if (resultados.length > 0) {
+    resultEl.innerHTML = `<h3>Rutas encontradas:</h3>`;
+    resultados.forEach(id => {
+      const props = routesIndex[id][0].properties;
+      const div = document.createElement("div");
+      div.className = "route-card";
+      div.dataset.id = id;
+      div.innerHTML = `
+        <div class="card-body">
+          <div class="card-title">${props.nombre}</div>
+          <div class="card-sub">🕒 ${props.horario}</div>
+          ${props.notas ? `<div class="card-notes">📝 ${props.notas}</div>` : ""}
+        </div>
+      `;
+      // Añadir evento de clic para seleccionar la ruta filtrada
+      
+      resultEl.appendChild(div);
+    });
+  } else {
+    resultEl.innerHTML = `<p class="no-routes">No se encontraron rutas con esos filtros 😢</p>`;
+  }
+
+  return resultados;
+}
+
+// Función para limpiar filtros y mostrar todas las rutas nuevamente
+function limpiarFiltros() {
+  // Restablecer valores de los filtros
+  document.getElementById("origen-input").value = "";
+  document.getElementById("destino-input").value = "";
+  document.getElementById("rutas-seguras").checked = false;
+  document.getElementById("rutas-cercanas").checked = false;
+  
+  // Ocultar resultados de filtro
+  const resultEl = document.getElementById("filtered-routes");
+  resultEl.innerHTML = "";
+  resultEl.style.display = "none";
+  
+  // Mostrar lista original de rutas
+  routesListEl.style.display = "block";
+  routeInfoEl.style.display = "block";
+  
+  // Quitar todas las rutas del mapa
+  Object.keys(routeLayers).forEach(id => {
+    map.removeLayer(routeLayers[id]);
+  });
+  
+  // Si había una ruta activa antes de filtrar, restaurarla
+  if (activeRoute) {
+    selectRoute(activeRoute, routesIndex[activeRoute][0].properties);
+  }
+}
+
+// Modificar los event listeners para usar las nuevas funciones
+document.querySelector(".btn-clear").addEventListener("click", limpiarFiltros);
+document.querySelector(".btn-apply").addEventListener("click", filtrarRutas);

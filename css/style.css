@@ -860,6 +860,9 @@ label {
 .filter-btn:hover {
   background: #8e8a63;
 }
+#filtered-routes:empty {
+  display: none; /* si no hay resultados, no ocupa espacio */
+}
 
 /* === PANEL DE FILTROS === */
 .filter-panel {
@@ -992,4 +995,60 @@ label {
   margin-bottom: .6rem;
   font-size: 0.9rem;
 }
+
+/* Estilos para filtros */
+.filter-panel.active {
+  display: block; /* aparece solo cuando tiene la clase */
+}
+
+/* Estilos para resultados filtrados */
+#filtered-routes {
+  display: none;
+}
+
+.no-routes {
+  text-align: center;
+  padding: 1.5rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* Asegurar que las tarjetas de ruta sean consistentes */
+.route-card {
+  background: white;
+  border-radius: 10px;
+  padding: 1rem;
+  margin-bottom: 0.8rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.route-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.route-card.active {
+  border-left: 4px solid #b6b189;
+  background-color: #f8f9fa;
+}
+
+.card-title {
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 0.4rem;
+}
+
+.card-sub {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin-bottom: 0.4rem;
+}
+
+.card-notes {
+  font-size: 0.85rem;
+  color: #e74c3c;
+}
+
 

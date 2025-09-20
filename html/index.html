@@ -18,7 +18,7 @@
       <button><i class="fas fa-search"></i></button>
     </div>
 
-    <div>
+    <div clas>
       <a href="IniciarS.html" class="login-btn">Iniciar sesión</a>
       <button id="menu-btn" class="menu-btn"><i class="fas fa-bars"></i></button>
     </div>
@@ -27,7 +27,6 @@
   <div id="app">
     <!-- SIDEBAR -->
     <div id="sidebar" class="sidebar">
-    
       <div class="sidebar-header">
         <h2 class="sidebar-title">Rutas</h2>
         <button id="filter-btn" class="filter-btn">
@@ -40,7 +39,7 @@
         <h3>Filtros de Rutas</h3>
 
         <label>Origen:</label>
-        <input list="origenes" placeholder="Escribe o selecciona origen">
+        <input id="origen-input" list="origenes" placeholder="Escribe o selecciona origen">
         <datalist id="origenes">
           <option value="Plaza Crystal">
           <option value="Universidad Veracruzana">
@@ -49,17 +48,17 @@
         </datalist>
 
         <label>Destino:</label>
-        <input list="destinos" placeholder="Escribe o selecciona destino">
+        <input id="destino-input" list="destinos" placeholder="Escribe o selecciona destino">
         <datalist id="destinos">
-          <option value="Zona Centro">
+          <option value="Zona UV">
           <option value="Plaza Américas">
           <option value="Clavijero">
-          <option value="Terminal ADO">
+          <option value="CAXA">
         </datalist>
 
         <div class="filter-options">
-          <label><input type="checkbox"> Solo rutas cercanas</label>
-          <label><input type="checkbox"> Rutas seguras (Mujer Segura)</label>
+          <label><input id="rutas-cercanas" type="checkbox"> Solo rutas cercanas</label>
+          <label><input id="rutas-seguras" type="checkbox"> Rutas seguras (Mujer Segura)</label>
         </div>
 
         <div class="filter-actions">
@@ -68,19 +67,20 @@
         </div>
       </div>
 
+      <!-- RESULTADOS DE FILTRO (AQUÍ VA AHORA) -->
+      <div id="filtered-routes" class="routes-list"></div>
+
       <!-- INFO Y LISTA DE RUTAS -->
       <div id="route-info" class="route-info">Selecciona una ruta…</div>
       <div id="routes-list" class="routes-list"></div>
     </div>
 
-    <div id="routes-list" class="routes-list"></div>
-
-    <!-- RESULTADOS DE FILTRO -->
-    <div id="filtered-routes" class="routes-list"></div>
+    <!-- MAPA -->
+    <main>
+      <div id="map"></div>
+    </main>
   </div>
-  <main>
-    <div id="map"></div>
-  </main>
+
   <footer>
     <p>© 2025 - Dard's Innovations</p>
   </footer>
@@ -90,6 +90,6 @@
   <script src="../js/index.js"></script>
 
 
- <!-- Es pa ver si ya salgo  -->
+  
 </body>
 </html>
