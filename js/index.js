@@ -178,13 +178,32 @@ filterBtn.addEventListener("click", () => {
 });
 
 // === FILTRADO DE RUTAS ===
-
 function filtrarRutas() {
   const origen = document.getElementById("origen-input").value.trim().toLowerCase();
   const destino = document.getElementById("destino-input").value.trim().toLowerCase();
   const rutasSeguras = document.getElementById("rutas-seguras")?.checked || false;
   const soloCercanas = document.getElementById("rutas-cercanas")?.checked || false;
 
+  // Validar si no hay datos en los filtros
+  if (!origen && !destino && !rutasSeguras && !soloCercanas) {
+    // Mostrar mensaje en el panel de resultados
+    const resultEl = document.getElementById("filtered-routes");
+    resultEl.innerHTML = `<p class="no-routes">!No has introducido ningún dato para filtrar¡</p>`;
+    resultEl.style.display = "block";
+    
+    // Ocultar lista original de rutas
+    routesListEl.style.display = "none";
+    routeInfoEl.style.display = "none";
+    
+    // Quitar todas las rutas del mapa
+    Object.keys(routeLayers).forEach(id => {
+      map.removeLayer(routeLayers[id]);
+    });
+    
+    return; // Detener la ejecución aquí
+  }
+
+  // Resto del código de filtrado...
   const resultados = Object.keys(routesIndex).filter(id => {
     const props = routesIndex[id][0].properties;
     const desc = (props.desc || "").toLowerCase();
