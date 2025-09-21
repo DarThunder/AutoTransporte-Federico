@@ -99,18 +99,32 @@ function renderSidebar(ids) {
   });
 }
 
-// 3) Selección desde sidebar
+// 3) Selección desde sidebar - CON DESELECCIÓN
 function selectRoute(id, props, cardEl) {
+  // Si ya está seleccionada esta ruta, la deseleccionamos
+  if (activeRoute === id) {
+    routeLayers[id].remove();
+    activeRoute = null;
+    cardEl.classList.remove('active');
+    routeInfoEl.innerHTML = "Selecciona una ruta…";
+    return;
+  }
+  
+  // Si hay otra ruta activa, la deseleccionamos primero
   if (activeRoute && routeLayers[activeRoute]) {
     routeLayers[activeRoute].remove();
     document.querySelector(`.route-card[data-id="${activeRoute}"]`)?.classList.remove('active');
   }
+  
+  // Creamos la capa si no existe
   if (!routeLayers[id]) {
     const group = L.geoJSON({ type: 'FeatureCollection', features: routesIndex[id] }, {
       style: { color: getColor(id), weight: 3, opacity: 0.9 }
     });
     routeLayers[id] = group;
   }
+  
+  // Mostramos la ruta seleccionada
   routeLayers[id].addTo(map);
   activeRoute = id;
   cardEl.classList.add('active');
