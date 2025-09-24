@@ -184,26 +184,20 @@ function filtrarRutas() {
   const rutasSeguras = document.getElementById("rutas-seguras")?.checked || false;
   const soloCercanas = document.getElementById("rutas-cercanas")?.checked || false;
 
-  // Validar si no hay datos en los filtros
+  // Verificar si no hay ningún filtro aplicado
   if (!origen && !destino && !rutasSeguras && !soloCercanas) {
-    // Mostrar mensaje en el panel de resultados
+    // Mostrar mensaje de error
     const resultEl = document.getElementById("filtered-routes");
-    resultEl.innerHTML = `<p class="no-routes">!No has introducido ningún dato para filtrar¡</p>`;
+    resultEl.innerHTML = `<p class="no-routes" style="color: #e74c3c; font-weight: bold;">⚠️ No has introducido ningún dato para filtrar</p>`;
     resultEl.style.display = "block";
     
-    // Ocultar lista original de rutas
+    // Ocultar lista original temporalmente
     routesListEl.style.display = "none";
     routeInfoEl.style.display = "none";
     
-    // Quitar todas las rutas del mapa
-    Object.keys(routeLayers).forEach(id => {
-      map.removeLayer(routeLayers[id]);
-    });
-    
-    return; // Detener la ejecución aquí
+    return [];
   }
 
-  // Resto del código de filtrado...
   const resultados = Object.keys(routesIndex).filter(id => {
     const props = routesIndex[id][0].properties;
     const desc = (props.desc || "").toLowerCase();
@@ -211,34 +205,18 @@ function filtrarRutas() {
     if (origen && !desc.includes(origen)) return false;
     if (destino && !desc.includes(destino)) return false;
     if (rutasSeguras && !props.segura) return false;
-    if (soloCercanas) {
-      // Aquí lógica para cercanas si luego quieres
-    }
     return true;
   });
 
-  // 1. Ocultar todas las rutas del mapa primero
-  Object.keys(routeLayers).forEach(id => {
-    map.removeLayer(routeLayers[id]);
-  });
+  // 1. NO mostrar nada en el mapa todavía
+  Object.keys(routeLayers).forEach(id => map.removeLayer(routeLayers[id]));
 
-  // 2. Mostrar solo las rutas que coinciden con el filtro
-  resultados.forEach(id => {
-    if (!routeLayers[id]) {
-      const group = L.geoJSON({ type: 'FeatureCollection', features: routesIndex[id] }, {
-        style: { color: getColor(id), weight: 3, opacity: 0.9 }
-      });
-      routeLayers[id] = group;
-    }
-    routeLayers[id].addTo(map);
-  });
-
-  // 3. Ocultar la lista original de rutas y mostrar solo los resultados filtrados
+  // 2. Mostrar solo los resultados en el panel
   routesListEl.style.display = "none";
   routeInfoEl.style.display = "none";
   
   const resultEl = document.getElementById("filtered-routes");
-  resultEl.innerHTML = ""; // limpiar resultados anteriores
+  resultEl.innerHTML = "";
   resultEl.style.display = "block";
 
   if (resultados.length > 0) {
@@ -255,8 +233,12 @@ function filtrarRutas() {
           ${props.notas ? `<div class="card-notes">📝 ${props.notas}</div>` : ""}
         </div>
       `;
-      // Añadir evento de clic para seleccionar la ruta filtrada
-      
+
+      // 👇 Aquí recién se dibuja cuando el usuario haga clic
+      div.addEventListener("click", () => {
+        selectRoute(id, props, div);
+      });
+
       resultEl.appendChild(div);
     });
   } else {
@@ -265,6 +247,7 @@ function filtrarRutas() {
 
   return resultados;
 }
+
 
 // Función para limpiar filtros y mostrar todas las rutas nuevamente
 function limpiarFiltros() {
@@ -297,3 +280,47 @@ function limpiarFiltros() {
 // Modificar los event listeners para usar las nuevas funciones
 document.querySelector(".btn-clear").addEventListener("click", limpiarFiltros);
 document.querySelector(".btn-apply").addEventListener("click", filtrarRutas);
+
+// === AUTOCOMPLETAR DESTINOS SEGÚN ORIGEN ===
+function obtenerDestinosDesdeOrigen(origen) {
+  origen = origen.trim().toLowerCase();
+  if (!origen) return [];
+
+  const destinos = new Set();
+
+  Object.keys(routesIndex).forEach(id => {
+    const props = routesIndex[id][0].properties;
+    // "desc" contiene las paradas separadas por "/"
+    const zonas = (props.desc || "").split("/").map(z => z.trim());
+
+    // Si la ruta contiene el origen, guardamos las demás paradas como destinos posibles
+    if (zonas.map(z => z.toLowerCase()).includes(origen)) {
+      zonas.forEach(z => {
+        if (z.toLowerCase() !== origen) destinos.add(z);
+      });
+    }
+  });
+
+  return Array.from(destinos);
+}
+
+// === Escuchar cuando el usuario cambia el ORIGEN ===
+document.getElementById("origen-input").addEventListener("change", () => {
+  const origen = document.getElementById("origen-input").value;
+  const posiblesDestinos = obtenerDestinosDesdeOrigen(origen);
+
+  const dataList = document.getElementById("destinos-sugeridos");
+  dataList.innerHTML = "";
+
+  if (posiblesDestinos.length === 0) {
+    const option = document.createElement("option");
+    option.value = "No hay destinos disponibles";
+    dataList.appendChild(option);
+  } else {
+    posiblesDestinos.forEach(dest => {
+      const option = document.createElement("option");
+      option.value = dest;
+      dataList.appendChild(option);
+    });
+  }
+});
