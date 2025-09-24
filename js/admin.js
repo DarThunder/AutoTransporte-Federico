@@ -30,14 +30,7 @@ if (navigator.geolocation) {
           .addTo(map)
           .bindPopup("Tu ubicación en tiempo real")
           .openPopup();
-
-        userCircle = L.circle([lat, lon], {
-          radius: 200,
-          color: "orange",
-          fillColor: "rgba(255, 174, 0, 0.63)",
-          fillOpacity: 0.4
-        }).addTo(map);
-
+        userCircle = L.circle([lat, lon], { radius: 200, color: "orange", fillColor: "rgba(255, 174, 0, 0.63)", fillOpacity: 0.4 }).addTo(map);
         map.setView([lat, lon], 15);
       } else {
         userMarker.setLatLng([lat, lon]);
@@ -80,6 +73,7 @@ fetch('../data/all_routes.geojson')
 function renderSidebar(ids) {
   routesListEl.innerHTML = '';
   ids.forEach(id => {
+    if (!routesIndex[id] || routesIndex[id].length === 0) return;
     const props = routesIndex[id][0].properties;
     const card = document.createElement('div');
     card.className = 'route-card';
@@ -97,6 +91,10 @@ function renderSidebar(ids) {
 }
 
 function selectRoute(id, cardEl) {
+    if (!routesIndex[id]) {
+        console.error(`La ruta con id ${id} no existe.`);
+        return;
+    }
   const props = routesIndex[id][0].properties;
   if (activeRoute && routeLayers[activeRoute]) {
     routeLayers[activeRoute].remove();
@@ -156,6 +154,7 @@ addBtn.addEventListener("click", () => {
   openAddPanel();
 });
 
+// --- LÓGICA PARA AGREGAR Y EDITAR RUTAS ---
 document.getElementById("btn-save-route").addEventListener("click", () => {
   const routeId = document.getElementById("route-id").value;
   const routeName = document.getElementById("route-name").value;
@@ -164,28 +163,74 @@ document.getElementById("btn-save-route").addEventListener("click", () => {
   const routeDestination = document.getElementById("route-destination").value;
   const routeNotes = document.getElementById("route-notes").value;
 
-  if (routeName && routeSchedule) {
-    if (routeId) {
-      const featuresToUpdate = routesIndex[routeId];
-      featuresToUpdate.forEach(feature => {
-        feature.properties.nombre = routeName;
-        feature.properties.horario = routeSchedule;
-        feature.properties.origen = routeOrigin;
-        feature.properties.destino = routeDestination;
-        feature.properties.notas = routeNotes;
-      });
-      alert(`Ruta ${routeName} actualizada.`);
-      
-      renderSidebar(Object.keys(routesIndex).sort((a,b)=>a-b));
-      const cardEl = document.querySelector(`.route-card[data-id="${routeId}"]`);
-      selectRoute(routeId, cardEl);
-    } else {
-      alert("La funcionalidad para agregar nuevas rutas aún no está implementada.");
-    }
-    
+  if (!routeName || !routeSchedule) {
+    alert("Por favor completa al menos el nombre y horario de la ruta.");
+    return;
+  }
+
+  // Si hay un routeId, estamos EDITANDO
+  if (routeId) {
+    const featuresToUpdate = routesIndex[routeId];
+    featuresToUpdate.forEach(feature => {
+      feature.properties.nombre = routeName;
+      feature.properties.horario = routeSchedule;
+      feature.properties.origen = routeOrigin;
+      feature.properties.destino = routeDestination;
+      feature.properties.notas = routeNotes;
+    });
+    alert(`Ruta "${routeName}" actualizada.`);
+    renderSidebar(Object.keys(routesIndex).sort((a,b)=>a-b));
+    const cardEl = document.querySelector(`.route-card[data-id="${routeId}"]`);
+    selectRoute(routeId, cardEl);
     closeAddPanel();
   } else {
-    alert("Por favor completa al menos el nombre y horario de la ruta");
+    // Si NO hay routeId, estamos AGREGANDO una nueva ruta
+    if (!uploadedFile) {
+      alert("Por favor, selecciona un archivo GeoJSON para la nueva ruta.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      try {
+        const newRouteData = JSON.parse(event.target.result);
+        const newRouteFeatures = newRouteData.features;
+
+        if (!newRouteFeatures || newRouteFeatures.length === 0) {
+          alert("El archivo GeoJSON no contiene 'features' válidas.");
+          return;
+        }
+
+        // 1. Encontrar el ID más alto y sumarle 1 para el nuevo ID
+        const maxId = Object.keys(routesIndex).reduce((max, currentId) => Math.max(max, parseInt(currentId)), 0);
+        const newId = maxId + 1;
+
+        // 2. Asignar el nuevo ID y las propiedades a cada feature de la nueva ruta
+        newRouteFeatures.forEach(feature => {
+          feature.properties = feature.properties || {};
+          feature.properties.id_ruta = newId;
+          feature.properties.nombre = routeName;
+          feature.properties.horario = routeSchedule;
+          feature.properties.origen = routeOrigin;
+          feature.properties.destino = routeDestination;
+          feature.properties.notas = routeNotes;
+        });
+
+        // 3. Añadir las nuevas features a los datos existentes
+        allFeatures.push(...newRouteFeatures);
+        routesIndex[newId] = newRouteFeatures;
+
+        // 4. Actualizar la interfaz
+        renderSidebar(Object.keys(routesIndex).sort((a,b)=>a-b));
+        alert(`Ruta "${routeName}" agregada con éxito.`);
+        closeAddPanel();
+
+      } catch (e) {
+        alert("Error al leer o procesar el archivo GeoJSON. Asegúrate de que el formato es correcto.");
+        console.error(e);
+      }
+    };
+    reader.readAsText(uploadedFile);
   }
 });
 
@@ -194,6 +239,7 @@ document.getElementById("btn-cancel-add").addEventListener("click", () => {
 });
 
 function openAddPanel() {
+  clearAddForm();
   filterPanel.style.display = "none";
   addPanel.querySelector('h3').textContent = "Agregar Nueva Ruta";
   document.getElementById("btn-save-route").textContent = "Guardar Ruta";
@@ -201,10 +247,11 @@ function openAddPanel() {
 }
 
 function openEditPanel(id, props) {
+  clearAddForm();
   filterPanel.style.display = "none";
   addPanel.querySelector('h3').textContent = "Editar Ruta";
   document.getElementById("btn-save-route").textContent = "Guardar Cambios";
-
+  
   document.getElementById("route-id").value = id;
   document.getElementById("route-name").value = props.nombre;
   document.getElementById("route-schedule").value = props.horario;
@@ -221,12 +268,13 @@ function closeAddPanel() {
 }
 
 function clearAddForm() {
-  document.getElementById("route-id").value = "";
-  document.getElementById("route-name").value = "";
-  document.getElementById("route-schedule").value = "";
-  document.getElementById("route-origin").value = "";
-  document.getElementById("route-destination").value = "";
-  document.getElementById("route-notes").value = "";
+  document.getElementById("add-panel").reset();
+  uploadedFile = null;
+  fileInput.value = '';
+  fileInfo.style.display = 'none';
+  fileUploadArea.querySelector('.file-upload-content > i').style.display = 'block';
+  fileUploadArea.querySelector('.file-upload-content > p').style.display = 'block';
+  btnSelectFile.style.display = 'inline-flex';
 }
 
 // === BOTONES DE ADMINISTRACIÓN (Editar, Eliminar y Descargar) ===
@@ -247,7 +295,18 @@ deleteBtn.addEventListener("click", () => {
   if (activeRoute) {
     const routeName = routesIndex[activeRoute][0].properties.nombre;
     if (confirm(`¿Estás seguro de que deseas eliminar la ruta "${routeName}"?`)) {
-      alert(`Ruta ${routeName} eliminada 🗑️`);
+      if (routeLayers[activeRoute]) {
+        routeLayers[activeRoute].remove();
+      }
+
+      delete routesIndex[activeRoute];
+      allFeatures = allFeatures.filter(f => f.properties.id_ruta !== activeRoute);
+
+      routeInfoEl.innerHTML = 'Selecciona una ruta…';
+      activeRoute = null;
+      renderSidebar(Object.keys(routesIndex).sort((a,b)=>a-b));
+      
+      alert(`Ruta "${routeName}" eliminada.`);
     }
   } else {
     alert("Primero selecciona una ruta para eliminar");
@@ -269,13 +328,89 @@ downloadBtn.addEventListener("click", () => {
   downloadAnchorNode.remove();
 });
 
-
-// Drag & Drop
+// === FUNCIONALIDAD DE DRAG & DROP PARA ARCHIVOS ===
 const fileUploadArea = document.getElementById("file-upload-area");
-// ... (resto del código de Drag & Drop) ...
+const fileInput = document.getElementById("route-file");
+const btnSelectFile = document.getElementById("btn-select-file");
+const fileInfo = document.getElementById("file-info");
+const fileName = document.getElementById("file-name");
+const btnRemoveFile = document.getElementById("btn-remove-file");
+let uploadedFile = null;
+
+['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+  fileUploadArea.addEventListener(eventName, preventDefaults, false);
+  document.body.addEventListener(eventName, preventDefaults, false);
+});
+
+function preventDefaults(e) {
+  e.preventDefault();
+  e.stopPropagation();
+}
+
+['dragenter', 'dragover'].forEach(eventName => {
+  fileUploadArea.addEventListener(eventName, highlight, false);
+});
+
+['dragleave', 'drop'].forEach(eventName => {
+  fileUploadArea.addEventListener(eventName, unhighlight, false);
+});
+
+function highlight(e) {
+  fileUploadArea.classList.add('drag-over');
+}
+
+function unhighlight(e) {
+  fileUploadArea.classList.remove('drag-over');
+}
+
+fileUploadArea.addEventListener('drop', handleDrop, false);
+
+function handleDrop(e) {
+  const dt = e.dataTransfer;
+  const files = dt.files;
+  handleFiles(files);
+}
+
+btnSelectFile.addEventListener('click', () => {
+  fileInput.click();
+});
+
+fileInput.addEventListener('change', (e) => {
+  handleFiles(e.target.files);
+});
+
+function handleFiles(files) {
+  if (files.length > 0) {
+    const file = files[0];
+    
+    if (file.type === 'application/json' || file.name.endsWith('.geojson') || file.name.endsWith('.json')) {
+      uploadedFile = file;
+      showFileInfo(file.name);
+    } else {
+      alert('Por favor selecciona un archivo GeoJSON válido (.geojson o .json)');
+    }
+  }
+}
+
+function showFileInfo(name) {
+  fileName.textContent = name;
+  fileInfo.style.display = 'flex';
+  fileUploadArea.querySelector('.file-upload-content > i').style.display = 'none';
+  fileUploadArea.querySelector('.file-upload-content > p').style.display = 'none';
+  btnSelectFile.style.display = 'none';
+}
+
+btnRemoveFile.addEventListener('click', () => {
+  uploadedFile = null;
+  fileInput.value = '';
+  fileInfo.style.display = 'none';
+  fileUploadArea.querySelector('.file-upload-content > i').style.display = 'block';
+  fileUploadArea.querySelector('.file-upload-content > p').style.display = 'block';
+  btnSelectFile.style.display = 'inline-flex';
+});
 
 // Colores
 function getColor(id) {
   const palette = ['#2563eb','#e74c3c','#27ae60','#8e44ad','#f39c12','#10b981','#d946ef','#ef4444','#0ea5e9','#f59e0b'];
-  return palette[id % palette.length];
+  return palette[parseInt(id) % palette.length];
 }

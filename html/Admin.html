@@ -50,9 +50,7 @@
       </div>
 
         <!-- PANEL DE AGREGAR RUTA -->
-      <div id="add-panel" class="filter-panel">
-        <h3>Agregar Nueva Ruta</h3>
-
+      <form id="add-panel" class="filter-panel"> <h3>Agregar Nueva Ruta</h3>
         <input type="hidden" id="route-id">
 
         <label>Nombre de la ruta:</label>
@@ -102,10 +100,8 @@
         <textarea placeholder="Información adicional sobre la ruta..." id="route-notes" rows="3"></textarea>
 
         <div class="filter-actions">
-          <button class="btn-apply" id="btn-save-route">Guardar Ruta</button>
-          <button class="btn-clear" id="btn-cancel-add">Cancelar</button>
-        </div>
-      </div>
+          <button type="button" class="btn-apply" id="btn-save-route">Guardar Ruta</button> <button type="button" class="btn-clear" id="btn-cancel-add">Cancelar</button> </div>
+      </form>
 
       <!-- PANEL DE FILTROS -->
       <div id="filter-panel" class="filter-panel">
