@@ -7035,12 +7035,14 @@
         "peak_pm": 10,
         "night": 10,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Ida",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "LineString",
@@ -7233,12 +7235,14 @@
         "passengerA": 147930995,
         "passengerB": 147930998,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Ida",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -7261,12 +7265,14 @@
         "passengerA": 147931053,
         "passengerB": 147931055,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Ida",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -7289,12 +7295,14 @@
         "passengerA": 147931065,
         "passengerB": 147931067,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Ida",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -7317,12 +7325,14 @@
         "passengerA": 147931082,
         "passengerB": 147931083,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Ida",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -7345,12 +7355,14 @@
         "passengerA": 147931097,
         "passengerB": 147931098,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Ida",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -7373,12 +7385,14 @@
         "passengerA": 147931106,
         "passengerB": 147931106,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Ida",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -7401,12 +7415,14 @@
         "passengerA": 147931120,
         "passengerB": 147931122,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Ida",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -7429,12 +7445,14 @@
         "passengerA": 147931149,
         "passengerB": 147931149,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Ida",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -7457,12 +7475,14 @@
         "passengerA": 147931153,
         "passengerB": 147931154,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Ida",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -7484,12 +7504,14 @@
         "peak_pm": 10,
         "night": 10,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Vuelta",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "LineString",
@@ -7698,12 +7720,14 @@
         "passengerA": 147932645,
         "passengerB": 147932647,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Vuelta",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -7726,12 +7750,14 @@
         "passengerA": 147932652,
         "passengerB": 147932652,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Vuelta",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -7754,12 +7780,14 @@
         "passengerA": 147932656,
         "passengerB": 147932658,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Vuelta",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -7782,12 +7810,14 @@
         "passengerA": 147932673,
         "passengerB": 147932674,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Vuelta",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -7810,12 +7840,14 @@
         "passengerA": 147932681,
         "passengerB": 147932681,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Vuelta",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -7838,12 +7870,14 @@
         "passengerA": 147932699,
         "passengerB": 147932701,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Vuelta",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -7866,12 +7900,14 @@
         "passengerA": 147932800,
         "passengerB": 147932803,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Vuelta",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -7894,12 +7930,14 @@
         "passengerA": 147932845,
         "passengerB": 147932849,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Vuelta",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -7922,12 +7960,14 @@
         "passengerA": 147932857,
         "passengerB": 147932859,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Vuelta",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -7950,12 +7990,14 @@
         "passengerA": 147932877,
         "passengerB": 147932878,
         "id_ruta": 3,
-        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - av.xalapa (economia)",
+        "nombre": "Ruta 3: Lazaro Cardenas -20 de noviembre. - Av.xalapa",
         "empresa": "Desconocida",
         "sentido": "Vuelta",
         "img": "../data/img/ruta_3.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -9391,12 +9433,14 @@
         "peak_pm": 10,
         "night": 10,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "LineString",
@@ -9809,12 +9853,14 @@
         "passengerA": 147808797,
         "passengerB": 147808797,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -9837,12 +9883,14 @@
         "passengerA": 147808813,
         "passengerB": 147808814,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -9865,12 +9913,14 @@
         "passengerA": 147808819,
         "passengerB": 147808819,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -9893,12 +9943,14 @@
         "passengerA": 147808825,
         "passengerB": 147808825,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -9921,12 +9973,14 @@
         "passengerA": 147808832,
         "passengerB": 147808832,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -9949,12 +10003,14 @@
         "passengerA": 147808845,
         "passengerB": 147808846,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -9977,12 +10033,14 @@
         "passengerA": 147808857,
         "passengerB": 147808858,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10005,12 +10063,14 @@
         "passengerA": 147808865,
         "passengerB": 147808866,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10033,12 +10093,14 @@
         "passengerA": 147808867,
         "passengerB": 147808868,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10061,12 +10123,14 @@
         "passengerA": 147808876,
         "passengerB": 147808876,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10089,12 +10153,14 @@
         "passengerA": 147808887,
         "passengerB": 147808888,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10117,12 +10183,14 @@
         "passengerA": 147808889,
         "passengerB": 147808890,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10145,12 +10213,14 @@
         "passengerA": 147808893,
         "passengerB": 147808894,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10173,12 +10243,14 @@
         "passengerA": 147808900,
         "passengerB": 147808901,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10201,12 +10273,14 @@
         "passengerA": 147808903,
         "passengerB": 147808903,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10229,12 +10303,14 @@
         "passengerA": 147808911,
         "passengerB": 147808912,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10257,12 +10333,14 @@
         "passengerA": 147808916,
         "passengerB": 147808917,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10285,12 +10363,14 @@
         "passengerA": 147808930,
         "passengerB": 147808931,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10313,12 +10393,14 @@
         "passengerA": 147808934,
         "passengerB": 147808935,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10341,12 +10423,14 @@
         "passengerA": 147808943,
         "passengerB": 147808944,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10369,12 +10453,14 @@
         "passengerA": 147808950,
         "passengerB": 147808951,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10397,12 +10483,14 @@
         "passengerA": 147808982,
         "passengerB": 147808984,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10425,12 +10513,14 @@
         "passengerA": 147808992,
         "passengerB": 147808995,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10453,12 +10543,14 @@
         "passengerA": 147809002,
         "passengerB": 147809002,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10481,12 +10573,14 @@
         "passengerA": 147809013,
         "passengerB": 147809014,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10509,12 +10603,14 @@
         "passengerA": 147809023,
         "passengerB": 147809023,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10537,12 +10633,14 @@
         "passengerA": 147809043,
         "passengerB": 147809044,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10565,12 +10663,14 @@
         "passengerA": 147809051,
         "passengerB": 147809051,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10593,12 +10693,14 @@
         "passengerA": 147809054,
         "passengerB": 147809054,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10621,12 +10723,14 @@
         "passengerA": 147809063,
         "passengerB": 147809064,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10649,12 +10753,14 @@
         "passengerA": 147809065,
         "passengerB": 147809065,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10677,12 +10783,14 @@
         "passengerA": 147809073,
         "passengerB": 147809074,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10705,12 +10813,14 @@
         "passengerA": 147809080,
         "passengerB": 147809081,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10733,12 +10843,14 @@
         "passengerA": 147809093,
         "passengerB": 147809094,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10761,12 +10873,14 @@
         "passengerA": 147809103,
         "passengerB": 147809104,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",
@@ -10789,12 +10903,14 @@
         "passengerA": 147809108,
         "passengerB": 147809108,
         "id_ruta": 6,
-        "nombre": "Ruta 6: mercado - pipila - jardines - carolino anaya",
+        "nombre": "Ruta 6: Mercado - Pípila - Jardines de Xalapa - Carolino Anaya",
         "empresa": "Desconocida",
         "sentido": "",
         "img": "../data/img/ruta_6.jpg",
         "horario": "10 am - 10 pm",
-        "notas": ""
+        "notas": "",
+        "origen": "",
+        "destino": ""
       },
       "geometry": {
         "type": "Point",

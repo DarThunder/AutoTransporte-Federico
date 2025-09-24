@@ -31,24 +31,29 @@
       <div class="sidebar-header">
         <h2 class="sidebar-title">Rutas</h2>
         <div class="admin-controls">
-          <button id="add-btn" class="admin-btn add-btn" title="Agregar ruta">
-            <i class="fas fa-plus"></i>
-          </button>
-          <button id="edit-btn" class="admin-btn edit-btn" title="Editar ruta">
-            <i class="fas fa-pencil-alt"></i>
-          </button>
-          <button id="delete-btn" class="admin-btn delete-btn" title="Eliminar ruta">
-            <i class="fas fa-trash"></i>
-          </button>
-          <button id="filter-btn" class="filter-btn">
-            <i class="fas fa-filter"></i> Filtrar
-          </button>
-        </div>
+        <button id="add-btn" class="admin-btn add-btn" title="Agregar ruta">
+          <i class="fas fa-plus"></i>
+        </button>
+        <button id="edit-btn" class="admin-btn edit-btn" title="Editar ruta">
+          <i class="fas fa-pencil-alt"></i>
+        </button>
+        <button id="delete-btn" class="admin-btn delete-btn" title="Eliminar ruta">
+          <i class="fas fa-trash"></i>
+        </button>
+        <button id="download-btn" class="admin-btn download-btn" title="Descargar GeoJSON">
+          <i class="fas fa-download"></i>
+        </button>
+        <button id="filter-btn" class="filter-btn">
+          <i class="fas fa-filter"></i> Filtrar
+        </button>
+      </div>
       </div>
 
         <!-- PANEL DE AGREGAR RUTA -->
       <div id="add-panel" class="filter-panel">
         <h3>Agregar Nueva Ruta</h3>
+
+        <input type="hidden" id="route-id">
 
         <label>Nombre de la ruta:</label>
         <input type="text" placeholder="Ej: Ruta Centro-UV" id="route-name">
