@@ -1,766 +1,944 @@
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background: #fafafa;
-  color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: #fafafa;
+    color: #333;
 }
+
 
 /* === HEADER === */
+
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.8rem 1.2rem;
-  background: #dad7c6;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  min-height: 60px;
-}
-
-header h1 {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #2c3e50;
-  letter-spacing: 1px;
-}
-
-.menu-btn {
-  background: none;
-  border: none;
-  font-size: 1.8rem;
-  color: #2c3e50;
-  cursor: pointer;
-  gap: 20px;
-  padding: 5px;
-  min-width: 44px;
-  min-height: 44px;
-}
-
-/* === MAPA === */
-main {
-  flex: 1;
-}
-
-#map {
-  width: 100%;
-  height: 88vh;
-  background: #ffffff !important;
-}
-
-.leaflet-container {
-  background: #ffffff !important;
-}
-
-/* === FOOTER === */
-footer {
-  text-align: center;
-  padding: 0.2rem;
-  background: #e6e4d9;
-  font-size: 0.7rem;
-  color: #666;
-  border-top: 1px solid #eaeaea;
-  height: auto;
-  line-height: 1rem;
-}
-
-/* === BUSCADOR EN EL HEADER === */
-.search-box {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  margin-left: 0px;
-  margin-right: 50px;
-}
-
-.search-box input {
-  width: 60%;
-  max-width: 400px;
-  padding: 0.4rem 0.8rem;
-  border: 1px solid #ccc;
-  border-radius: 20px 0 0 20px;
-  outline: none;
-  font-size: 0.9rem;
-  min-height: 44px;
-}
-
-.search-box button {
-  padding: 0.4rem 0.8rem;
-  border: none;
-  background: #b9b28a;
-  color: white;
-  border-radius: 0 20px 20px 0;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background 0.3s;
-  min-width: 44px;
-  min-height: 44px;
-}
-
-.search-box button:hover {
-  background: #1e40af;
-}
-
-/* === SIDEBAR DERECHA === */
-.sidebar {
-  position: fixed;
-  top: 68px;
-  right: -45%;
-  width: 40%;
-  height: calc(100% - 64px);
-  background: #ffffff;
-  box-shadow: -2px 0 12px rgba(0, 0, 0, 0.2);
-  border-top-left-radius: 15px;
-  border-bottom-left-radius: 15px;
-  z-index: 1000;
-  transition: right 0.3s ease;
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.sidebar-title {
-  font-size: 1.1rem;
-  margin-bottom: .5rem;
-  color: #2c3e50;
-  font-weight: bold;
-}
-
-.route-info {
-  background: #f6f7f2;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  padding: .75rem;
-  font-size: .9rem;
-  color: #374151;
-  margin-bottom: .5rem;
-}
-
-.routes-list {
-  flex: 1;
-  overflow-y: auto;
-  padding-right: .25rem;
-}
-
-.route-item {
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-  padding: .45rem .6rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background .15s ease, color .15s ease;
-  user-select: none;
-  min-height: 44px;
-}
-
-.route-item:hover { 
-  background: #f1f5f9; 
-}
-
-.route-item.active {
-  background: #2563eb;
-  color: #fff;
-}
-
-.color-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 999px;
-  border: 1px solid rgba(0,0,0,.15);
-  flex: 0 0 12px;
-}
-
-.routes-list::-webkit-scrollbar { 
-  width: 8px; 
-}
-
-.routes-list::-webkit-scrollbar-thumb {
-  background: #d1d5db;
-  border-radius: 8px;
-}
-
-.sidebar.active { 
-  right: 0; 
-}
-
-.route-item:focus {
-  outline: 2px solid #2563eb;
-  outline-offset: 2px;
-}
-
-/* === MARCADOR DE USUARIO CON EFECTO PULSE === */
-.user-location {
-  background: transparent !important;
-  border: none !important;
-}
-
-.user-circle {
-  width: 20px;
-  height: 20px;
-  background: #3498db;
-  border: 3px solid #fff;
-  border-radius: 50%;
-  box-shadow: 0 0 8px rgba(52, 152, 219, 0.8);
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.5);
-    opacity: 0.6;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@-webkit-keyframes pulse {
-  0% {
-    -webkit-transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    -webkit-transform: scale(1.5);
-    opacity: 0.6;
-  }
-  100% {
-    -webkit-transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.route-card {
-  display: flex;
-  align-items: center;
-  background: #fff;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: .6rem .8rem;
-  margin-bottom: .6rem;
-  cursor: pointer;
-  transition: background .2s ease, transform .1s ease;
-  min-height: 60px;
-}
-
-.route-card:hover { 
-  background: #f9fafb; 
-  transform: scale(1.01); 
-}
-
-.route-card.active { 
-  border-color: #2563eb; 
-  box-shadow: 0 0 6px rgba(37,99,235,0.4); 
-}
-
-.card-color {
-  width: 14px; 
-  height: 100%;
-  border-radius: 8px;
-  margin-right: .7rem;
-}
-
-.card-body {
-  flex: 1;
-}
-
-.card-title {
-  font-weight: 600;
-  color: #111827;
-}
-
-.card-sub {
-  font-size: .8rem;
-  color: #6b7280;
-}
-
-.routes-list .card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  margin-bottom: 8px;
-  padding: 8px;
-  cursor: pointer;
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  min-height: 80px;
-}
-
-.routes-list .card img {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 5px;
-  flex-shrink: 0;
-}
-
-.routes-list .card-body {
-  flex: 1;
-}
-
-.routes-list .card-title {
-  font-weight: bold;
-  font-size: 0.9rem;
-}
-
-.routes-list .card-sub {
-  font-size: 0.8rem;
-  color: #555;
-}
-
-.routes-list .card-notes {
-  font-size: 0.75rem;
-  color: #777;
-  margin-top: 2px;
-}
-
-.route-info img {
-  width: 300px;
-  height: 200px;
-  object-fit: cover;
-  border-radius: 10px;
-  margin-top: 0.5rem;
-}
-
-/* === BOTÓN DE FILTRO === */
-.sidebar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: .5rem;
-}
-
-.filter-btn {
-  background: #b9b28a;
-  border: none;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  transition: background 0.3s ease;
-}
-
-.filter-btn:hover {
-  background: #8e8a63;
-}
-
-#filtered-routes:empty {
-  display: none; /* si no hay resultados, no ocupa espacio */
-}
-
-/* === PANEL DE FILTROS === */
-.filter-panel {
-  background: #f6f7f2;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  display: none;
-  animation: fadeIn 0.3s ease;
-}
-
-.filter-panel h3 {
-  font-size: 1rem;
-  color: #2c3e50;
-  margin-bottom: .8rem;
-  text-align: center;
-}
-
-.filter-panel label {
-  font-weight: 600;
-  font-size: 0.85rem;
-  margin-top: .6rem;
-  display: block;
-}
-
-.filter-panel select {
-  width: 100%;
-  padding: .5rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-bottom: .6rem;
-}
-
-.filter-options {
-  margin: .8rem 0;
-  display: flex;
-  flex-direction: column;
-  gap: .5rem;
-  font-size: 0.85rem;
-}
-
-.filter-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: .8rem;
-}
-
-.filter-actions button {
-  flex: 1;
-  margin: 0 4px;
-  padding: .5rem;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.btn-apply {
-  background: #b6b189;
-  color: white;
-}
-
-.btn-apply:hover {
-  background: #8e8a63;
-}
-
-.btn-clear {
-  background: #e5e5e5;
-  color: #333;
-}
-
-.btn-clear:hover {
-  background: #ccc;
-}
-
-/* Animación de aparición */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.filter-panel input[list] {
-  width: 100%;
-  padding: .5rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-bottom: .6rem;
-  font-size: 0.9rem;
-}
-
-/* Estilos para filtros */
-.filter-panel.active {
-  display: block;
-}
-
-/* Estilos para resultados filtrados */
-#filtered-routes {
-  display: none;
-}
-
-.no-routes {
-  text-align: center;
-  padding: 1.5rem;
-  color: #666;
-  font-style: italic;
-}
-
-/* Asegurar que las tarjetas de ruta sean consistentes */
-.route-card {
-  background: white;
-  border-radius: 10px;
-  padding: 1rem;
-  margin-bottom: 0.8rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.route-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-}
-
-.route-card.active {
-  border-left: 4px solid #b6b189;
-  background-color: #f8f9fa;
-}
-
-.card-title {
-  font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 0.4rem;
-}
-
-.card-sub {
-  font-size: 0.9rem;
-  color: #7f8c8d;
-  margin-bottom: 0.4rem;
-}
-
-.card-notes {
-  font-size: 0.85rem;
-  color: #e74c3c;
-}
-
-.login-btn {
-  background-color: #b6b189;
-  font-weight: bold;
-  color: white;
-  padding: 12px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-size: 14px;
-  margin-left: 50px;
-  box-shadow: 0px 3px 6px rgba(0,0,0,0.2);
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.login-btn:hover {
-  background: #b6b189;
-}
-
-/* === MEDIA QUERIES PARA MÓVILES === */
-
-/* Tablets y pantallas medianas */
-@media (max-width: 1024px) {
-  .sidebar {
-    width: 50%;
-    right: -50%;
-  }
-  
-  .search-box {
-    margin-right: 20px;
-  }
-  
-  .search-box input {
-    width: 70%;
-  }
-}
-
-/* Pantallas pequeñas (tablets verticales) */
-@media (max-width: 768px) {
-  /* Header reorganizado */
-  header {
-    padding: 0.5rem 1rem;
-    flex-direction: column;
-    min-height: auto;
-    gap: 10px;
-  }
-  
-  /* Buscador en la parte superior, sin elementos a los lados */
-  .search-box {
-    width: 100%;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    order: 1;
-  }
-  
-  .search-box input {
-    width: 100%;
-    font-size: 14px;
-    border-radius: 20px;
-  }
-  
-  .search-box button {
-    position: absolute;
-    right: 1rem;
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  
-  /* Fila de botones debajo del buscador */
-  .header-buttons {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    order: 2;
-  }
-  
-  header h1 {
-    font-size: 1.2rem;
-  }
-  
-  .menu-btn {
-    font-size: 1.5rem;
-  }
-  
-  .login-btn {
-    margin-left: 0;
-    padding: 8px 12px;
-    font-size: 12px;
-  }
-  
-  /* Sidebar más pequeño y debajo del header */
-  .sidebar {
-    width: 45%;
-    right: -45%;
-    top: 120px; /* Debajo del header reorganizado */
-    height: calc(100vh - 120px);
-  }
-  
-  .sidebar.active {
-    right: 0;
-  }
-  
-  /* Mapa ajustes */
-  #map {
-    height: calc(100vh - 140px); /* Ajustado para el header más alto */
-  }
-  
-  /* Cards más grandes para touch */
-  .route-card {
-    padding: 1rem;
-    margin-bottom: 1rem;
-    min-height: 70px;
-  }
-  
-  .route-item {
-    padding: 0.8rem;
-    min-height: 50px;
-  }
+    padding: 0.8rem 1.2rem;
+    background: #dad7c6;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    min-height: 60px;
 }
 
-/* Móviles pequeños */
-@media (max-width: 480px) {
-  /* Header más organizado */
-  header {
-    padding: 0.5rem;
-    gap: 8px;
-  }
-  
-  /* Buscador ocupa todo el ancho */
-  .search-box {
-    position: relative;
-  }
-  
-  .search-box input {
-    width: 100%;
-    padding: 0.6rem 50px 0.6rem 1rem;
-    font-size: 14px;
-    min-height: 44px;
-    border-radius: 22px;
-    border: 2px solid #ccc;
-  }
-  
-  .search-box button {
-    position: absolute;
-    right: 2px;
-    top: 2px;
-    border-radius: 20px;
-    width: 40px;
-    height: 40px;
-    padding: 0;
-  }
-  
-  /* Fila de botones más espaciada */
-  .header-buttons {
-    padding: 0 0.5rem;
-  }
-  
-  header h1 {
-    font-size: 1rem;
-  }
-  
-  .menu-btn {
+header h1 {
     font-size: 1.4rem;
+    font-weight: 700;
+    color: #2c3e50;
+    letter-spacing: 1px;
+}
+
+.menu-btn {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: #2c3e50;
+    cursor: pointer;
+    gap: 20px;
+    padding: 5px;
     min-width: 44px;
     min-height: 44px;
-  }
-  
-  .login-btn {
-    padding: 8px 12px;
-    font-size: 11px;
-    min-height: 36px;
-  }
-  
-  /* Sidebar más pequeño en móviles */
-  .sidebar {
-    width: 35%;
-    right: -35%;
-    top: 130px;
-    height: calc(100vh - 130px);
-    padding: 0.8rem 0.5rem;
-  }
-  
-  .sidebar-title {
-    font-size: 0.9rem;
-  }
-  
-  /* Mapa ajustado */
-  #map {
-    height: calc(100vh - 80px);
-  }
-  
-  /* Cards optimizados para touch móvil */
-  .route-card {
-    padding: 0.8rem;
-    min-height: 60px;
-  }
-  
-  .route-item {
-    padding: 0.6rem;
-    min-height: 44px;
-  }
-  
-  .routes-list .card {
-    padding: 0.5rem;
-    min-height: 70px;
-  }
-  
-  .routes-list .card img {
-    width: 50px;
-    height: 50px;
-  }
-  
-  .routes-list .card-title {
-    font-size: 0.8rem;
-  }
-  
-  .routes-list .card-sub {
-    font-size: 0.75rem;
-  }
-  
-  .route-info img {
-    width: 100%;
-    height: 150px;
-  }
-  
-  /* Footer más pequeño */
-  footer {
-    font-size: 0.6rem;
-    padding: 0.1rem;
-  }
 }
 
+
+/* === MAPA === */
+
+main {
+    flex: 1;
+}
+
+#map {
+    width: 100%;
+    height: 88vh;
+    background: #ffffff !important;
+}
+
+.leaflet-container {
+    background: #ffffff !important;
+}
+
+
+/* === FOOTER === */
+
+footer {
+    text-align: center;
+    padding: 0.2rem;
+    background: #e6e4d9;
+    font-size: 0.7rem;
+    color: #666;
+    border-top: 1px solid #eaeaea;
+    height: auto;
+    line-height: 1rem;
+}
+
+
+/* === BUSCADOR EN EL HEADER === */
+
+.search-box {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    margin-left: 0px;
+    margin-right: 50px;
+}
+
+.search-box input {
+    width: 60%;
+    max-width: 400px;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 20px 0 0 20px;
+    outline: none;
+    font-size: 0.9rem;
+    min-height: 44px;
+}
+
+.search-box button {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    background: #b9b28a;
+    color: white;
+    border-radius: 0 20px 20px 0;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s;
+    min-width: 44px;
+    min-height: 44px;
+}
+
+.search-box button:hover {
+    background: #1e40af;
+}
+
+
+/* === SIDEBAR DERECHA === */
+
+.sidebar {
+    position: fixed;
+    top: 68px;
+    right: -45%;
+    width: 40%;
+    height: calc(100% - 64px);
+    background: #ffffff;
+    box-shadow: -2px 0 12px rgba(0, 0, 0, 0.2);
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    z-index: 1000;
+    transition: right 0.3s ease;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-title {
+    font-size: 1.1rem;
+    margin-bottom: .5rem;
+    color: #2c3e50;
+    font-weight: bold;
+}
+
+.route-info {
+    background: #f6f7f2;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: .75rem;
+    font-size: .9rem;
+    color: #374151;
+    margin-bottom: .5rem;
+}
+
+.routes-list {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: .25rem;
+}
+
+.route-item {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .45rem .6rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background .15s ease, color .15s ease;
+    user-select: none;
+    min-height: 44px;
+}
+
+.route-item:hover {
+    background: #f1f5f9;
+}
+
+.route-item.active {
+    background: #2563eb;
+    color: #fff;
+}
+
+.color-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(0, 0, 0, .15);
+    flex: 0 0 12px;
+}
+
+.routes-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.routes-list::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 8px;
+}
+
+.sidebar.active {
+    right: 0;
+}
+
+.route-item:focus {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
+
+/* === MARCADOR DE USUARIO CON EFECTO PULSE === */
+
+.user-location {
+    background: transparent !important;
+    border: none !important;
+}
+
+.user-circle {
+    width: 20px;
+    height: 20px;
+    background: #3498db;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(52, 152, 219, 0.8);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0.6;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes pulse {
+    0% {
+        -webkit-transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        -webkit-transform: scale(1.5);
+        opacity: 0.6;
+    }
+    100% {
+        -webkit-transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.route-card {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: .6rem .8rem;
+    margin-bottom: .6rem;
+    cursor: pointer;
+    transition: background .2s ease, transform .1s ease;
+    min-height: 60px;
+}
+
+.route-card:hover {
+    background: #f9fafb;
+    transform: scale(1.01);
+}
+
+.route-card.active {
+    border-color: #2563eb;
+    box-shadow: 0 0 6px rgba(37, 99, 235, 0.4);
+}
+
+.card-color {
+    width: 14px;
+    height: 100%;
+    border-radius: 8px;
+    margin-right: .7rem;
+}
+
+.card-body {
+    flex: 1;
+}
+
+.card-title {
+    font-weight: 600;
+    color: #111827;
+}
+
+.card-sub {
+    font-size: .8rem;
+    color: #6b7280;
+}
+
+.routes-list .card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    min-height: 80px;
+}
+
+.routes-list .card img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 5px;
+    flex-shrink: 0;
+}
+
+.routes-list .card-body {
+    flex: 1;
+}
+
+.routes-list .card-title {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.routes-list .card-sub {
+    font-size: 0.8rem;
+    color: #555;
+}
+
+.routes-list .card-notes {
+    font-size: 0.75rem;
+    color: #777;
+    margin-top: 2px;
+}
+
+.route-info img {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-top: 0.5rem;
+}
+
+
+/* === BOTÓN DE FILTRO === */
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: .5rem;
+}
+
+.filter-btn {
+    background: #b9b28a;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.3s ease;
+}
+
+.filter-btn:hover {
+    background: #8e8a63;
+}
+
+#filtered-routes:empty {
+    display: none;
+    /* si no hay resultados, no ocupa espacio */
+}
+
+
+/* === PANEL DE FILTROS === */
+
+.filter-panel {
+    background: #f6f7f2;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.filter-panel h3 {
+    font-size: 1rem;
+    color: #2c3e50;
+    margin-bottom: .8rem;
+    text-align: center;
+}
+
+.filter-panel label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-top: .6rem;
+    display: block;
+}
+
+.filter-panel select {
+    width: 100%;
+    padding: .5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: .6rem;
+}
+
+.filter-options {
+    margin: .8rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    font-size: 0.85rem;
+}
+
+.filter-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: .8rem;
+}
+
+.filter-actions button {
+    flex: 1;
+    margin: 0 4px;
+    padding: .5rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-apply {
+    background: #b6b189;
+    color: white;
+}
+
+.btn-apply:hover {
+    background: #8e8a63;
+}
+
+.btn-clear {
+    background: #e5e5e5;
+    color: #333;
+}
+
+.btn-clear:hover {
+    background: #ccc;
+}
+
+
+/* Animación de aparición */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.filter-panel input[list] {
+    width: 100%;
+    padding: .5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: .6rem;
+    font-size: 0.9rem;
+}
+
+
+/* Estilos para filtros */
+
+.filter-panel.active {
+    display: block;
+}
+
+
+/* Estilos para resultados filtrados */
+
+#filtered-routes {
+    display: none;
+}
+
+.no-routes {
+    text-align: center;
+    padding: 1.5rem;
+    color: #666;
+    font-style: italic;
+}
+
+
+/* Asegurar que las tarjetas de ruta sean consistentes */
+
+.route-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 0.8rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.route-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.route-card.active {
+    border-left: 4px solid #b6b189;
+    background-color: #f8f9fa;
+}
+
+.card-title {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.4rem;
+}
+
+.card-sub {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-bottom: 0.4rem;
+}
+
+.card-notes {
+    font-size: 0.85rem;
+    color: #e74c3c;
+}
+
+.login-btn {
+    background-color: #b6b189;
+    font-weight: bold;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    margin-left: 50px;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-btn:hover {
+    background: #b6b189;
+}
+
+
+/* === MEDIA QUERIES PARA MÓVILES === */
+
+
+/* Tablets y pantallas medianas */
+
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 50%;
+        right: -50%;
+    }
+    .search-box {
+        margin-right: 20px;
+    }
+    .search-box input {
+        width: 70%;
+    }
+}
+
+
+/* Pantallas pequeñas (tablets verticales) */
+
+@media (max-width: 768px) {
+    /* Header reorganizado */
+    header {
+        padding: 0.5rem 1rem;
+        flex-direction: column;
+        min-height: auto;
+        gap: 10px;
+    }
+    /* Buscador en la parte superior, sin elementos a los lados */
+    .search-box {
+        width: 100%;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        order: 1;
+    }
+    .search-box input {
+        width: 100%;
+        font-size: 14px;
+        border-radius: 20px;
+    }
+    .search-box button {
+        position: absolute;
+        right: 1rem;
+        border-radius: 50%;
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    /* Fila de botones debajo del buscador */
+    .header-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        order: 2;
+    }
+    header h1 {
+        font-size: 1.2rem;
+    }
+    .menu-btn {
+        font-size: 1.5rem;
+    }
+    .login-btn {
+        margin-left: 0;
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+    /* Sidebar más pequeño y debajo del header */
+    .sidebar {
+        width: 45%;
+        right: -45%;
+        top: 120px;
+        /* Debajo del header reorganizado */
+        height: calc(100vh - 120px);
+    }
+    .sidebar.active {
+        right: 0;
+    }
+    /* Mapa ajustes */
+    #map {
+        height: calc(100vh - 140px);
+        /* Ajustado para el header más alto */
+    }
+    /* Cards más grandes para touch */
+    .route-card {
+        padding: 1rem;
+        margin-bottom: 1rem;
+        min-height: 70px;
+    }
+    .route-item {
+        padding: 0.8rem;
+        min-height: 50px;
+    }
+}
+
+
+/* Móviles pequeños */
+
+@media (max-width: 480px) {
+    /* Header más organizado */
+    header {
+        padding: 0.5rem;
+        gap: 8px;
+    }
+    /* Buscador ocupa todo el ancho */
+    .search-box {
+        position: relative;
+    }
+    .search-box input {
+        width: 100%;
+        padding: 0.6rem 50px 0.6rem 1rem;
+        font-size: 14px;
+        min-height: 44px;
+        border-radius: 22px;
+        border: 2px solid #ccc;
+    }
+    .search-box button {
+        position: absolute;
+        right: 2px;
+        top: 2px;
+        border-radius: 20px;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+    }
+    /* Fila de botones más espaciada */
+    .header-buttons {
+        padding: 0 0.5rem;
+    }
+    header h1 {
+        font-size: 1rem;
+    }
+    .menu-btn {
+        font-size: 1.4rem;
+        min-width: 44px;
+        min-height: 44px;
+    }
+    .login-btn {
+        padding: 8px 12px;
+        font-size: 11px;
+        min-height: 36px;
+    }
+    /* Sidebar más pequeño en móviles */
+    .sidebar {
+        width: 35%;
+        right: -35%;
+        top: 130px;
+        height: calc(100vh - 130px);
+        padding: 0.8rem 0.5rem;
+    }
+    .sidebar-title {
+        font-size: 0.9rem;
+    }
+    /* Mapa ajustado */
+    #map {
+        height: calc(100vh - 80px);
+    }
+    /* Cards optimizados para touch móvil */
+    .route-card {
+        padding: 0.8rem;
+        min-height: 60px;
+    }
+    .route-item {
+        padding: 0.6rem;
+        min-height: 44px;
+    }
+    .routes-list .card {
+        padding: 0.5rem;
+        min-height: 70px;
+    }
+    .routes-list .card img {
+        width: 50px;
+        height: 50px;
+    }
+    .routes-list .card-title {
+        font-size: 0.8rem;
+    }
+    .routes-list .card-sub {
+        font-size: 0.75rem;
+    }
+    .route-info img {
+        width: 100%;
+        height: 150px;
+    }
+    /* Footer más pequeño */
+    footer {
+        font-size: 0.6rem;
+        padding: 0.1rem;
+    }
+}
+
+
 /* Pantallas muy pequeñas (iPhone SE, etc.) */
+
 @media (max-width: 375px) {
-  .search-box input {
-    width: 65%;
-  }
-  
-  .sidebar {
-    width: 90%;
-    right: -90%;
-  }
-  
-  .routes-list .card img {
-    width: 45px;
-    height: 45px;
-  }
+    .search-box input {
+        width: 65%;
+    }
+    .sidebar {
+        width: 90%;
+        right: -90%;
+    }
+    .routes-list .card img {
+        width: 45px;
+        height: 45px;
+    }
+}
+
+
+/* === PANEL AGREGAR RUTA === */
+
+#add-panel {
+    background: #f6f7f2;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+#add-panel h3 {
+    font-size: 1rem;
+    color: #2c3e50;
+    margin-bottom: .8rem;
+    text-align: center;
+}
+
+#add-panel label {
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-top: .6rem;
+    display: block;
+    color: #374151;
+}
+
+#add-panel input,
+#add-panel textarea {
+    width: 100%;
+    padding: .5rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: .6rem;
+    font-size: 0.9rem;
+    font-family: inherit;
+}
+
+#add-panel textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+
+/* Área de subida de archivos */
+
+.file-upload-area {
+    border: 2px dashed #b9b28a;
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    margin-bottom: .6rem;
+    background: #fafafa;
+    transition: border-color 0.3s ease;
+}
+
+.file-upload-area.drag-over {
+    border-color: #2563eb;
+    background: #f0f4ff;
+}
+
+.file-upload-content i {
+    font-size: 2rem;
+    color: #b9b28a;
+    margin-bottom: .5rem;
+}
+
+.file-upload-content p {
+    margin-bottom: .8rem;
+    color: #666;
+}
+
+.btn-select-file {
+    background: #b9b28a;
+    color: white;
+    border: none;
+    padding: .5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.3s;
+}
+
+.btn-select-file:hover {
+    background: #8e8a63;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    margin-top: .5rem;
+    padding: .5rem;
+    background: #e8f4fd;
+    border-radius: 6px;
+}
+
+.file-info i {
+    font-size: 1rem;
+    color: #2563eb;
+}
+
+.btn-remove-file {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    padding: 2px;
+}
+
+.btn-remove-file:hover {
+    color: #e74c3c;
+}
+
+
+/* Botones de administración */
+
+.admin-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.admin-btn {
+    background: #b9b28a;
+    border: none;
+    color: white;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+}
+
+.admin-btn:hover {
+    background: #8e8a63;
+}
+
+.delete-btn {
+    background: #e74c3c;
+}
+
+.delete-btn:hover {
+    background: #c0392b;
+}
+
+
+/* Responsive para el panel de agregar */
+
+@media (max-width: 768px) {
+    #add-panel {
+        padding: 0.8rem;
+    }
+    .file-upload-area {
+        padding: 1rem;
+    }
+    .admin-controls {
+        gap: 3px;
+    }
+    .admin-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
 }
