@@ -464,26 +464,25 @@ function obtenerDestinosDesdeOrigen(origen) {
 // Escuchar cuando el usuario cambia el origen 
 document.getElementById("origen-input").addEventListener("input", (e) => {
   const origen = e.target.value.trim();
-  
-  if (origen.length < 2) {
-    const dataList = document.getElementById("destinos-sugeridos");
-    dataList.innerHTML = "";
-    return;
-  }
-  
+
+  const destinoSelect = document.getElementById("destino-input");
+  destinoSelect.innerHTML = "";
+
+  if (origen.length < 2) return;
+
   const posiblesDestinos = obtenerDestinosDesdeOrigen(origen);
-  const dataList = document.getElementById("destinos-sugeridos");
-  dataList.innerHTML = "";
 
   if (posiblesDestinos.length === 0) {
     const option = document.createElement("option");
-    option.value = "Escribe más caracteres para ver sugerencias";
-    dataList.appendChild(option);
+    option.textContent = "No hay destinos disponibles";
+    option.disabled = true;
+    destinoSelect.appendChild(option);
   } else {
-    posiblesDestinos.slice(0, 40).forEach(dest => { // 
+    posiblesDestinos.slice(0, 40).forEach(dest => {
       const option = document.createElement("option");
       option.value = dest;
-      dataList.appendChild(option);
+      option.textContent = dest;
+      destinoSelect.appendChild(option);
     });
   }
 });

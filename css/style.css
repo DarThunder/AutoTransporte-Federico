@@ -947,3 +947,10 @@ footer {
         font-size: 0.8rem;
     }
 }
+
+/*Formato Filtro*/
+#destino-input {
+  max-width: 100%;
+  overflow-y: auto;
+}
+
