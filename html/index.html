@@ -1,102 +1,120 @@
 <!DOCTYPE html>
 <html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>El Rutero</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>El Rutero</title>
-  <link rel="stylesheet" href="../css/style.css" />
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <body>
+    <header>
+      <h1>El Rutero</h1>
+      <div class="search-box">
+        <input type="text" placeholder="Buscar rutas o paradas..." />
+        <button><i class="fas fa-search"></i></button>
+      </div>
 
-</head>
-
-<body>
-  <header>
-    <h1>El Rutero</h1>
-    <div class="search-box">
-      <input type="text" placeholder="Buscar rutas o paradas...">
-      <button><i class="fas fa-search"></i></button>
-    </div>
-
-    <div clas>
-      <a href="IniciarS.html" class="login-btn">Iniciar sesión</a>
-      <button id="menu-btn" class="menu-btn"><i class="fas fa-bars"></i></button>
-    </div>
-  </header>
-
-  <div id="app">
-    <!-- SIDEBAR -->
-    <div id="sidebar" class="sidebar">
-      <div class="sidebar-header">
-        <h2 class="sidebar-title">Rutas</h2>
-        <button id="filter-btn" class="filter-btn">
-          <i class="fas fa-filter"></i> Filtrar
+      <div clas>
+        <a href="IniciarS.html" class="login-btn">Iniciar sesión</a>
+        <button id="menu-btn" class="menu-btn">
+          <i class="fas fa-bars"></i>
         </button>
       </div>
+    </header>
 
-     
-
-      <!-- CONTENEDOR CON SCROLL (routes-list) -->
-      <div id="routes-list" class="routes-list">
-
-         <!-- INFO DE RUTA -->
-        <div id="route-info" class="route-info">Selecciona una ruta…</div>
-        
-        <!-- PANEL DE FILTROS -->
-        <div id="filter-panel" class="filter-panel">
-          <h3>Filtros de Rutas</h3>
-
-          <label>Origen:</label>
-          <input id="origen-input" list="origenes" placeholder="Escribe o selecciona origen">
-          <datalist id="origenes">
-            <option value="Plaza Crystal">
-            <option value="Zona Uv">
-            <option value="Colonia Revolución">
-            <option value="Plaza Américas"></option>
-            <option value="Centro">
-            <option value="CAXA"></option>
-          </datalist>
-
-          <label>Destino:</label>
-          <input id="destino-input" list="destinos-sugeridos" placeholder="Escribe o selecciona destino">
-          <datalist id="destinos-sugeridos"></datalist>
-
-          <div class="filter-options">
-            <label><input id="rutas-cercanas" type="checkbox"> Solo rutas cercanas</label>
-            <label><input id="rutas-seguras" type="checkbox"> Rutas seguras (Mujer Segura)</label>
-          </div>
-
-          <div class="filter-actions">
-            <button class="btn-apply">Aplicar filtros</button>
-            <button class="btn-clear">Limpiar</button>
-          </div>
+    <div id="app">
+      <!-- SIDEBAR -->
+      <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+          <h2 class="sidebar-title">Rutas</h2>
+          <button id="filter-btn" class="filter-btn">
+            <i class="fas fa-filter"></i> Filtrar
+          </button>
         </div>
 
-        <!-- RESULTADOS DE FILTRO -->
-        <div id="filtered-routes"></div>
+        <!-- CONTENEDOR CON SCROLL (routes-list) -->
+        <div id="routes-list" class="routes-list">
+          <div id="nearby-routes-panel" class="filter-panel active">
+            <h3>Rutas Cercanas</h3>
+            <div id="nearby-routes-list">
+              <p>No hay rutas cercanas a tu ubicación.</p>
+            </div>
+          </div>
 
-        <!-- CONTENEDOR PARA LAS ROUTE-CARDS (aquí se insertan dinámicamente) -->
-        <div id="routes-cards-container"></div>
+          <!-- INFO DE RUTA -->
+          <div id="route-info" class="route-info">Selecciona una ruta…</div>
 
+          <!-- PANEL DE FILTROS -->
+          <div id="filter-panel" class="filter-panel">
+            <h3>Filtros de Rutas</h3>
+
+            <label>Origen:</label>
+            <input
+              id="origen-input"
+              list="origenes"
+              placeholder="Escribe o selecciona origen"
+            />
+            <datalist id="origenes">
+              <option value="Plaza Crystal"></option>
+              <option value="Zona Uv"></option>
+              <option value="Colonia Revolución"></option>
+              <option value="Plaza Américas"></option>
+              <option value="Centro"></option>
+              <option value="CAXA"></option>
+            </datalist>
+
+            <label>Destino:</label>
+            <input
+              id="destino-input"
+              list="destinos-sugeridos"
+              placeholder="Escribe o selecciona destino"
+            />
+            <datalist id="destinos-sugeridos"></datalist>
+
+            <div class="filter-options">
+              <label
+                ><input id="rutas-cercanas" type="checkbox" /> Solo rutas
+                cercanas</label
+              >
+              <label
+                ><input id="rutas-seguras" type="checkbox" /> Rutas seguras
+                (Mujer Segura)</label
+              >
+            </div>
+
+            <div class="filter-actions">
+              <button class="btn-apply">Aplicar filtros</button>
+              <button class="btn-clear">Limpiar</button>
+            </div>
+          </div>
+
+          <!-- RESULTADOS DE FILTRO -->
+          <div id="filtered-routes"></div>
+
+          <!-- CONTENEDOR PARA LAS ROUTE-CARDS (aquí se insertan dinámicamente) -->
+          <div id="routes-cards-container"></div>
+        </div>
       </div>
+
+      <!-- MAPA -->
+      <main>
+        <div id="map"></div>
+      </main>
     </div>
 
-    <!-- MAPA -->
-    <main>
-      <div id="map"></div>
-    </main>
-  </div>
+    <footer>
+      <p>© 2025 - Dard's Innovations</p>
+    </footer>
 
-  <footer>
-    <p>© 2025 - Dard's Innovations</p>
-  </footer>
-
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="../js/index.js"></script>
-
-</body>
-
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="../js/index.js"></script>
+  </body>
 </html>
