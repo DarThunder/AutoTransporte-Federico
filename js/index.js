@@ -320,13 +320,34 @@ function filtrarRutas() {
     return [];
   }
 
-  const resultados = Object.keys(routesIndex).filter((id) => {
+  //Agregado*
+  const resultados = Object.keys(routesIndex).filter(id => {
     const props = routesIndex[id][0].properties;
-    const desc = (props.desc || "").toLowerCase();
+    
+    // Buscar en TODOS los campos de texto disponibles
+    const textoBusqueda = [
+      props.desc || "",          // Descripción de la ruta
+      props.nombre || "",        // Nombre completo
+      props.name || "",          // Nombre alternativo
+      props.notes || "",         // Notas
+      props.notas || "",         // Notas en español
+      props.origen || "",        // Origen específico
+      props.destino || ""        // Destino específico
+    ].join(" ").toLowerCase();
 
-    if (origen && !desc.includes(origen)) return false;
-    if (destino && !desc.includes(destino)) return false;
-    if (rutasSeguras && !props.segura) return false;
+    // Verificar filtro de origen
+    if (origen && !textoBusqueda.includes(origen)) return false;
+    
+    // Verificar filtro de destino
+    if (destino && !textoBusqueda.includes(destino)) return false;
+    
+    // Verificar filtro de rutas seguras (para futuro)
+    if (rutasSeguras) {
+      // Por ahora, como no tenemos datos de seguridad, mostramos todas
+      const esSegura = props.segura || props.seguridad || props.safe;
+      if (!esSegura) return false;
+    }
+    
     return true;
   });
 
@@ -340,19 +361,18 @@ function filtrarRutas() {
   resultEl.style.display = "block";
 
   if (resultados.length > 0) {
-    resultEl.innerHTML = `<h3>Rutas encontradas:</h3>`;
-    resultados.forEach((id) => {
+    resultEl.innerHTML = `<h3>Rutas encontradas: ${resultados.length}</h3>`;
+    resultados.forEach(id => {
       const props = routesIndex[id][0].properties;
       const div = document.createElement("div");
       div.className = "route-card";
       div.dataset.id = id;
       div.innerHTML = `
         <div class="card-body">
-          <div class="card-title">${props.nombre}</div>
-          <div class="card-sub">🕒 ${props.horario}</div>
-          ${
-            props.notas ? `<div class="card-notes">📝 ${props.notas}</div>` : ""
-          }
+          <div class="card-title">${props.nombre || props.name || 'Ruta ' + id}</div>
+          <div class="card-sub">🕒 ${props.horario || 'Horario no disponible'}</div>
+          ${props.notas || props.notes ? `<div class="card-notes">📝 ${props.notas || props.notes}</div>` : ""}
+          ${props.desc ? `<div class="card-notes">📍 ${props.desc}</div>` : ""}
         </div>
       `;
 
@@ -402,33 +422,65 @@ function obtenerDestinosDesdeOrigen(origen) {
 
   const destinos = new Set();
 
-  Object.keys(routesIndex).forEach((id) => {
+  Object.keys(routesIndex).forEach(id => {
     const props = routesIndex[id][0].properties;
-    const zonas = (props.desc || "").split("/").map((z) => z.trim());
-
-    if (zonas.map((z) => z.toLowerCase()).includes(origen)) {
-      zonas.forEach((z) => {
-        if (z.toLowerCase() !== origen) destinos.add(z);
+    
+    // Priorizar el campo 'desc' que contiene las paradas, si no existe usar 'nombre'
+    const textoRuta = props.desc || props.nombre || props.name || "";
+    
+    if (!textoRuta) return;
+    
+    // Buscar separadores comunes en las descripciones de rutas
+    const posiblesSeparadores = ["/", "|", "-", ",", ";", "→", "->"];
+    let zonas = [textoRuta];
+    
+    // Intentar dividir usando diferentes separadores
+    for (let separador of posiblesSeparadores) {
+      if (textoRuta.includes(separador)) {
+        zonas = textoRuta.split(separador).map(z => z.trim());
+        break;
+      }
+    }
+    
+    // También considerar el campo 'origen' y 'destino' si existen
+    if (props.origen) zonas.push(props.origen);
+    if (props.destino) zonas.push(props.destino);
+    
+    // Si encontramos el origen, agregar las demás zonas como destinos
+    const zonasMinusculas = zonas.map(z => z.toLowerCase());
+    if (zonasMinusculas.includes(origen)) {
+      zonas.forEach(z => {
+        const zonaLimpia = z.trim();
+        if (zonaLimpia && zonaLimpia.toLowerCase() !== origen) {
+          destinos.add(zonaLimpia);
+        }
       });
     }
   });
 
-  return Array.from(destinos);
+  return Array.from(destinos).filter(dest => dest.length > 0);
 }
 
-document.getElementById("origen-input").addEventListener("change", () => {
-  const origen = document.getElementById("origen-input").value;
+// Escuchar cuando el usuario cambia el origen 
+document.getElementById("origen-input").addEventListener("input", (e) => {
+  const origen = e.target.value.trim();
+  
+  if (origen.length < 2) {
+    const dataList = document.getElementById("destinos-sugeridos");
+    dataList.innerHTML = "";
+    return;
+  }
+  
   const posiblesDestinos = obtenerDestinosDesdeOrigen(origen);
-
   const dataList = document.getElementById("destinos-sugeridos");
   dataList.innerHTML = "";
 
   if (posiblesDestinos.length === 0) {
     const option = document.createElement("option");
-    option.value = "No hay destinos disponibles";
+    option.value = "Escribe más caracteres para ver sugerencias";
     dataList.appendChild(option);
   } else {
-    posiblesDestinos.forEach((dest) => {
+    posiblesDestinos.slice(0, 40).forEach(dest => { // 
       const option = document.createElement("option");
       option.value = dest;
       dataList.appendChild(option);
