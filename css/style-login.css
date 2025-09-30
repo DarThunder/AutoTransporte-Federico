@@ -19,7 +19,7 @@ body {
 
 .left-img {
   flex: 1;
-  background: url('/imagenes/autobus.png') no-repeat center center;
+  background: url('../images/autobus.png') no-repeat center center;
   background-size: cover;
 }
 
