@@ -1,69 +1,90 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>El Rutero</title>
-  <link rel="stylesheet" href="../css/style-registro.css" />
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-
-</head>
-<body>
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>El Rutero</title>
+    <link rel="stylesheet" href="../css/style-registro.css" />
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
     <div class="container-register">
-    <div class="left-img"></div>
+      <div class="left-img"></div>
 
-    <div class="right-form">
+      <div class="right-form">
         <div class="form-box">
-            <div class="logo-img">
-                <img src="../images/Logo1.jpg" alt="El Rutero Logo" />
+          <div class="logo-img">
+            <img src="../images/Logo1.jpg" alt="El Rutero Logo" />
+          </div>
+          <div class="register-title">CREAR UNA NUEVA CUENTA</div>
+
+          <form id="registro-form">
+            <div class="form-row">
+              <div class="input-wrapper w-100">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Nombre"
+                  id="nombre"
+                  required
+                />
+                <i class="fa fa-user"></i>
+              </div>
+              <div class="input-wrapper w-100">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Apellido"
+                  id="apellido"
+                  required
+                />
+                <i class="fa fa-user"></i>
+              </div>
             </div>
-            <div class="register-title">CREAR UNA NUEVA CUENTA</div>
 
-            <form>
-                <div class="form-row">
-                    <div class="input-wrapper w-100">
-                        <input type="text" class="form-control" placeholder="Nombre" required />
-                        <i class="fa fa-user"></i>
-                    </div>
-                    <div class="input-wrapper w-100">
-                        <input type="text" class="form-control" placeholder="Apellido" required />
-                        <i class="fa fa-user"></i>
-                    </div>
-                </div>
+            <div class="form-row">
+              <div class="input-wrapper w-100">
+                <input
+                  type="email"
+                  class="form-control"
+                  placeholder="Correo electrónico"
+                  id="email"
+                  required
+                />
+                <i class="fa fa-envelope"></i>
+              </div>
+              <div class="input-wrapper w-100">
+                <input
+                  type="password"
+                  class="form-control"
+                  placeholder="Contraseña"
+                  id="password"
+                  required
+                />
+                <i class="fa fa-eye"></i>
+              </div>
+            </div>
 
-                <div class="form-row">
-                    <div class="input-wrapper w-100">
-                        <input type="email" class="form-control" placeholder="Correo electrónico" required />
-                        <i class="fa fa-envelope"></i>
-                    </div>
-                    <div class="input-wrapper w-100">
-                        <input type="password" class="form-control" placeholder="Contraseña" required />
-                        <i class="fa fa-eye"></i>
-                    </div>
-                </div>
+            <div class="links-row">
+              ¿Ya tienes cuenta? <a href="/html/IniciarS.html">Inicia sesión</a>
+            </div>
 
-                <div class="links-row">
-                    ¿Ya tienes cuenta? <a href="/html/IniciarS.html">Inicia sesión</a>
-                </div>
-
-
-                <button type="submit" class="btn-orange mt-3">Crear cuenta</button>
-                <a href="IniciarS.html" class="btn-orange mt-3">
-                    Regresar
-                </a>
-            </form>
+            <button type="submit" class="btn-orange mt-3">Crear cuenta</button>
+            <a href="IniciarS.html" class="btn-orange mt-3"> Regresar </a>
+          </form>
         </div>
+      </div>
     </div>
-</div>
 
+    <footer>
+      <p>© 2025 - Dard's Innovations</p>
+    </footer>
 
-  <footer>
-    <p>© 2025 - Dard's Innovations</p>
-  </footer>
-
- 
-</body>
+    <script type="module" src="../js/registrarU.js"></script>
+  </body>
 </html>
