@@ -48,7 +48,7 @@ const sidebar = document.getElementById('sidebar');
 menuBtn.addEventListener('click', () => sidebar.classList.toggle('active'));
 
 // === RUTAS (sidebar y mapa) ===
-const routesListEl = document.getElementById('routes-list');
+const routesListEl = document.getElementById('routes-cards-container');
 const routeInfoEl  = document.getElementById('route-info');
 const searchInput  = document.querySelector('.search-box input');
 

@@ -8,7 +8,6 @@
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-<!-- Intento De aparecer en git -->
 </head>
 <body>
   <header>
@@ -31,127 +30,139 @@
       <div class="sidebar-header">
         <h2 class="sidebar-title">Rutas</h2>
         <div class="admin-controls">
-        <button id="add-btn" class="admin-btn add-btn" title="Agregar ruta">
-          <i class="fas fa-plus"></i>
-        </button>
-        <button id="edit-btn" class="admin-btn edit-btn" title="Editar ruta">
-          <i class="fas fa-pencil-alt"></i>
-        </button>
-        <button id="delete-btn" class="admin-btn delete-btn" title="Eliminar ruta">
-          <i class="fas fa-trash"></i>
-        </button>
-        <button id="download-btn" class="admin-btn download-btn" title="Descargar GeoJSON">
-          <i class="fas fa-download"></i>
-        </button>
-        <button id="filter-btn" class="filter-btn">
-          <i class="fas fa-filter"></i> Filtrar
-        </button>
-      </div>
+          <button id="add-btn" class="admin-btn add-btn" title="Agregar ruta">
+            <i class="fas fa-plus"></i>
+          </button>
+          <button id="edit-btn" class="admin-btn edit-btn" title="Editar ruta">
+            <i class="fas fa-pencil-alt"></i>
+          </button>
+          <button id="delete-btn" class="admin-btn delete-btn" title="Eliminar ruta">
+            <i class="fas fa-trash"></i>
+          </button>
+          <button id="download-btn" class="admin-btn download-btn" title="Descargar GeoJSON">
+            <i class="fas fa-download"></i>
+          </button>
+          <button id="filter-btn" class="filter-btn">
+            <i class="fas fa-filter"></i> Filtrar
+          </button>
+        </div>
       </div>
 
+      <!-- INFO DE RUTA (fuera del scroll) -->
+      <div id="route-info" class="route-info">Selecciona una ruta…</div>
+
+      <!-- CONTENEDOR CON SCROLL (routes-list) -->
+      <div id="routes-list" class="routes-list">
+        
         <!-- PANEL DE AGREGAR RUTA -->
-      <form id="add-panel" class="filter-panel"> <h3>Agregar Nueva Ruta</h3>
-        <input type="hidden" id="route-id">
+        <form id="add-panel" class="filter-panel">
+          <h3>Agregar Nueva Ruta</h3>
+          <input type="hidden" id="route-id">
 
-        <label>Nombre de la ruta:</label>
-        <input type="text" placeholder="Ej: Ruta Centro-UV" id="route-name">
+          <label>Nombre de la ruta:</label>
+          <input type="text" placeholder="Ej: Ruta Centro-UV" id="route-name">
 
-        <label>Horario:</label>
-        <input type="text" placeholder="Ej: 6:00 AM - 10:00 PM" id="route-schedule">
+          <label>Horario:</label>
+          <input type="text" placeholder="Ej: 6:00 AM - 10:00 PM" id="route-schedule">
 
-        <label>Origen:</label>
-        <input list="origenes" placeholder="Escribe o selecciona origen" id="route-origin">
-        <datalist id="origenes">
-          <option value="Plaza Crystal">
-          <option value="Universidad Veracruzana">
-          <option value="Colonia Revolución">
-          <option value="Zona Centro">
-        </datalist>
+          <label>Origen:</label>
+          <input list="origenes" placeholder="Escribe o selecciona origen" id="route-origin">
+          <datalist id="origenes">
+            <option value="Plaza Crystal">
+            <option value="Universidad Veracruzana">
+            <option value="Colonia Revolución">
+            <option value="Zona Centro">
+          </datalist>
 
-        <label>Destino:</label>
-        <input list="destinos" placeholder="Escribe o selecciona destino" id="route-destination">
-        <datalist id="destinos">
-          <option value="Zona Centro">
-          <option value="Plaza Américas">
-          <option value="Clavijero">
-          <option value="Terminal ADO">
-        </datalist>
+          <label>Destino:</label>
+          <input list="destinos" placeholder="Escribe o selecciona destino" id="route-destination">
+          <datalist id="destinos">
+            <option value="Zona Centro">
+            <option value="Plaza Américas">
+            <option value="Clavijero">
+            <option value="Terminal ADO">
+          </datalist>
 
-        <label>Archivo de ruta (GeoJSON):</label>
-        <div class="file-upload-area" id="file-upload-area">
-          <div class="file-upload-content">
-            <i class="fas fa-cloud-upload-alt"></i>
-            <p>Arrastra tu archivo aquí o</p>
-            <button type="button" class="btn-select-file" id="btn-select-file">
-              <i class="fas fa-folder-open"></i> Seleccionar archivo
-            </button>
-            <input type="file" id="route-file" accept=".geojson,.json" hidden>
-            <div class="file-info" id="file-info" style="display: none;">
-              <i class="fas fa-file-alt"></i>
-              <span class="file-name" id="file-name">archivo.geojson</span>
-              <button type="button" class="btn-remove-file" id="btn-remove-file">
-                <i class="fas fa-times"></i>
+          <label>Archivo de ruta (GeoJSON):</label>
+          <div class="file-upload-area" id="file-upload-area">
+            <div class="file-upload-content">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <p>Arrastra tu archivo aquí o</p>
+              <button type="button" class="btn-select-file" id="btn-select-file">
+                <i class="fas fa-folder-open"></i> Seleccionar archivo
               </button>
+              <input type="file" id="route-file" accept=".geojson,.json" hidden>
+              <div class="file-info" id="file-info" style="display: none;">
+                <i class="fas fa-file-alt"></i>
+                <span class="file-name" id="file-name">archivo.geojson</span>
+                <button type="button" class="btn-remove-file" id="btn-remove-file">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
             </div>
+          </div>
+
+          <label>Notas adicionales:</label>
+          <textarea placeholder="Información adicional sobre la ruta..." id="route-notes" rows="3"></textarea>
+
+          <div class="filter-actions">
+            <button type="button" class="btn-apply" id="btn-save-route">Guardar Ruta</button>
+            <button type="button" class="btn-clear" id="btn-cancel-add">Cancelar</button>
+          </div>
+        </form>
+
+        <!-- PANEL DE FILTROS -->
+        <div id="filter-panel" class="filter-panel">
+          <h3>Filtros de Rutas</h3>
+
+          <label>Origen:</label>
+          <input list="origenes-filter" placeholder="Escribe o selecciona origen">
+          <datalist id="origenes-filter">
+            <option value="Plaza Crystal">
+            <option value="Universidad Veracruzana">
+            <option value="Colonia Revolución">
+            <option value="Zona Centro">
+          </datalist>
+
+          <label>Destino:</label>
+          <input list="destinos-filter" placeholder="Escribe o selecciona destino">
+          <datalist id="destinos-filter">
+            <option value="Zona Centro">
+            <option value="Plaza Américas">
+            <option value="Clavijero">
+            <option value="Terminal ADO">
+          </datalist>
+
+          <div class="filter-options">
+            <label><input type="checkbox"> Solo rutas cercanas</label>
+            <label><input type="checkbox"> Rutas seguras (Mujer Segura)</label>
+          </div>
+
+          <div class="filter-actions">
+            <button class="btn-apply">Aplicar filtros</button>
+            <button class="btn-clear">Limpiar</button>
           </div>
         </div>
 
-        <label>Notas adicionales:</label>
-        <textarea placeholder="Información adicional sobre la ruta..." id="route-notes" rows="3"></textarea>
+        <!-- RESULTADOS DE FILTRO -->
+        <div id="filtered-routes"></div>
 
-        <div class="filter-actions">
-          <button type="button" class="btn-apply" id="btn-save-route">Guardar Ruta</button> <button type="button" class="btn-clear" id="btn-cancel-add">Cancelar</button> </div>
-      </form>
+        <!-- CONTENEDOR PARA LAS ROUTE-CARDS (aquí se insertan dinámicamente) -->
+        <div id="routes-cards-container"></div>
 
-      <!-- PANEL DE FILTROS -->
-      <div id="filter-panel" class="filter-panel">
-        <h3>Filtros de Rutas</h3>
-
-        <label>Origen:</label>
-        <input list="origenes" placeholder="Escribe o selecciona origen">
-        <datalist id="origenes">
-          <option value="Plaza Crystal">
-          <option value="Universidad Veracruzana">
-          <option value="Colonia Revolución">
-          <option value="Zona Centro">
-        </datalist>
-
-        <label>Destino:</label>
-        <input list="destinos" placeholder="Escribe o selecciona destino">
-        <datalist id="destinos">
-          <option value="Zona Centro">
-          <option value="Plaza Américas">
-          <option value="Clavijero">
-          <option value="Terminal ADO">
-        </datalist>
-
-        <div class="filter-options">
-          <label><input type="checkbox"> Solo rutas cercanas</label>
-          <label><input type="checkbox"> Rutas seguras (Mujer Segura)</label>
-        </div>
-
-        <div class="filter-actions">
-          <button class="btn-apply">Aplicar filtros</button>
-          <button class="btn-clear">Limpiar</button>
-        </div>
       </div>
-
-      <!-- INFO Y LISTA DE RUTAS -->
-      <div id="route-info" class="route-info">Selecciona una ruta…</div>
-      <div id="routes-list" class="routes-list"></div>
     </div>
 
-    <div id="routes-list" class="routes-list"></div>
-
-    <!-- RESULTADOS DE FILTRO -->
-    <div id="filtered-routes" class="routes-list"></div>
+    <!-- MAPA -->
+    <main>
+      <div id="map"></div>
+    </main>
   </div>
-  <main>
-    <div id="map"></div>
-  </main>
+
   <footer>
     <p>© 2025 - Dard's Innovations</p>
   </footer>
+
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="../js/admin.js"></script>
