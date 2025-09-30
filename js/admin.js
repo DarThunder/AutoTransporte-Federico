@@ -151,7 +151,14 @@ document.querySelector(".btn-clear").addEventListener("click", () => {
 });
 
 addBtn.addEventListener("click", () => {
-  openAddPanel();
+  filterPanel.style.display = "none";  // Ocultar panel de filtros
+  
+  // Toggle: alternar visibilidad del panel de agregar
+  if (addPanel.style.display === "block") {
+    closeAddPanel();  // Si está visible, cerrarlo
+  } else {
+    openAddPanel();  // Si está oculto, abrirlo
+  }
 });
 
 // --- LÓGICA PARA AGREGAR Y EDITAR RUTAS ---
