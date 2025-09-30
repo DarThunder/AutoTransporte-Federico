@@ -199,21 +199,38 @@ function renderSidebar(ids) {
 
 // 3) Selección desde sidebar - CON DESELECCIÓN
 function selectRoute(id, props, cardEl) {
+  // Si ya está activa, la desactivamos
   if (activeRoute === id) {
     routeLayers[id].remove();
     activeRoute = null;
-    if (cardEl) cardEl.classList.remove("active");
-    routeInfoEl.innerHTML = "Selecciona una ruta…";
+    if (cardEl) {
+      cardEl.classList.remove("active");
+      // Eliminar el route-info asociado
+      const existingInfo = cardEl.nextElementSibling;
+      if (existingInfo && existingInfo.classList.contains('route-info')) {
+        existingInfo.remove();
+      }
+    }
     return;
   }
 
+
+  // Remover ruta activa anterior
   if (activeRoute && routeLayers[activeRoute]) {
     routeLayers[activeRoute].remove();
-    document
-      .querySelector(`.route-card[data-id="${activeRoute}"]`)
-      ?.classList.remove("active");
+
+    // Buscar TODAS las tarjetas con ese id y limpiarlas
+    document.querySelectorAll(`.route-card[data-id="${activeRoute}"]`).forEach(prevCard => {
+      prevCard.classList.remove("active");
+      // Eliminar el route-info anterior si existe
+      const prevInfo = prevCard.nextElementSibling;
+      if (prevInfo && prevInfo.classList.contains('route-info')) {
+        prevInfo.remove();
+      }
+    })
   }
 
+  // Crear o agregar la nueva ruta al mapa
   if (!routeLayers[id]) {
     const group = L.geoJSON(
       { type: "FeatureCollection", features: routesIndex[id] },
@@ -226,23 +243,30 @@ function selectRoute(id, props, cardEl) {
 
   routeLayers[id].addTo(map);
   activeRoute = id;
-  if (cardEl) cardEl.classList.add("active");
+  if (cardEl) {
+    cardEl.classList.add("active");
+    // Insertar el route-info justo después del cardEl
+    showRouteInfoBelowCard(id, props, cardEl);
+  }
   map.fitBounds(routeLayers[id].getBounds(), { padding: [20, 20] });
-  showRouteInfo(id, props);
 }
 
 // 4) Mostrar info completa
-function showRouteInfo(id, props) {
-  routeInfoEl.innerHTML = `
+function showRouteInfoBelowCard(id, props, cardEl) {
+  const infoDiv = document.createElement('div');
+  infoDiv.className = 'route-info';
+  infoDiv.innerHTML = `
     <h2>${props.nombre}</h2>
     <p><strong>🕒 Horario:</strong> ${props.horario}</p>
-    ${props.notas ? `<p><strong>📝 Notas:</strong> ${props.notas}</p>` : ""}
-    ${
-      props.img
-        ? `<div><img src="${props.img}" alt="Ruta ${id}" style="max-width:100%; border-radius:10px"></div>`
-        : ""
+    ${props.notas ? `<p><strong>📌 Notas:</strong> ${props.notas}</p>` : ""}
+    ${props.img
+      ? `<div><img src="${props.img}" alt="Ruta ${id}" style="max-width:100%; border-radius:10px"></div>`
+      : ""
     }
   `;
+
+  // Insertar el infoDiv justo después del cardEl
+  cardEl.parentNode.insertBefore(infoDiv, cardEl.nextSibling);
 }
 
 // 5) Búsqueda
