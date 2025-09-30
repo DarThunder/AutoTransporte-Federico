@@ -169,6 +169,7 @@ document.getElementById("btn-save-route").addEventListener("click", () => {
   const routeOrigin = document.getElementById("route-origin").value;
   const routeDestination = document.getElementById("route-destination").value;
   const routeNotes = document.getElementById("route-notes").value;
+  const mujerSegura = document.getElementById("route-mujer-segura").checked;
 
   if (!routeName || !routeSchedule) {
     alert("Por favor completa al menos el nombre y horario de la ruta.");
@@ -265,6 +266,8 @@ function openEditPanel(id, props) {
   document.getElementById("route-origin").value = props.origen || "";
   document.getElementById("route-destination").value = props.destino || "";
   document.getElementById("route-notes").value = props.notas || "";
+  
+  document.getElementById("route-mujer-segura").checked = props.mujerSegura || false;
 
   addPanel.style.display = "block";
 }
