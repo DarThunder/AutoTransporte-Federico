@@ -156,6 +156,7 @@ footer {
     flex: 1;
     overflow-y: auto;
     padding-right: .25rem;
+    /* Este contenedor ahora incluye tanto el panel como las cards */
 }
 
 .route-item {
@@ -386,9 +387,10 @@ footer {
     border: 1px solid #ddd;
     border-radius: 12px;
     padding: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1rem;  /* Este margin lo separa de las cards */
     display: none;
     animation: fadeIn 0.3s ease;
+    /* ELIMINAR cualquier position: absolute o fixed si existe */
 }
 
 .filter-panel h3 {

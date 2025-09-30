@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>El Rutero</title>
   <link rel="stylesheet" href="../css/style.css" />
   <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
 </head>
+
 <body>
   <header>
     <h1>El Rutero</h1>
@@ -34,43 +36,49 @@
         </button>
       </div>
 
-      <!-- PANEL DE FILTROS -->
-      <div id="filter-panel" class="filter-panel">
-        <h3>Filtros de Rutas</h3>
-
-        <label>Origen:</label>
-        <input id="origen-input" list="origenes" placeholder="Escribe o selecciona origen">
-        <datalist id="origenes">
-          <option value="Plaza Crystal">
-          <option value="Zona Uv">
-          <option value="Colonia Revolución">
-          <option value="Plaza Américas"></option>
-          <option value="Centro">
-          <option value="CAXA"></option>
-        </datalist>
-
-        <label>Destino:</label>
-        <input id="destino-input" list="destinos-sugeridos" placeholder="Escribe o selecciona destino">
-        <datalist id="destinos-sugeridos"></datalist>
-
-
-        <div class="filter-options">
-          <label><input id="rutas-cercanas" type="checkbox"> Solo rutas cercanas</label>
-          <label><input id="rutas-seguras" type="checkbox"> Rutas seguras (Mujer Segura)</label>
-        </div>
-
-        <div class="filter-actions">
-          <button class="btn-apply">Aplicar filtros</button>
-          <button class="btn-clear">Limpiar</button>
-        </div>
-      </div>
-
-      <!-- RESULTADOS DE FILTRO (AQUÍ VA AHORA) -->
-      <div id="filtered-routes" class="routes-list"></div>
-
-      <!-- INFO Y LISTA DE RUTAS -->
+      <!-- INFO DE RUTA -->
       <div id="route-info" class="route-info">Selecciona una ruta…</div>
-      <div id="routes-list" class="routes-list"></div>
+
+      <!-- CONTENEDOR CON SCROLL (routes-list) -->
+      <div id="routes-list" class="routes-list">
+        
+        <!-- PANEL DE FILTROS -->
+        <div id="filter-panel" class="filter-panel">
+          <h3>Filtros de Rutas</h3>
+
+          <label>Origen:</label>
+          <input id="origen-input" list="origenes" placeholder="Escribe o selecciona origen">
+          <datalist id="origenes">
+            <option value="Plaza Crystal">
+            <option value="Zona Uv">
+            <option value="Colonia Revolución">
+            <option value="Plaza Américas"></option>
+            <option value="Centro">
+            <option value="CAXA"></option>
+          </datalist>
+
+          <label>Destino:</label>
+          <input id="destino-input" list="destinos-sugeridos" placeholder="Escribe o selecciona destino">
+          <datalist id="destinos-sugeridos"></datalist>
+
+          <div class="filter-options">
+            <label><input id="rutas-cercanas" type="checkbox"> Solo rutas cercanas</label>
+            <label><input id="rutas-seguras" type="checkbox"> Rutas seguras (Mujer Segura)</label>
+          </div>
+
+          <div class="filter-actions">
+            <button class="btn-apply">Aplicar filtros</button>
+            <button class="btn-clear">Limpiar</button>
+          </div>
+        </div>
+
+        <!-- RESULTADOS DE FILTRO -->
+        <div id="filtered-routes"></div>
+
+        <!-- CONTENEDOR PARA LAS ROUTE-CARDS (aquí se insertan dinámicamente) -->
+        <div id="routes-cards-container"></div>
+
+      </div>
     </div>
 
     <!-- MAPA -->
@@ -87,7 +95,6 @@
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="../js/index.js"></script>
 
-
-  
 </body>
+
 </html>

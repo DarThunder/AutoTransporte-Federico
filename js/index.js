@@ -58,7 +58,7 @@ const sidebar = document.getElementById('sidebar');
 menuBtn.addEventListener('click', () => sidebar.classList.toggle('active'));
 
 // === RUTAS (solo sidebar) ===
-const routesListEl = document.getElementById('routes-list');
+const routesListEl = document.getElementById('routes-cards-container');
 const routeInfoEl  = document.getElementById('route-info');
 const searchInput  = document.querySelector('.search-box input');
 
@@ -175,6 +175,12 @@ const filterPanel = document.getElementById("filter-panel");
 
 filterBtn.addEventListener("click", () => {
   filterPanel.classList.toggle("active");
+  
+  // Hacer scroll al inicio para ver el panel
+  if (filterPanel.classList.contains("active")) {
+    const routesList = document.getElementById("routes-list");
+    routesList.scrollTop = 0; // Scroll al inicio para ver el panel
+  }
 });
 
 // === FILTRADO DE RUTAS ===
