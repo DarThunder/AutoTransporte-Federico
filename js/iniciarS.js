@@ -1,8 +1,8 @@
-import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 import {
   doc,
   getDoc,
-} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
 import { auth, db } from "./firebase_config.js";
 
@@ -13,13 +13,15 @@ loginForm.addEventListener("submit", (e) => {
 
   const email = loginForm.email.value;
   const password = loginForm.password.value;
+  console.log("email:", email);
+  console.log("contraseña:", password);
 
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
       console.log("Usuario inició sesión con UID:", user.uid);
 
-      const userDocRef = doc(db, "usuarios", user.uid);
+      const userDocRef = doc(db, "Usuarios", user.uid);
       return getDoc(userDocRef);
     })
     .then((docSnap) => {

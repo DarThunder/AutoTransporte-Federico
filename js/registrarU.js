@@ -27,11 +27,12 @@ registroForm.addEventListener("submit", (e) => {
         nombre: nombre,
         apellido: apellido,
         email: email,
+        rol: "user",
       });
     })
     .then(() => {
       alert("¡Registro exitoso!");
-      window.location.href = "index.html";
+      window.location.href = "iniciarS.html";
     })
     .catch((error) => {
       console.error("Error en el registro:", error.message);

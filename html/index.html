@@ -21,8 +21,15 @@
         <button><i class="fas fa-search"></i></button>
       </div>
 
-      <div clas>
-        <a href="IniciarS.html" class="login-btn">Iniciar sesión</a>
+      <div class="header-buttons">
+        <a id="login-link" href="IniciarS.html" class="login-btn"
+          >Iniciar sesión</a
+        >
+
+        <button id="logout-btn" class="logout-btn" style="display: none">
+          Cerrar Sesión
+        </button>
+
         <button id="menu-btn" class="menu-btn">
           <i class="fas fa-bars"></i>
         </button>
@@ -47,7 +54,6 @@
               <p>No hay rutas cercanas a tu ubicación.</p>
             </div>
           </div>
-
 
           <!-- PANEL DE FILTROS -->
           <div id="filter-panel" class="filter-panel">
@@ -109,5 +115,6 @@
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="../js/index.js"></script>
+    <script type="module" src="../js/auth_status.js"></script>
   </body>
 </html>
