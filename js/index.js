@@ -510,3 +510,18 @@ document.getElementById("origen-input").addEventListener("input", (e) => {
     });
   }
 });
+
+// Menu desplegable Rutas Cercanas
+var coll = document.getElementById("BotonDesplegableRutasCercanas");
+coll.addEventListener("click", function(){
+  this.classList.toggle("active");
+  var content = document.getElementById("nearby-routes-list");
+  var textoBoton = document.getElementById("TextoRutas");
+  if (content.style.display === "block") {
+    content.style.display = "none";
+    textoBoton.textContent = "Rutas Cercanas ↓"
+  } else {
+    content.style.display = "block";
+    textoBoton.textContent= "Rutas Cercanas ↑"
+  }
+})
