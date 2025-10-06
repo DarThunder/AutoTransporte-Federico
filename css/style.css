@@ -1047,3 +1047,87 @@ input:checked + .slider:before {
   transform: translateX(22px);
 }
 
+/* Animaciones para notificaciones */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutRight {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+/* Estilo específico para notificaciones */
+.notification {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: #b9b28a;
+    color: white;
+    padding: 12px 16px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 10000;
+    max-width: 280px;
+    font-size: 14px;
+    font-weight: 500;
+    border-left: 4px solid #8e8a63;
+    animation: slideInRight 0.3s ease-out;
+}
+
+.btn-apply {
+    background-color: #b6b189;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 2px 4px #b9b58e;
+}
+
+.btn-apply:hover {
+    background-color: #c7c298;
+    box-shadow: 0 4px 8px #b9b58e;
+    transform: translateY(-1px);
+}
+
+.btn-apply:active {
+    background-color: #b9b58e;
+    transform: translateY(0);
+    box-shadow: 0 1px 2px #c7c298;
+}
+
+.btn-clear {
+    background-color: #c3be9a;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: block;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 2px 4px #b9b58e;
+}
