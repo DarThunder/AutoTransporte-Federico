@@ -130,6 +130,64 @@ function findNearbyStops(userLat, userLon, radius) {
   });
 }
 
+// --- HACER PARADAS CLICKEABLES ---
+function makeStopsClickable() {
+    nearbyStopsLayer.eachLayer(layer => {
+        // Hacer que el marcador sea clickeable
+        layer.on('click', function(e) {
+            if (!isSelectingStop) return;
+            
+            e.originalEvent.stopPropagation();
+            
+            // Encontrar la parada correspondiente
+            const stopData = findStopByCoordinates(e.latlng.lat, e.latlng.lng);
+            
+            if (stopData) {
+                // Obtener el nombre de la ruta activa
+                const routeName = activeRoute ? routesIndex[activeRoute][0].properties.nombre : 'Ruta actual';
+                selectStop(stopData, routeName);
+            }
+        });
+    });
+}
+
+// --- HACER TODAS LAS PARADAS CLICKEABLES ---
+function makeAllStopsClickable() {
+    // Hacer clickeables las paradas CERCANAS (las que ya están en el mapa)
+    nearbyStopsLayer.eachLayer(layer => {
+        layer.off('click'); // Remover eventos anteriores
+        layer.on('click', function(e) {
+            if (!isSelectingStop) return;
+            
+            e.originalEvent.stopPropagation();
+            const stopData = findStopByCoordinates(e.latlng.lat, e.latlng.lng);
+            
+            if (stopData) {
+                const routeName = activeRoute ? routesIndex[activeRoute][0].properties.nombre : 'Ruta actual';
+                selectStop(stopData, routeName);
+            }
+        });
+    });
+}
+
+function findNearestStop(lat, lng) {
+    let nearestStop = null;
+    let minDistance = Infinity;
+    
+    allStops.forEach(stop => {
+        const stopLat = stop.geometry.coordinates[1];
+        const stopLng = stop.geometry.coordinates[0];
+        const distance = getDistance(lat, lng, stopLat, stopLng);
+        
+        if (distance < minDistance && distance < 100) { // ✅ 100 metros de tolerancia
+            minDistance = distance;
+            nearestStop = stop;
+        }
+    });
+    
+    return nearestStop;
+}
+
 // --- FUNCIÓN PARA ENCONTRAR RUTAS CERCANAS ---
 function findNearbyRoutes(userLat, userLon, radius) {
   const nearbyRoutesList = document.getElementById("nearby-routes-list");
@@ -263,10 +321,35 @@ function showRouteInfoBelowCard(id, props, cardEl) {
       ? `<div><img src="${props.img}" alt="Ruta ${id}" style="max-width:100%; border-radius:10px"></div>`
       : ""
     }
+
+     <!-- BOTÓN PARA MARCAR PARADA DESTINO -->
+    <div style="margin-top: 15px; padding: 10px; background: #e9e7d9; border-radius: 8px;">
+      <button id="mark-stop-btn-${id}" class="btn-apply" style="width: 100%; margin-bottom: 8px;">
+        <i class="fas fa-bullseye"></i> Marcar Parada de Destino
+      </button>
+      
+      <button id="cancel-selection-btn-${id}" class="btn-clear" style="width: 100%; display: none;">
+        <i class="fas fa-times"></i> Cancelar Selección
+      </button>
+      
+      <p style="font-size: 12px; margin: 5px 0 0 0; color: #666;">
+        Haz clic en el botón y luego selecciona una parada en el mapa
+      </p>
+    </div>
   `;
 
   // Insertar el infoDiv justo después del cardEl
   cardEl.parentNode.insertBefore(infoDiv, cardEl.nextSibling);
+
+  // Agregar evento al botón de marcar parada
+  document.getElementById(`mark-stop-btn-${id}`).addEventListener('click', function() {
+    startStopSelection(id, props);
+  });
+
+  // Agregar evento al botón de cancelar selección de la parada
+  document.getElementById(`cancel-selection-btn-${id}`).addEventListener('click', function() {
+    cancelStopSelection();
+  });
 }
 
 // 5) Búsqueda
@@ -525,3 +608,302 @@ coll.addEventListener("click", function(){
     textoBoton.textContent= "Rutas Cercanas ↑"
   }
 })
+
+// Sistema de destino para marcador 
+let destinationMarker = null;
+let selectedStop = null;
+let isSelectingStop = false;
+
+function startStopSelection(routeId, routeProps) {
+    isSelectingStop = true;
+    
+    alert("🗺️ Selección de paradas activada\n\nSelecciona la parada de tu destino, cuando este cerca recibirás una alerta");
+    
+    // Hacer que todas las paradas existentes sean clickeables
+    makeAllStopsClickable();
+    
+    // También permitir clic en cualquier parte del mapa para buscar paradas cercanas
+    map.once('click', function(e) {
+        if (!isSelectingStop) return;
+        
+        // Buscar la parada más cercana al clic (con mayor tolerancia)
+        const nearestStop = findNearestStop(e.latlng.lat, e.latlng.lng);
+        
+        if (nearestStop) {
+            selectStop(nearestStop, routeProps.nombre);
+        } else {
+            alert("No se encontró una parada cerca de este punto. Intenta hacer clic directamente sobre un marcador de parada.");
+            resetStopSelection();
+        }
+    });
+
+    // Mostrar botón de cancelar y ocultar botón normal
+    document.querySelectorAll('[id^="cancel-selection-btn-"]').forEach(btn => {
+        btn.style.display = 'block';
+    });
+    document.querySelectorAll('[id^="mark-stop-btn-"]').forEach(btn => {
+        btn.style.display = 'none';
+    });
+}
+
+function findStopByCoordinates(lat, lng) {
+    return allStops.find(stop => {
+        const stopLat = stop.geometry.coordinates[1];
+        const stopLng = stop.geometry.coordinates[0];
+        const distance = getDistance(lat, lng, stopLat, stopLng);
+        return distance < 30; // 30 metros de tolerancia (más preciso)
+    });
+}
+
+function selectStop(stop, routeName) {
+    selectedStop = stop;
+    const stopName = stop.properties.name || 'Parada sin nombre';
+    
+    // Preguntar confirmación
+    const confirmar = confirm(`¿Quieres marcar esta parada como destino?\n\n📍 ${stopName}\n🚌 Ruta: ${routeName}\n\nLa aplicación te alertará cuando estés cerca.`);
+    
+    if (confirmar) {
+        setupDestination(stop, routeName);
+    }
+    
+    isSelectingStop = false;
+    resetStopSelection();
+}
+
+function setupDestination(stop, routeName) {
+    const stopName = stop.properties.name || 'Parada sin nombre';
+    const coords = stop.geometry.coordinates;
+    
+    // Remover marcador anterior si existe
+    if (destinationMarker) {
+        map.removeLayer(destinationMarker);
+    }
+    
+    // Crear marcador de destino
+    destinationMarker = L.marker([coords[1], coords[0]], {
+        icon: L.divIcon({
+            className: 'destination-marker',
+            html: '<div style="width:24px;height:24px;background:#ff4444;border:3px solid white;border-radius:50%;box-shadow:0 2px 10px rgba(0,0,0,0.3);"></div>',
+            iconSize: [24, 24],
+            iconAnchor: [12, 12]
+        })
+    }).addTo(map)
+    .bindPopup(`
+        🎯 <strong>Destino establecido</strong><br>
+        📍 ${stopName}<br>
+        🚌 Ruta: ${routeName}<br>
+        <button onclick="removeDestination()" style="margin-top:8px; padding:5px 10px; background:#ff4444; color:white; border:none; border-radius:4px; cursor:pointer;">
+            ❌ Eliminar destino
+        </button>
+    `)
+    .openPopup();
+    
+    // ✅ AGREGAR BOTÓN DE ELIMINAR EN EL PANEL DE INFORMACIÓN
+    addRemoveButtonToRouteInfo(routeName, stopName);
+    
+    // Iniciar monitoreo
+    startMonitoring();
+    
+    // Mostrar notificación
+    showNotification(`🎯 Destino establecido: ${stopName}`);
+}
+
+
+function addRemoveButtonToRouteInfo(routeName, stopName) {
+    // Buscar todos los route-info activos
+    document.querySelectorAll('.route-info').forEach(infoDiv => {
+        // Verificar si ya existe un botón de eliminar
+        const existingRemoveBtn = infoDiv.querySelector('.remove-destination-btn');
+        if (existingRemoveBtn) return;
+        
+        // Crear el botón de eliminar
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'remove-destination-btn';
+        removeBtn.innerHTML = '<i class="fas fa-trash"></i> Eliminar destino seleccionado';
+        removeBtn.style.cssText = `
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        `;
+        
+        removeBtn.addEventListener('click', removeDestination);
+        
+        // Agregar información del destino actual
+        const destinationInfo = document.createElement('div');
+        destinationInfo.style.cssText = `
+            margin: 10px 0;
+            padding: 10px;
+            background: #e9e7d9;
+            border-radius: 8px;
+            font-size: 13px;
+        `;
+        destinationInfo.innerHTML = `
+            <strong>🎯 Destino actual:</strong><br>
+            📍 ${stopName}<br>
+            🚌 ${routeName}
+        `;
+        
+        // Insertar antes del botón de marcar parada
+        const markStopContainer = infoDiv.querySelector('div[style*="background: #e9e7d9"]');
+        if (markStopContainer) {
+            markStopContainer.parentNode.insertBefore(destinationInfo, markStopContainer);
+            markStopContainer.parentNode.insertBefore(removeBtn, markStopContainer);
+        }
+    });
+}
+
+function resetStopSelection() {
+    isSelectingStop = false;
+    map.off('click');
+    
+    // Solo resetear si no hay un destino seleccionado
+    if (!selectedStop) {
+        document.querySelectorAll('[id^="mark-stop-btn-"]').forEach(btn => {
+            btn.style.display = 'block';
+        });
+        document.querySelectorAll('[id^="cancel-selection-btn-"]').forEach(btn => {
+            btn.style.display = 'none';
+        });
+    }
+}
+
+function startMonitoring() {
+    // Verificar cada 3 segundos
+    setInterval(() => {
+        if (!userMarker || !selectedStop) return;
+        
+        const userLatLng = userMarker.getLatLng();
+        const destCoords = selectedStop.geometry.coordinates;
+        const distance = getDistance(
+            userLatLng.lat, 
+            userLatLng.lng, 
+            destCoords[1], 
+            destCoords[0]
+        );
+        
+        // Alertas basadas en distancia
+        if (distance <= 100) { // 100 metros
+            showNotification("🎉 ¡LLEGASTE A TU DESTINO!", true);
+            playSound();
+            removeDestination();
+        } else if (distance <= 300) { // 300 metros
+            showNotification("🔔 Estás muy cerca de tu destino (300m)");
+        } else if (distance <= 500) { // 500 metros
+            showNotification("📍 Te estás acercando a tu destino (500m)");
+        }
+    }, 3000);
+}
+
+function showNotification(message, isUrgent = false) {
+    // Crear notificación 
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 70px;
+        right: 10px;
+        background: ${isUrgent ? '#4CAF50' : '#2c3e50'};
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        z-index: 10000;
+        max-width: 250px;
+        font-size: 13px;
+        font-weight: 400;
+        opacity: 0.95;
+        animation: fadeIn 0.3s ease-out;
+    `;
+    notification.textContent = message;
+    
+    document.body.appendChild(notification);
+    
+    // Remover después de 3 segundos
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.style.animation = 'fadeOut 0.3s ease-in';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    document.body.removeChild(notification);
+                }
+            }, 300);
+        }
+    }, 3000);
+}
+function playSound() {
+    // Sonido simple de notificación
+    try {
+        const audio = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==");
+        audio.play();
+    } catch (e) {
+        // Si falla el audio, hacemos un beep con el sistema
+        console.log("🔔 ¡LLEGASTE!");
+    }
+}
+
+function removeDestination() {
+    if (destinationMarker) {
+        map.removeLayer(destinationMarker);
+        destinationMarker = null;
+    }
+    selectedStop = null;
+    
+    document.querySelectorAll('.route-info').forEach(infoDiv => {
+        const removeBtn = infoDiv.querySelector('.remove-destination-btn');
+        const destinationInfo = infoDiv.querySelector('div[style*="background: #e9e7d9"]');
+        
+        // Buscar el elemento de información de destino 
+        const allDivs = infoDiv.querySelectorAll('div');
+        let destinationInfoElement = null;
+        
+        allDivs.forEach(div => {
+            if (div.innerHTML.includes('🎯 Destino actual:')) {
+                destinationInfoElement = div;
+            }
+        });
+        
+        if (removeBtn) removeBtn.remove();
+        if (destinationInfoElement) destinationInfoElement.remove();
+    });
+    
+    showNotification("🗑️ Destino eliminado");
+    resetStopSelection();
+}
+
+// FUNCIÓN PARA VER EL DESTINO ACTUAL
+function showCurrentDestination() {
+    if (!selectedStop) {
+        showNotification("ℹ️ No hay ningún destino establecido");
+        return;
+    }
+    
+    const stopName = selectedStop.properties.name || 'Parada sin nombre';
+    if (destinationMarker) {
+        destinationMarker.openPopup();
+        showNotification(`🎯 Destino actual: ${stopName}`);
+    }
+}
+
+map.on('dblclick', function() {
+    if (selectedStop) {
+        showCurrentDestination();
+    }
+});
+
+function cancelStopSelection() {
+    resetStopSelection();
+    showNotification("Selección de destino cancelada");
+    
+    // Ocultar botón de cancelar y mostrar botón normal
+    document.querySelectorAll('[id^="cancel-selection-btn-"]').forEach(btn => {
+        btn.style.display = 'none';
+    });
+    document.querySelectorAll('[id^="mark-stop-btn-"]').forEach(btn => {
+        btn.style.display = 'block';
+    });
+}
