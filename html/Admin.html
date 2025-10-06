@@ -13,7 +13,9 @@
 
 <body>
   <header>
-    <h1>El Rutero - Admin</h1>
+    <div class="logo-img">
+      <img src="../images/Logo1.png" alt="El Rutero Logo" />
+    </div>
     <div class="search-box">
       <input type="text" placeholder="Buscar rutas o paradas...">
       <button><i class="fas fa-search"></i></button>
@@ -127,31 +129,23 @@
           <h3>Filtros de Rutas</h3>
 
           <label>Origen:</label>
-          <input list="origenes-filter" placeholder="Escribe o selecciona origen">
+          <input id="origen-input-admin" list="origenes-filter" placeholder="Escribe o selecciona origen">
           <datalist id="origenes-filter">
-            <option value="Plaza Crystal">
-            <option value="Universidad Veracruzana">
-            <option value="Colonia Revolución">
-            <option value="Zona Centro">
-          </datalist>
+              </datalist>
 
           <label>Destino:</label>
-          <input list="destinos-filter" placeholder="Escribe o selecciona destino">
+          <input id="destino-input-admin" list="destinos-filter" placeholder="Escribe o selecciona destino">
           <datalist id="destinos-filter">
-            <option value="Zona Centro">
-            <option value="Plaza Américas">
-            <option value="Clavijero">
-            <option value="Terminal ADO">
-          </datalist>
+              </datalist>
 
           <div class="filter-options">
-            <label><input type="checkbox"> Solo rutas cercanas</label>
-            <label><input type="checkbox"> Rutas seguras (Mujer Segura)</label>
+              <label><input type="checkbox" id="rutas-cercanas-admin"> Solo rutas cercanas</label>
+              <label><input type="checkbox" id="rutas-seguras-admin"> Rutas seguras (Mujer Segura)</label>
           </div>
 
           <div class="filter-actions">
-            <button class="btn-apply">Aplicar filtros</button>
-            <button class="btn-clear">Limpiar</button>
+              <button type="button" id="btn-apply-filters" class="btn-apply">Aplicar filtros</button>
+              <button type="button" id="btn-clear-filters" class="btn-clear">Limpiar</button>
           </div>
         </div>
 

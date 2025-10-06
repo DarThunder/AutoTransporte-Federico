@@ -846,6 +846,42 @@ footer {
     min-height: 60px;
 }
 
+/* === ESTILOS RESPONSIVOS DEL LOGO === */
+
+.logo-img img {
+  height: 100px; /* Altura del logo en pantallas grandes */
+  width: auto;
+  margin-bottom: -20px;
+  margin-top: -20px;
+  display: block; /* Asegura que la imagen no tenga espacios extra */
+  transition: height 0.3s ease; /* Animación suave al cambiar tamaño */
+}
+
+/* --- Media Queries para hacerlo responsivo --- */
+
+/* Para tabletas (hasta 768px de ancho) */
+@media (max-width: 768px) {
+  .logo-img img {
+    height: 80px; /* Hacemos el logo un poco más pequeño */
+  }
+  header {
+    padding: 0.6rem 1rem; /* Reducimos un poco el espaciado del header */
+  }
+}
+
+/* Para celulares (hasta 480px de ancho) */
+@media (max-width: 480px) {
+  .logo-img img {
+    height: 70px; /* Un tamaño más compacto para móviles */
+  }
+  header {
+    padding: 0.5rem 0.8rem; /* Menos espaciado en el header */
+    gap: 10px; /* Reduce el espacio entre el logo, la búsqueda y los botones */
+  }
+  .search-box {
+    flex-grow: 1; /* Permite que la barra de búsqueda ocupe el espacio sobrante */
+  }
+}
 
 /* Área de subida de archivos */
 

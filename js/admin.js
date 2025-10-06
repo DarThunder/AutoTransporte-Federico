@@ -143,13 +143,6 @@ filterBtn.addEventListener("click", () => {
   filterPanel.style.display = filterPanel.style.display === "block" ? "none" : "block";
 });
 
-document.querySelector(".btn-apply").addEventListener("click", () => alert("Filtros aplicados 🚌"));
-document.querySelector(".btn-clear").addEventListener("click", () => {
-    filterPanel.querySelectorAll("input[type=checkbox]").forEach(cb => cb.checked = false);
-    filterPanel.querySelectorAll("input[list]").forEach(inp => inp.value = "");
-    document.getElementById("filtered-routes").innerHTML = "";
-});
-
 addBtn.addEventListener("click", () => {
   filterPanel.style.display = "none";  // Ocultar panel de filtros
   
@@ -422,3 +415,87 @@ function getColor(id) {
   const palette = ['#2563eb','#e74c3c','#27ae60','#8e44ad','#f39c12','#10b981','#d946ef','#ef4444','#0ea5e9','#f59e0b'];
   return palette[parseInt(id) % palette.length];
 }
+// === LÓGICA DE FILTRADO PARA EL PANEL DE ADMIN ===
+
+function filtrarRutasAdmin() {
+  const origen = document.getElementById("origen-input-admin").value.trim().toLowerCase();
+  const destino = document.getElementById("destino-input-admin").value.trim().toLowerCase();
+  const rutasSeguras = document.getElementById("rutas-seguras-admin")?.checked || false;
+  const soloCercanas = document.getElementById("rutas-cercanas-admin")?.checked || false; // Esta opción no tendrá efecto en admin.
+
+  const routesContainer = document.getElementById('routes-cards-container');
+  const filteredContainer = document.getElementById('filtered-routes');
+  
+  if (!origen && !destino && !rutasSeguras && !soloCercanas) {
+    alert("⚠️ No has introducido ningún dato para filtrar.");
+    return;
+  }
+
+  // Filtra los IDs de las rutas
+  const resultados = Object.keys(routesIndex).filter(id => {
+    const props = routesIndex[id][0].properties;
+    
+    // Combina todos los textos relevantes de la ruta para la búsqueda
+    const textoBusqueda = [
+      props.nombre || "",
+      props.origen || "",
+      props.destino || "",
+      props.notas || ""
+    ].join(" ").toLowerCase();
+
+    // Aplica filtros
+    if (origen && !textoBusqueda.includes(origen)) return false;
+    if (destino && !textoBusqueda.includes(destino)) return false;
+    if (rutasSeguras && !props.mujerSegura) return false;
+    
+    return true;
+  });
+
+  // Oculta la lista principal de rutas
+  routesContainer.style.display = 'none';
+  // Muestra el contenedor de resultados y lo limpia
+  filteredContainer.style.display = 'block';
+  filteredContainer.innerHTML = ''; 
+
+  if (resultados.length > 0) {
+    const resultHeader = document.createElement('h3');
+    resultHeader.textContent = `Rutas encontradas: ${resultados.length}`;
+    filteredContainer.appendChild(resultHeader);
+    
+    resultados.forEach(id => {
+      const props = routesIndex[id][0].properties;
+      const card = document.createElement("div");
+      card.className = "route-card";
+      card.dataset.id = id;
+      card.innerHTML = `
+        <div class="card-body">
+          <div class="card-title">${props.nombre}</div>
+          <div class="card-sub">🕒 ${props.horario}</div>
+          ${props.notas ? `<div class="card-notes">📝 ${props.notas}</div>` : ""}
+        </div>
+      `;
+      card.addEventListener('click', () => selectRoute(id, card));
+      filteredContainer.appendChild(card);
+    });
+  } else {
+    filteredContainer.innerHTML = `<p class="no-routes" style="padding: 15px; text-align: center;">No se encontraron rutas con esos filtros 😢</p>`;
+  }
+}
+
+function limpiarFiltrosAdmin() {
+  document.getElementById("origen-input-admin").value = "";
+  document.getElementById("destino-input-admin").value = "";
+  document.getElementById("rutas-seguras-admin").checked = false;
+  document.getElementById("rutas-cercanas-admin").checked = false;
+
+  // Oculta los resultados y muestra la lista principal
+  document.getElementById('filtered-routes').style.display = 'none';
+  document.getElementById('routes-cards-container').style.display = 'block';
+  
+  // Vuelve a renderizar el sidebar original por si algo cambió
+  renderSidebar(Object.keys(routesIndex).sort((a,b)=>a-b));
+}
+
+// --- Event Listeners para los botones de filtro del panel de Admin ---
+document.getElementById('btn-apply-filters').addEventListener('click', filtrarRutasAdmin);
+document.getElementById('btn-clear-filters').addEventListener('click', limpiarFiltrosAdmin);
