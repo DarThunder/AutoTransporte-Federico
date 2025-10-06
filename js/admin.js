@@ -185,6 +185,7 @@ document.getElementById("btn-save-route").addEventListener("click", () => {
       feature.properties.origen = routeOrigin;
       feature.properties.destino = routeDestination;
       feature.properties.notas = routeNotes;
+      feature.properties.mujerSegura = mujerSegura; // <-- AÑADE ESTA LÍNEA
     });
     alert(`Ruta "${routeName}" actualizada.`);
     renderSidebar(Object.keys(routesIndex).sort((a,b)=>a-b));
@@ -209,11 +210,9 @@ document.getElementById("btn-save-route").addEventListener("click", () => {
           return;
         }
 
-        // 1. Encontrar el ID más alto y sumarle 1 para el nuevo ID
         const maxId = Object.keys(routesIndex).reduce((max, currentId) => Math.max(max, parseInt(currentId)), 0);
         const newId = maxId + 1;
 
-        // 2. Asignar el nuevo ID y las propiedades a cada feature de la nueva ruta
         newRouteFeatures.forEach(feature => {
           feature.properties = feature.properties || {};
           feature.properties.id_ruta = newId;
@@ -222,13 +221,12 @@ document.getElementById("btn-save-route").addEventListener("click", () => {
           feature.properties.origen = routeOrigin;
           feature.properties.destino = routeDestination;
           feature.properties.notas = routeNotes;
+          feature.properties.mujerSegura = mujerSegura; // <-- AÑADE ESTA LÍNEA
         });
 
-        // 3. Añadir las nuevas features a los datos existentes
         allFeatures.push(...newRouteFeatures);
         routesIndex[newId] = newRouteFeatures;
 
-        // 4. Actualizar la interfaz
         renderSidebar(Object.keys(routesIndex).sort((a,b)=>a-b));
         alert(`Ruta "${routeName}" agregada con éxito.`);
         closeAddPanel();

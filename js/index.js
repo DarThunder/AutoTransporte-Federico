@@ -427,19 +427,18 @@ function filtrarRutas() {
     return [];
   }
 
-  //Agregado*
   const resultados = Object.keys(routesIndex).filter(id => {
     const props = routesIndex[id][0].properties;
     
     // Buscar en TODOS los campos de texto disponibles
     const textoBusqueda = [
-      props.desc || "",          // Descripción de la ruta
-      props.nombre || "",        // Nombre completo
-      props.name || "",          // Nombre alternativo
-      props.notes || "",         // Notas
-      props.notas || "",         // Notas en español
-      props.origen || "",        // Origen específico
-      props.destino || ""        // Destino específico
+      props.desc || "",       // Descripción de la ruta
+      props.nombre || "",     // Nombre completo
+      props.name || "",       // Nombre alternativo
+      props.notes || "",      // Notas
+      props.notas || "",      // Notas en español
+      props.origen || "",     // Origen específico
+      props.destino || ""     // Destino específico
     ].join(" ").toLowerCase();
 
     // Verificar filtro de origen
@@ -448,12 +447,12 @@ function filtrarRutas() {
     // Verificar filtro de destino
     if (destino && !textoBusqueda.includes(destino)) return false;
     
-    // Verificar filtro de rutas seguras (para futuro)
-    if (rutasSeguras) {
-      // Por ahora, como no tenemos datos de seguridad, mostramos todas
-      const esSegura = props.segura || props.seguridad || props.safe;
-      if (!esSegura) return false;
+    // ===== INICIO DE LA MODIFICACIÓN =====
+    // Verificar filtro de rutas "Mujer Segura"
+    if (rutasSeguras && !props.mujerSegura) {
+      return false; // Si el filtro está activo y la ruta no es segura, la descartamos.
     }
+    // ===== FIN DE LA MODIFICACIÓN =====
     
     return true;
   });
