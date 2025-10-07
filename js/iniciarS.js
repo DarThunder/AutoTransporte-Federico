@@ -30,7 +30,11 @@ loginForm.addEventListener("submit", (e) => {
         console.log("Datos del usuario:", userData);
         alert(`¡Bienvenido de nuevo, ${userData.nombre}!`);
 
-        window.location.href = "index.html";
+        if (userData.rol == "admin") {
+          window.location.href = "Admin.html";
+        } else {
+          window.location.href = "index.html";
+        }
       } else {
         console.log("No se encontraron datos para este usuario en Firestore.");
       }

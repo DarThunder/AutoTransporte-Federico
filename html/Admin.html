@@ -1,176 +1,243 @@
 <!DOCTYPE html>
 <html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>El Rutero - Admin</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>El Rutero - Admin</title>
-  <link rel="stylesheet" href="../css/style.css" />
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-</head>
-
-<body>
-  <header>
-    <div class="logo-img">
-      <img src="../images/Logo1.png" alt="El Rutero Logo" />
-    </div>
-    <div class="search-box">
-      <input type="text" placeholder="Buscar rutas o paradas...">
-      <button><i class="fas fa-search"></i></button>
-    </div>
-
-    <div>
-      <a href="IniciarS.html" class="login-btn">Iniciar sesión</a>
-      <button id="menu-btn" class="menu-btn"><i class="fas fa-bars"></i></button>
-    </div>
-  </header>
-
-  <div id="app">
-    <!-- SIDEBAR -->
-    <div id="sidebar" class="sidebar">
-
-      <div class="sidebar-header">
-        <h2 class="sidebar-title">Rutas</h2>
-        <div class="admin-controls">
-          <button id="add-btn" class="admin-btn add-btn" title="Agregar ruta">
-            <i class="fas fa-plus"></i>
-          </button>
-          <button id="edit-btn" class="admin-btn edit-btn" title="Editar ruta">
-            <i class="fas fa-pencil-alt"></i>
-          </button>
-          <button id="delete-btn" class="admin-btn delete-btn" title="Eliminar ruta">
-            <i class="fas fa-trash"></i>
-          </button>
-          <button id="download-btn" class="admin-btn download-btn" title="Descargar GeoJSON">
-            <i class="fas fa-download"></i>
-          </button>
-          <button id="filter-btn" class="filter-btn">
-            <i class="fas fa-filter"></i> Filtrar
-          </button>
-        </div>
+  <body>
+    <header>
+      <div class="logo-img">
+        <img src="../images/Logo1.png" alt="El Rutero Logo" />
+      </div>
+      <div class="search-box">
+        <input type="text" placeholder="Buscar rutas o paradas..." />
+        <button><i class="fas fa-search"></i></button>
       </div>
 
+      <div>
+        <a href="IniciarS.html" id="login-link" class="login-btn"
+          >Iniciar sesión</a
+        >
+        <button id="menu-btn" class="menu-btn">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+    </header>
 
+    <div id="app">
+      <!-- SIDEBAR -->
+      <div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+          <h2 class="sidebar-title">Rutas</h2>
+          <div class="admin-controls">
+            <button id="add-btn" class="admin-btn add-btn" title="Agregar ruta">
+              <i class="fas fa-plus"></i>
+            </button>
+            <button
+              id="edit-btn"
+              class="admin-btn edit-btn"
+              title="Editar ruta"
+            >
+              <i class="fas fa-pencil-alt"></i>
+            </button>
+            <button
+              id="delete-btn"
+              class="admin-btn delete-btn"
+              title="Eliminar ruta"
+            >
+              <i class="fas fa-trash"></i>
+            </button>
+            <button
+              id="download-btn"
+              class="admin-btn download-btn"
+              title="Descargar GeoJSON"
+            >
+              <i class="fas fa-download"></i>
+            </button>
+            <button id="filter-btn" class="filter-btn">
+              <i class="fas fa-filter"></i> Filtrar
+            </button>
+          </div>
+        </div>
 
-      <!-- CONTENEDOR CON SCROLL (routes-list) -->
-      <div id="routes-list" class="routes-list">
-        <!-- INFO DE RUTA (fuera del scroll) -->
-        <div id="route-info" class="route-info">Selecciona una ruta…</div>
+        <!-- CONTENEDOR CON SCROLL (routes-list) -->
+        <div id="routes-list" class="routes-list">
+          <!-- INFO DE RUTA (fuera del scroll) -->
+          <div id="route-info" class="route-info">Selecciona una ruta…</div>
 
-        <!-- PANEL DE AGREGAR RUTA -->
-        <form id="add-panel" class="filter-panel">
-          <h3>Agregar Nueva Ruta</h3>
-          <input type="hidden" id="route-id">
+          <!-- PANEL DE AGREGAR RUTA -->
+          <form id="add-panel" class="filter-panel">
+            <h3>Agregar Nueva Ruta</h3>
+            <input type="hidden" id="route-id" />
 
-          <label>Nombre de la ruta:</label>
-          <input type="text" placeholder="Ej: Ruta Centro-UV" id="route-name">
+            <label>Nombre de la ruta:</label>
+            <input
+              type="text"
+              placeholder="Ej: Ruta Centro-UV"
+              id="route-name"
+            />
 
-          <label>Horario:</label>
-          <input type="text" placeholder="Ej: 6:00 AM - 10:00 PM" id="route-schedule">
+            <label>Horario:</label>
+            <input
+              type="text"
+              placeholder="Ej: 6:00 AM - 10:00 PM"
+              id="route-schedule"
+            />
 
-          <label>Origen:</label>
-          <input list="origenes" placeholder="Escribe o selecciona origen" id="route-origin">
-          <datalist id="origenes">
-            <option value="Plaza Crystal">
-            <option value="Universidad Veracruzana">
-            <option value="Colonia Revolución">
-            <option value="Zona Centro">
-          </datalist>
+            <label>Origen:</label>
+            <input
+              list="origenes"
+              placeholder="Escribe o selecciona origen"
+              id="route-origin"
+            />
+            <datalist id="origenes">
+              <option value="Plaza Crystal"></option>
+              <option value="Universidad Veracruzana"></option>
+              <option value="Colonia Revolución"></option>
+              <option value="Zona Centro"></option>
+            </datalist>
 
-          <label>Destino:</label>
-          <input list="destinos" placeholder="Escribe o selecciona destino" id="route-destination">
-          <datalist id="destinos">
-            <option value="Zona Centro">
-            <option value="Plaza Américas">
-            <option value="Clavijero">
-            <option value="Terminal ADO">
-          </datalist>
+            <label>Destino:</label>
+            <input
+              list="destinos"
+              placeholder="Escribe o selecciona destino"
+              id="route-destination"
+            />
+            <datalist id="destinos">
+              <option value="Zona Centro"></option>
+              <option value="Plaza Américas"></option>
+              <option value="Clavijero"></option>
+              <option value="Terminal ADO"></option>
+            </datalist>
 
-          <label>Archivo de ruta (GeoJSON):</label>
-          <div class="file-upload-area" id="file-upload-area">
-            <div class="file-upload-content">
-              <i class="fas fa-cloud-upload-alt"></i>
-              <p>Arrastra tu archivo aquí o</p>
-              <button type="button" class="btn-select-file" id="btn-select-file">
-                <i class="fas fa-folder-open"></i> Seleccionar archivo
-              </button>
-              <input type="file" id="route-file" accept=".geojson,.json" hidden>
-              <div class="file-info" id="file-info" style="display: none;">
-                <i class="fas fa-file-alt"></i>
-                <span class="file-name" id="file-name">archivo.geojson</span>
-                <button type="button" class="btn-remove-file" id="btn-remove-file">
-                  <i class="fas fa-times"></i>
+            <label>Archivo de ruta (GeoJSON):</label>
+            <div class="file-upload-area" id="file-upload-area">
+              <div class="file-upload-content">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Arrastra tu archivo aquí o</p>
+                <button
+                  type="button"
+                  class="btn-select-file"
+                  id="btn-select-file"
+                >
+                  <i class="fas fa-folder-open"></i> Seleccionar archivo
                 </button>
+                <input
+                  type="file"
+                  id="route-file"
+                  accept=".geojson,.json"
+                  hidden
+                />
+                <div class="file-info" id="file-info" style="display: none">
+                  <i class="fas fa-file-alt"></i>
+                  <span class="file-name" id="file-name">archivo.geojson</span>
+                  <button
+                    type="button"
+                    class="btn-remove-file"
+                    id="btn-remove-file"
+                  >
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
               </div>
+            </div>
+
+            <label>Notas adicionales:</label>
+            <textarea
+              placeholder="Información adicional sobre la ruta..."
+              id="route-notes"
+              rows="3"
+            ></textarea>
+
+            <div class="form-group form-group-toggle">
+              <label for="route-mujer-segura">Mujer Segura:</label>
+              <label class="switch">
+                <input type="checkbox" id="route-mujer-segura" />
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="filter-actions">
+              <button type="button" class="btn-apply" id="btn-save-route">
+                Guardar Ruta
+              </button>
+              <button type="button" class="btn-clear" id="btn-cancel-add">
+                Cancelar
+              </button>
+            </div>
+          </form>
+
+          <!-- PANEL DE FILTROS -->
+          <div id="filter-panel" class="filter-panel">
+            <h3>Filtros de Rutas</h3>
+
+            <label>Origen:</label>
+            <input
+              id="origen-input-admin"
+              list="origenes-filter"
+              placeholder="Escribe o selecciona origen"
+            />
+            <datalist id="origenes-filter"> </datalist>
+
+            <label>Destino:</label>
+            <input
+              id="destino-input-admin"
+              list="destinos-filter"
+              placeholder="Escribe o selecciona destino"
+            />
+            <datalist id="destinos-filter"> </datalist>
+
+            <div class="filter-options">
+              <label
+                ><input type="checkbox" id="rutas-cercanas-admin" /> Solo rutas
+                cercanas</label
+              >
+              <label
+                ><input type="checkbox" id="rutas-seguras-admin" /> Rutas
+                seguras (Mujer Segura)</label
+              >
+            </div>
+
+            <div class="filter-actions">
+              <button type="button" id="btn-apply-filters" class="btn-apply">
+                Aplicar filtros
+              </button>
+              <button type="button" id="btn-clear-filters" class="btn-clear">
+                Limpiar
+              </button>
             </div>
           </div>
 
-          <label>Notas adicionales:</label>
-          <textarea placeholder="Información adicional sobre la ruta..." id="route-notes" rows="3"></textarea>
+          <!-- RESULTADOS DE FILTRO -->
+          <div id="filtered-routes"></div>
 
-          <div class="form-group form-group-toggle">
-              <label for="route-mujer-segura">Mujer Segura:</label>
-              <label class="switch">
-                  <input type="checkbox" id="route-mujer-segura">
-                  <span class="slider"></span>
-              </label>
-          </div>
-
-          <div class="filter-actions">
-            <button type="button" class="btn-apply" id="btn-save-route">Guardar Ruta</button>
-            <button type="button" class="btn-clear" id="btn-cancel-add">Cancelar</button>
-          </div>
-        </form>
-
-        <!-- PANEL DE FILTROS -->
-        <div id="filter-panel" class="filter-panel">
-          <h3>Filtros de Rutas</h3>
-
-          <label>Origen:</label>
-          <input id="origen-input-admin" list="origenes-filter" placeholder="Escribe o selecciona origen">
-          <datalist id="origenes-filter">
-              </datalist>
-
-          <label>Destino:</label>
-          <input id="destino-input-admin" list="destinos-filter" placeholder="Escribe o selecciona destino">
-          <datalist id="destinos-filter">
-              </datalist>
-
-          <div class="filter-options">
-              <label><input type="checkbox" id="rutas-cercanas-admin"> Solo rutas cercanas</label>
-              <label><input type="checkbox" id="rutas-seguras-admin"> Rutas seguras (Mujer Segura)</label>
-          </div>
-
-          <div class="filter-actions">
-              <button type="button" id="btn-apply-filters" class="btn-apply">Aplicar filtros</button>
-              <button type="button" id="btn-clear-filters" class="btn-clear">Limpiar</button>
-          </div>
+          <!-- CONTENEDOR PARA LAS ROUTE-CARDS (aquí se insertan dinámicamente) -->
+          <div id="routes-cards-container"></div>
         </div>
-
-        <!-- RESULTADOS DE FILTRO -->
-        <div id="filtered-routes"></div>
-
-        <!-- CONTENEDOR PARA LAS ROUTE-CARDS (aquí se insertan dinámicamente) -->
-        <div id="routes-cards-container"></div>
-
       </div>
+
+      <!-- MAPA -->
+      <main>
+        <div id="map"></div>
+      </main>
     </div>
 
-    <!-- MAPA -->
-    <main>
-      <div id="map"></div>
-    </main>
-  </div>
+    <footer>
+      <p>© 2025 - Dard's Innovations</p>
+    </footer>
 
-  <footer>
-    <p>© 2025 - Dard's Innovations</p>
-  </footer>
-
-  <!-- Leaflet JS -->
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="../js/admin.js"></script>
-</body>
-
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="../js/admin.js"></script>
+    <script type="module" src="../js/auth_status.js"></script>
+  </body>
 </html>
