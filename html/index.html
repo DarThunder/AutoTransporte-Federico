@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+  
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -83,7 +84,17 @@
             </datalist>
 
             <label>Destino:</label>
-            <select id="destino-input" size="1"></select>
+            <input
+              id="destino-input"
+              list="destinos"
+              placeholder="Escribe o selecciona destino"
+            />
+            <datalist id="destinos">
+              <option value="Plaza Américas"></option>
+              <option value="CAXA"></option>
+              <option value="Zona UV"></option>
+              <option value="Centro"></option>
+            </datalist>
 
             <div class="filter-options">
               <label

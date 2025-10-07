@@ -1,6 +1,9 @@
 // Inicializar mapa centrado en Xalapa
 const map = L.map('map').setView([19.5438, -96.9103], 13);
 
+let origenMarker = null;
+let destinoMarker = null;
+
 // Base map con Stadia Outdoors
 L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.{ext}', {
   minZoom: 0,
@@ -415,53 +418,116 @@ function getColor(id) {
   const palette = ['#2563eb','#e74c3c','#27ae60','#8e44ad','#f39c12','#10b981','#d946ef','#ef4444','#0ea5e9','#f59e0b'];
   return palette[parseInt(id) % palette.length];
 }
-// === LÓGICA DE FILTRADO PARA EL PANEL DE ADMIN ===
+// --- FUNCIÓN PARA CALCULAR DISTANCIA ---
+function getDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371e3; // Radio de la Tierra en metros
+  const φ1 = (lat1 * Math.PI) / 180;
+  const φ2 = (lat2 * Math.PI) / 180;
+  const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+  const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+  const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
 
-function filtrarRutasAdmin() {
-  const origen = document.getElementById("origen-input-admin").value.trim().toLowerCase();
-  const destino = document.getElementById("destino-input-admin").value.trim().toLowerCase();
+/**
+ * Normaliza un término de búsqueda para la API.
+ */
+function normalizeSearchTerm(searchTerm) {
+  return searchTerm.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
+/**
+ * Geocodifica un término de búsqueda usando Nominatim.
+ */
+async function geocodeSearchTerm(searchTerm) {
+  const normalized = normalizeSearchTerm(searchTerm);
+  const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(normalized + ', Xalapa, Veracruz')}&limit=1`;
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    if (data && data.length > 0) {
+      return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon), displayName: data[0].display_name };
+    }
+    return null;
+  } catch (error) {
+    console.error('Error en la geocodificación:', error);
+    return null;
+  }
+}
+
+/**
+ * Verifica si una ruta cruza un círculo (nodo).
+ */
+function routeIntersectsCircle(routeFeatures, circle) {
+  const center = circle.getLatLng();
+  const radius = circle.getRadius();
+  for (const feature of routeFeatures) {
+    if (feature.geometry.type === 'LineString') {
+      for (const point of feature.geometry.coordinates) {
+        const distance = getDistance(center.lat, center.lng, point[1], point[0]);
+        if (distance <= radius) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
+/**
+ * Función principal para filtrar rutas en el panel de Admin.
+ */
+async function filtrarRutasAdmin() {
+  const origenInput = document.getElementById("origen-input-admin").value.trim();
+  const destinoInput = document.getElementById("destino-input-admin").value.trim();
   const rutasSeguras = document.getElementById("rutas-seguras-admin")?.checked || false;
-  const soloCercanas = document.getElementById("rutas-cercanas-admin")?.checked || false; // Esta opción no tendrá efecto en admin.
-
-  const routesContainer = document.getElementById('routes-cards-container');
-  const filteredContainer = document.getElementById('filtered-routes');
   
-  if (!origen && !destino && !rutasSeguras && !soloCercanas) {
-    alert("⚠️ No has introducido ningún dato para filtrar.");
+  const filteredContainer = document.getElementById('filtered-routes');
+  const routesContainer = document.getElementById('routes-cards-container');
+
+  if (origenMarker) map.removeLayer(origenMarker);
+  if (destinoMarker) map.removeLayer(destinoMarker);
+
+  if (!origenInput || !destinoInput) {
+    alert("⚠️ Por favor, introduce un origen y un destino para filtrar.");
     return;
   }
 
-  // Filtra los IDs de las rutas
-  const resultados = Object.keys(routesIndex).filter(id => {
-    const props = routesIndex[id][0].properties;
-    
-    // Combina todos los textos relevantes de la ruta para la búsqueda
-    const textoBusqueda = [
-      props.nombre || "",
-      props.origen || "",
-      props.destino || "",
-      props.notas || ""
-    ].join(" ").toLowerCase();
-
-    // Aplica filtros
-    if (origen && !textoBusqueda.includes(origen)) return false;
-    if (destino && !textoBusqueda.includes(destino)) return false;
-    if (rutasSeguras && !props.mujerSegura) return false;
-    
-    return true;
-  });
-
-  // Oculta la lista principal de rutas
-  routesContainer.style.display = 'none';
-  // Muestra el contenedor de resultados y lo limpia
+  filteredContainer.innerHTML = `<p class="no-routes" style="padding: 15px;">Buscando ubicaciones...</p>`;
   filteredContainer.style.display = 'block';
-  filteredContainer.innerHTML = ''; 
+  routesContainer.style.display = 'none';
 
+  const [origenCoords, destinoCoords] = await Promise.all([
+    geocodeSearchTerm(origenInput),
+    geocodeSearchTerm(destinoInput)
+  ]);
+
+  if (!origenCoords || !destinoCoords) {
+    alert("No se pudieron encontrar una o ambas ubicaciones.");
+    limpiarFiltrosAdmin();
+    return;
+  }
+  
+  origenMarker = L.circle([origenCoords.lat, origenCoords.lng], { radius: 500, color: '#3498db', fillColor: '#3498db', fillOpacity: 0.3 }).addTo(map);
+  destinoMarker = L.circle([destinoCoords.lat, destinoCoords.lng], { radius: 500, color: '#e74c3c', fillColor: '#e74c3c', fillOpacity: 0.3 }).addTo(map);
+  map.fitBounds(L.latLngBounds([origenCoords.lat, origenCoords.lng], [destinoCoords.lat, destinoCoords.lng]).pad(0.5));
+
+  let resultados = Object.keys(routesIndex).filter(id => 
+    routeIntersectsCircle(routesIndex[id], origenMarker) &&
+    routeIntersectsCircle(routesIndex[id], destinoMarker)
+  );
+
+  if (rutasSeguras) {
+    resultados = resultados.filter(id => routesIndex[id][0].properties.mujerSegura);
+  }
+  
+  filteredContainer.innerHTML = "";
   if (resultados.length > 0) {
     const resultHeader = document.createElement('h3');
     resultHeader.textContent = `Rutas encontradas: ${resultados.length}`;
     filteredContainer.appendChild(resultHeader);
-    
+
     resultados.forEach(id => {
       const props = routesIndex[id][0].properties;
       const card = document.createElement("div");
@@ -471,14 +537,14 @@ function filtrarRutasAdmin() {
         <div class="card-body">
           <div class="card-title">${props.nombre}</div>
           <div class="card-sub">🕒 ${props.horario}</div>
-          ${props.notas ? `<div class="card-notes">📝 ${props.notas}</div>` : ""}
+          ${props.mujerSegura ? `<div class="card-notes" style="color: #d946ef; font-weight: bold;">💜 Mujer Segura</div>` : ""}
         </div>
       `;
       card.addEventListener('click', () => selectRoute(id, card));
       filteredContainer.appendChild(card);
     });
   } else {
-    filteredContainer.innerHTML = `<p class="no-routes" style="padding: 15px; text-align: center;">No se encontraron rutas con esos filtros 😢</p>`;
+    filteredContainer.innerHTML = `<p class="no-routes" style="padding: 15px; text-align: center;">No se encontraron rutas que conecten ambos puntos 😢</p>`;
   }
 }
 
@@ -488,14 +554,15 @@ function limpiarFiltrosAdmin() {
   document.getElementById("rutas-seguras-admin").checked = false;
   document.getElementById("rutas-cercanas-admin").checked = false;
 
-  // Oculta los resultados y muestra la lista principal
   document.getElementById('filtered-routes').style.display = 'none';
   document.getElementById('routes-cards-container').style.display = 'block';
+
+  if (origenMarker) map.removeLayer(origenMarker);
+  if (destinoMarker) map.removeLayer(destinoMarker);
   
-  // Vuelve a renderizar el sidebar original por si algo cambió
   renderSidebar(Object.keys(routesIndex).sort((a,b)=>a-b));
 }
 
-// --- Event Listeners para los botones de filtro del panel de Admin ---
+// --- Event Listeners para los botones de filtro ---
 document.getElementById('btn-apply-filters').addEventListener('click', filtrarRutasAdmin);
 document.getElementById('btn-clear-filters').addEventListener('click', limpiarFiltrosAdmin);

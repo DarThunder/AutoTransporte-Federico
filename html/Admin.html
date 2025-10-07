@@ -178,44 +178,44 @@
 
           <!-- PANEL DE FILTROS -->
           <div id="filter-panel" class="filter-panel">
-            <h3>Filtros de Rutas</h3>
+          <h3>Filtros de Rutas</h3>
 
-            <label>Origen:</label>
-            <input
-              id="origen-input-admin"
-              list="origenes-filter"
-              placeholder="Escribe o selecciona origen"
-            />
-            <datalist id="origenes-filter"> </datalist>
+          <label>Origen:</label>
+          <input
+            id="origen-input-admin"
+            list="origenes-filter"
+            placeholder="Escribe una ubicación de origen"
+          />
+          <datalist id="origenes-filter">
+            <option value="Plaza Crystal"></option>
+            <option value="Zona UV"></option>
+          </datalist>
 
-            <label>Destino:</label>
-            <input
-              id="destino-input-admin"
-              list="destinos-filter"
-              placeholder="Escribe o selecciona destino"
-            />
-            <datalist id="destinos-filter"> </datalist>
+          <label>Destino:</label>
+          <input
+            id="destino-input-admin"
+            list="destinos-filter"
+            placeholder="Escribe una ubicación de destino"
+          />
+          <datalist id="destinos-filter">
+            <option value="Plaza Américas"></option>
+            <option value="Centro"></option>
+          </datalist>
 
-            <div class="filter-options">
-              <label
-                ><input type="checkbox" id="rutas-cercanas-admin" /> Solo rutas
-                cercanas</label
-              >
-              <label
-                ><input type="checkbox" id="rutas-seguras-admin" /> Rutas
-                seguras (Mujer Segura)</label
-              >
-            </div>
-
-            <div class="filter-actions">
-              <button type="button" id="btn-apply-filters" class="btn-apply">
-                Aplicar filtros
-              </button>
-              <button type="button" id="btn-clear-filters" class="btn-clear">
-                Limpiar
-              </button>
-            </div>
+          <div class="filter-options">
+            <label>
+              <input type="checkbox" id="rutas-cercanas-admin" /> Solo rutas cercanas
+            </label>
+            <label>
+              <input type="checkbox" id="rutas-seguras-admin" /> Rutas seguras (Mujer Segura)
+            </label>
           </div>
+
+          <div class="filter-actions">
+            <button type="button" id="btn-apply-filters" class="btn-apply">Aplicar filtros</button>
+            <button type="button" id="btn-clear-filters" class="btn-clear">Limpiar</button>
+          </div>
+        </div>
 
           <!-- RESULTADOS DE FILTRO -->
           <div id="filtered-routes"></div>

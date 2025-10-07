@@ -1,6 +1,12 @@
 // Inicializar mapa centrado en Xalapa
 const map = L.map("map").setView([19.5438, -96.9103], 13);
 
+// ... al inicio de index.js
+let userCircle2;
+let origenMarker = null; // <-- AÑADE ESTA LÍNEA
+let destinoMarker = null; // <-- AÑADE ESTA LÍNEA
+// ...
+
 // Base map con Stadia Outdoors
 var Stadia_Outdoors = L.tileLayer(
   "https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.{ext}",
@@ -256,8 +262,7 @@ function renderSidebar(ids) {
 }
 
 // 3) Selección desde sidebar - CON DESELECCIÓN
-function selectRoute(id, props, cardEl) {
-  limpiarFiltros();
+function selectRoute(id, props, cardEl) { 
 
   // Si ya está activa, la desactivamos
   if (activeRoute === id) {
@@ -402,70 +407,92 @@ filterBtn.addEventListener("click", () => {
   }
 });
 
-// === FILTRADO DE RUTAS ===
-function filtrarRutas() {
-  const origen = document
-    .getElementById("origen-input")
-    .value.trim()
-    .toLowerCase();
-  const destino = document
-    .getElementById("destino-input")
-    .value.trim()
-    .toLowerCase();
-  const rutasSeguras =
-    document.getElementById("rutas-seguras")?.checked || false;
-  const soloCercanas =
-    document.getElementById("rutas-cercanas")?.checked || false;
+// === FILTRADO DE RUTAS (VERSIÓN COMPLETA CON GEOCODIFICACIÓN) ===
 
-  if (!origen && !destino && !rutasSeguras && !soloCercanas) {
-    const resultEl = document.getElementById("filtered-routes");
-    resultEl.innerHTML = `<p class="no-routes" style="color: #e74c3c; font-weight: bold;">⚠️ No has introducido ningún dato para filtrar</p>`;
-    resultEl.style.display = "block";
+async function filtrarRutas() {
+  const origenInput = document.getElementById("origen-input").value.trim();
+  const destinoInput = document.getElementById("destino-input").value.trim();
+  const rutasSeguras = document.getElementById("rutas-seguras")?.checked || false;
+  const soloCercanas = document.getElementById("rutas-cercanas")?.checked || false; // Funcionalidad futura
+  const resultEl = document.getElementById("filtered-routes");
 
-    routesListEl.style.display = "none";
-    routeInfoEl.style.display = "none";
-
-    return [];
+  // Limpiar marcadores de nodos anteriores
+  if (origenMarker) map.removeLayer(origenMarker);
+  if (destinoMarker) map.removeLayer(destinoMarker);
+  
+  if (!origenInput && !destinoInput) {
+      // Si ambos campos están vacíos, no hacemos nada o mostramos un error.
+      // Si solo se marca una casilla, la lógica de abajo funcionará.
+  } else if (!origenInput || !destinoInput) {
+      alert("⚠️ Para buscar por ubicación, debes introducir un origen y un destino.");
+      return;
   }
 
-  const resultados = Object.keys(routesIndex).filter(id => {
-    const props = routesIndex[id][0].properties;
-    
-    // Buscar en TODOS los campos de texto disponibles
-    const textoBusqueda = [
-      props.desc || "",       // Descripción de la ruta
-      props.nombre || "",     // Nombre completo
-      props.name || "",       // Nombre alternativo
-      props.notes || "",      // Notas
-      props.notas || "",      // Notas en español
-      props.origen || "",     // Origen específico
-      props.destino || ""     // Destino específico
-    ].join(" ").toLowerCase();
-
-    // Verificar filtro de origen
-    if (origen && !textoBusqueda.includes(origen)) return false;
-    
-    // Verificar filtro de destino
-    if (destino && !textoBusqueda.includes(destino)) return false;
-    
-    // ===== INICIO DE LA MODIFICACIÓN =====
-    // Verificar filtro de rutas "Mujer Segura"
-    if (rutasSeguras && !props.mujerSegura) {
-      return false; // Si el filtro está activo y la ruta no es segura, la descartamos.
-    }
-    // ===== FIN DE LA MODIFICACIÓN =====
-    
-    return true;
-  });
-
-  Object.keys(routeLayers).forEach((id) => map.removeLayer(routeLayers[id]));
-
-  routesListEl.style.display = "none";
-  routeInfoEl.style.display = "none";
-
-  const resultEl = document.getElementById("filtered-routes");
-  resultEl.innerHTML = "";
+  resultEl.innerHTML = `<p class="no-routes" style="padding: 15px;">Buscando...</p>`;
   resultEl.style.display = "block";
+  routesListEl.style.display = "none";
+  
+  let origenCoords = null;
+  let destinoCoords = null;
+
+  // Solo geocodificamos si hay texto en los inputs
+  if (origenInput && destinoInput) {
+      [origenCoords, destinoCoords] = await Promise.all([
+          geocodeSearchTerm(origenInput),
+          geocodeSearchTerm(destinoInput)
+      ]);
+
+      if (!origenCoords) {
+          resultEl.innerHTML = `<p class="no-routes" style="padding: 15px;">😢 No se pudo encontrar la ubicación de origen: "${origenInput}"</p>`;
+          return;
+      }
+      if (!destinoCoords) {
+          resultEl.innerHTML = `<p class="no-routes" style="padding: 15px;">😢 No se pudo encontrar la ubicación de destino: "${destinoInput}"</p>`;
+          return;
+      }
+
+      // Dibuja los nodos en el mapa
+      origenMarker = L.circle([origenCoords.lat, origenCoords.lng], { radius: 500, color: '#3498db', fillColor: '#3498db', fillOpacity: 0.3 }).addTo(map);
+      destinoMarker = L.circle([destinoCoords.lat, destinoCoords.lng], { radius: 500, color: '#e74c3c', fillColor: '#e74c3c', fillOpacity: 0.3 }).addTo(map);
+
+      const bounds = L.latLngBounds([origenCoords.lat, origenCoords.lng], [destinoCoords.lat, destinoCoords.lng]);
+      map.fitBounds(bounds.pad(0.5));
+  }
+
+  // ===== LÓGICA DE FILTRADO DE RUTAS =====
+  let resultados = Object.keys(routesIndex); // Empezamos con todas las rutas
+
+  // 1. Filtro por Nodos (si existen)
+  if (origenMarker && destinoMarker) {
+      resultados = resultados.filter(id => 
+          routeIntersectsCircle(routesIndex[id], origenMarker) &&
+          routeIntersectsCircle(routesIndex[id], destinoMarker)
+      );
+  }
+  
+  // 2. Aplicar filtros adicionales de las CASILLAS
+  if (rutasSeguras || soloCercanas) {
+      resultados = resultados.filter(id => {
+          const props = routesIndex[id][0].properties;
+          
+          if (rutasSeguras && !props.mujerSegura) {
+              return false;
+          }
+          
+          if (soloCercanas && userMarker) {
+              // Lógica de rutas cercanas
+              const userLatLng = userMarker.getLatLng();
+              if (!routeIntersectsCircle(routesIndex[id], L.circle(userLatLng, { radius: 500 }))) {
+                  return false;
+              }
+          }
+          
+          return true;
+      });
+  }
+
+  // ===== MOSTRAR RESULTADOS =====
+  resultEl.innerHTML = ""; 
 
   if (resultados.length > 0) {
     resultEl.innerHTML = `<h3>Rutas encontradas: ${resultados.length}</h3>`;
@@ -478,22 +505,78 @@ function filtrarRutas() {
         <div class="card-body">
           <div class="card-title">${props.nombre || props.name || 'Ruta ' + id}</div>
           <div class="card-sub">🕒 ${props.horario || 'Horario no disponible'}</div>
-          ${props.notas || props.notes ? `<div class="card-notes">📝 ${props.notas || props.notes}</div>` : ""}
-          ${props.desc ? `<div class="card-notes">📍 ${props.desc}</div>` : ""}
+          ${props.mujerSegura ? `<div class="card-notes" style="color: #d946ef; font-weight: bold;">💜 Mujer Segura</div>` : ""}
         </div>
       `;
-
-      div.addEventListener("click", () => {
-        selectRoute(id, props, div);
-      });
-
+      div.addEventListener("click", () => selectRoute(id, props, div));
       resultEl.appendChild(div);
     });
   } else {
-    resultEl.innerHTML = `<p class="no-routes">No se encontraron rutas con esos filtros 😢</p>`;
+    resultEl.innerHTML = `<p class="no-routes" style="padding: 15px; text-align: center;">No se encontraron rutas con los filtros seleccionados 😢</p>`;
   }
+}
 
-  return resultados;
+/**
+ * Normaliza un término de búsqueda para la API (quita acentos, etc.).
+ */
+function normalizeSearchTerm(searchTerm) {
+  return searchTerm
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+/**
+ * Geocodifica (busca coordenadas de) un término de búsqueda usando Nominatim.
+ * @param {string} searchTerm Nombre o dirección a buscar.
+ * @returns {Object|null} Objeto con {lat, lng, displayName} o null.
+ */
+async function geocodeSearchTerm(searchTerm) {
+  const normalized = normalizeSearchTerm(searchTerm);
+  const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(normalized + ', Xalapa, Veracruz')}&limit=1`;
+  
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+    
+    if (data && data.length > 0) {
+      return { 
+        lat: parseFloat(data[0].lat), 
+        lng: parseFloat(data[0].lon), 
+        displayName: data[0].display_name 
+      };
+    }
+    return null;
+  } catch (error) {
+    console.error('Error en la geocodificación:', error);
+    return null;
+  }
+}
+
+// Justo después de este bloque, debería empezar tu función "async function filtrarRutas() { ... }"
+
+/**
+ * Verifica si alguna parte de una ruta está dentro de un círculo (nodo).
+ * @param {Array} routeFeatures - Las partes que componen una ruta.
+ * @param {L.Circle} circle - El círculo del nodo (origen o destino).
+ * @returns {boolean} - True si la ruta cruza el círculo.
+ */
+function routeIntersectsCircle(routeFeatures, circle) {
+  const center = circle.getLatLng();
+  const radius = circle.getRadius();
+
+  for (const feature of routeFeatures) {
+    if (feature.geometry.type === 'LineString') {
+      for (const point of feature.geometry.coordinates) {
+        // La distancia se calcula entre el centro del círculo y cada punto de la ruta
+        const distance = getDistance(center.lat, center.lng, point[1], point[0]);
+        if (distance <= radius) {
+          return true; // Si un solo punto está dentro, la ruta es válida.
+        }
+      }
+    }
+  }
+  return false; // Si ningún punto de la ruta entró en el círculo.
 }
 
 // === MOSTRAR TODAS LAS RUTAS ===
@@ -550,7 +633,7 @@ function limpiarFiltros() {
   document.getElementById("destino-input").value = "";
   document.getElementById("rutas-seguras").checked = false;
   document.getElementById("rutas-cercanas").checked = false;
-  
+
   const resultEl = document.getElementById("filtered-routes");
   resultEl.innerHTML = "";
   resultEl.style.display = "none";
@@ -558,25 +641,21 @@ function limpiarFiltros() {
   routesListEl.style.display = "block";
   routeInfoEl.style.display = "block";
 
-  if (window.allRoutesLayer && map.hasLayer(window.allRoutesLayer)) {
-        map.removeLayer(window.allRoutesLayer);
-        window.allRoutesLayer = null;
+  // Limpiar nodos del mapa
+  if (origenMarker) map.removeLayer(origenMarker);
+  if (destinoMarker) map.removeLayer(destinoMarker);
+
+  // Limpiar trazados de rutas del mapa
+  Object.keys(routeLayers).forEach((id) => {
+    map.removeLayer(routeLayers[id]);
+  });
+  
+  if (activeRoute) {
+      activeRoute = null; // Resetea la ruta activa
   }
+}
 
-  if (activeRoute && routeLayers[activeRoute]) {
-    routeLayers[activeRoute].remove();
-
-    // Buscar TODAS las tarjetas con ese id y limpiarlas
-    document.querySelectorAll(`.route-card[data-id="${activeRoute}"]`).forEach(prevCard => {
-      prevCard.classList.remove("active");
-      // Eliminar el route-info anterior si existe
-      const prevInfo = prevCard.nextElementSibling;
-      if (prevInfo && prevInfo.classList.contains('route-info')) {
-        prevInfo.remove();
-      }
-    })}
-} 
-
+// Conectar los botones a las nuevas funciones
 document.getElementById("show-all-routes-btn").addEventListener("click", mostrarTodasLasRutas);
 document.querySelector(".btn-clear2").addEventListener("click", limpiarFiltros);
 document.querySelector(".btn-clear").addEventListener("click", limpiarFiltros);
