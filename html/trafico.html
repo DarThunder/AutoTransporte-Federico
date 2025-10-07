@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>El Rutero - Notificaciones de Tráfico</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/style-trafico.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="logo-img">
+        <img src="../images/Logo1.png" alt="El Rutero Logo" />
+      </div>
+      <div class="header-buttons">
+        <a href="index.html" class="login-btn">Regresar al Mapa</a>
+      </div>
+    </header>
+
+    <main>
+      <div class="traffic-container">
+        <h1><i class="fas fa-traffic-light"></i> Notificaciones de Tráfico</h1>
+
+        <div id="alert-form-container">
+          <h2>Reportar Incidente</h2>
+          <form id="traffic-alert-form">
+            <div class="form-group">
+              <label for="incident-type">Tipo de Incidente:</label>
+              <select id="incident-type" required>
+                <option value="tráfico lento">Tráfico Lento</option>
+                <option value="accidente">Accidente</option>
+                <option value="calle cerrada">Calle Cerrada</option>
+                <option value="obra en construcción"></option>
+                  Obra en Construcción
+                </option>
+                <option value="otro">Otro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="description">Descripción:</label>
+              <textarea
+                id="description"
+                rows="3"
+                placeholder="Añade una breve descripción del incidente..."
+                required
+              ></textarea>
+            </div>
+            <button type="submit" class="btn-submit-alert">
+              <i class="fas fa-exclamation-triangle"></i> Reportar
+            </button>
+          </form>
+        </div>
+
+        <div id="login-prompt" style="display: none">
+          <p>
+            <a href="IniciarS.html">Inicia sesión</a> para reportar un
+            incidente.
+          </p>
+        </div>
+
+        <hr />
+
+        <h2><i class="fas fa-bullhorn"></i> Alertas Recientes</h2>
+        <div id="traffic-alerts" class="alerts-list"></div>
+      </div>
+    </main>
+
+    <footer>
+      <p>© 2025 - Dard's Innovations</p>
+    </footer>
+    <script type="module" src="../js/trafico.js"></script>
+  </body>
+</html>
