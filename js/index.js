@@ -300,7 +300,7 @@ function selectRoute(id, props, cardEl) {
     const group = L.geoJSON(
       { type: "FeatureCollection", features: routesIndex[id] },
       {
-        style: { color: getColor(id), weight: 3, opacity: 0.9 },
+        style: { color: getColor(id, props), weight: 3, opacity: 0.9 },
       }
     );
     routeLayers[id] = group;
@@ -378,7 +378,14 @@ if (searchInput) {
 }
 
 // colores
-function getColor(id) {
+
+function getColor(id, properties) {
+  // Si la ruta tiene mujerSegura: true, devolver morado
+  if (properties && properties.mujerSegura === true) {
+    return "#F502AC"; // Color magenta w
+  }
+  
+  // Si no, usar la paleta de colores normal
   const palette = [
     "#2563eb",
     "#e74c3c",
@@ -393,7 +400,6 @@ function getColor(id) {
   ];
   return palette[id % palette.length];
 }
-
 // === BOTÓN APLICAR FILTROS ===
 const filterBtn = document.getElementById("filter-btn");
 const filterPanel = document.getElementById("filter-panel");
@@ -608,7 +614,7 @@ function mostrarTodasLasRutas() {
       const group = L.geoJSON(
         { type: "FeatureCollection", features: routeLines },
         {
-          style: { color: getColor(id), weight: 3, opacity: 0.7 },
+          style: { color: getColor(id, routesIndex[id][0].properties), weight: 3, opacity: 0.7 },
         }
       );
       // Añade la ruta a la capa que agrupa todas las rutas.
