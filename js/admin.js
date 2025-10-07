@@ -304,11 +304,15 @@ deleteBtn.addEventListener("click", () => {
       }
 
       delete routesIndex[activeRoute];
-      allFeatures = allFeatures.filter(f => f.properties.id_ruta !== activeRoute);
+      
+      // ===== INICIO DE LA CORRECCIÓN =====
+      // Convertimos activeRoute a número para que la comparación sea correcta
+      allFeatures = allFeatures.filter(f => f.properties.id_ruta !== Number(activeRoute));
+      // ===== FIN DE LA CORRECCIÓN =====
 
       routeInfoEl.innerHTML = 'Selecciona una ruta…';
       activeRoute = null;
-      renderSidebar(Object.keys(routesIndex).sort((a,b)=>a-b));
+      renderSidebar(Object.keys(routesIndex).sort((a, b) => a - b));
       
       alert(`Ruta "${routeName}" eliminada.`);
     }
