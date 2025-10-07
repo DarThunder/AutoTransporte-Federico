@@ -495,6 +495,45 @@ function filtrarRutas() {
   return resultados;
 }
 
+// === MOSTRAR TODAS LAS RUTAS ===
+function mostrarTodasLasRutas() {
+  // Elimina cualquier ruta activa o anterior
+  Object.keys(routeLayers).forEach(id => {
+    if (map.hasLayer(routeLayers[id])) {
+      map.removeLayer(routeLayers[id]);
+    }
+  });
+
+  // Crear una capa grupal para todas las rutas
+  const allRoutesLayer = L.layerGroup();
+
+  Object.keys(routesIndex).forEach(id => {
+    // Si no existe el layer, créalo
+    if (!routeLayers[id]) {
+      const group = L.geoJSON(
+        { type: "FeatureCollection", features: routesIndex[id] },
+        {
+          style: { color: getColor(id), weight: 3, opacity: 0.7 },
+        }
+      );
+      routeLayers[id] = group;
+    }
+
+    // Agregar cada ruta a la capa grupal
+    routeLayers[id].addTo(allRoutesLayer);
+  });
+
+  // Añadir al mapa
+  allRoutesLayer.addTo(map);
+
+  // Ajustar vista al total de rutas
+  map.fitBounds(allRoutesLayer.getBounds(), { padding: [30, 30] });
+
+  // Guardar referencia global (por si luego quieres quitarla)
+  window.allRoutesLayer = allRoutesLayer;
+}
+
+
 // Función para limpiar filtros y mostrar todas las rutas nuevamente
 function limpiarFiltros() {
   document.getElementById("origen-input").value = "";
@@ -518,8 +557,13 @@ function limpiarFiltros() {
   }
 }
 
+document.getElementById("show-all-routes-btn").addEventListener("click", mostrarTodasLasRutas);
+document.querySelector(".btn-clear2").addEventListener("click", limpiarFiltros);
 document.querySelector(".btn-clear").addEventListener("click", limpiarFiltros);
 document.querySelector(".btn-apply").addEventListener("click", filtrarRutas);
+
+
+
 
 // === AUTOCOMPLETAR DESTINOS SEGÚN ORIGEN ===
 function obtenerDestinosDesdeOrigen(origen) {
