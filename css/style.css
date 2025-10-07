@@ -1167,3 +1167,50 @@ input:checked + .slider:before {
     text-align: center;
     box-shadow: 0 2px 4px #b9b58e;
 }
+
+.btn-show-all {
+  background-color: #d5cc91; 
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease-in-out;
+}
+
+.btn-show-all:hover {
+  background-color: #bfb773;
+}
+
+.btn-clear2 {
+  background-color: #d5cc91; 
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease-in-out;
+}
+
+.btn-clear2:hover {
+  background-color: #bfb773;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: flex-end; 
+  align-items: center;
+  gap: 6px; 
+  margin-bottom: 10px;
+}
+
+.sidebar-header h2 {
+  margin-right: auto; 
+  font-size: 18px;
+}
+
+
+
+
