@@ -257,6 +257,8 @@ function renderSidebar(ids) {
 
 // 3) Selección desde sidebar - CON DESELECCIÓN
 function selectRoute(id, props, cardEl) {
+  limpiarFiltros();
+
   // Si ya está activa, la desactivamos
   if (activeRoute === id) {
     routeLayers[id].remove();
@@ -322,8 +324,7 @@ function showRouteInfoBelowCard(id, props, cardEl) {
       : ""
     }
 
-     <!-- BOTÓN PARA MARCAR PARADA DESTINO -->
-    <div style="margin-top: 15px; padding: 10px; background: #e9e7d9; border-radius: 8px;">
+     <div style="margin-top: 15px; padding: 10px; background: #e9e7d9; border-radius: 8px;">
       <button id="mark-stop-btn-${id}" class="btn-apply" style="width: 100%; margin-bottom: 8px;">
         <i class="fas fa-bullseye"></i> Marcar Parada de Destino
       </button>
@@ -497,39 +498,48 @@ function filtrarRutas() {
 
 // === MOSTRAR TODAS LAS RUTAS ===
 function mostrarTodasLasRutas() {
-  // Elimina cualquier ruta activa o anterior
+  // Limpia el mapa de cualquier ruta individual previamente seleccionada.
   Object.keys(routeLayers).forEach(id => {
     if (map.hasLayer(routeLayers[id])) {
       map.removeLayer(routeLayers[id]);
     }
   });
 
-  // Crear una capa grupal para todas las rutas
+  // Si ya existe una capa con todas las rutas, la elimina para no duplicarla.
+  if (window.allRoutesLayer) {
+    map.removeLayer(window.allRoutesLayer);
+  }
+
+  // Crea una nueva capa para agrupar todas las rutas.
   const allRoutesLayer = L.layerGroup();
 
+  // Recorre todas las rutas disponibles.
   Object.keys(routesIndex).forEach(id => {
-    // Si no existe el layer, créalo
-    if (!routeLayers[id]) {
+    // **Filtra para obtener solo las líneas de la ruta, excluyendo las paradas (puntos).**
+    const routeLines = routesIndex[id].filter(
+      (feature) => feature.geometry.type === "LineString"
+    );
+
+    // Solo si se encontraron líneas para la ruta, crea la capa GeoJSON.
+    if (routeLines.length > 0) {
       const group = L.geoJSON(
-        { type: "FeatureCollection", features: routesIndex[id] },
+        { type: "FeatureCollection", features: routeLines },
         {
           style: { color: getColor(id), weight: 3, opacity: 0.7 },
         }
       );
-      routeLayers[id] = group;
+      // Añade la ruta a la capa que agrupa todas las rutas.
+      group.addTo(allRoutesLayer);
     }
-
-    // Agregar cada ruta a la capa grupal
-    routeLayers[id].addTo(allRoutesLayer);
   });
 
-  // Añadir al mapa
+  // Añade la capa con todas las rutas al mapa.
   allRoutesLayer.addTo(map);
 
-  // Ajustar vista al total de rutas
-  map.fitBounds(allRoutesLayer.getBounds(), { padding: [30, 30] });
-
-  // Guardar referencia global (por si luego quieres quitarla)
+  // Ajusta el zoom del mapa para que todas las rutas sean visibles.
+  /* map.fitBounds(allRoutesLayer.getBounds(), { padding: [30, 30] });
+ */
+  // Guarda una referencia global a la capa para poder eliminarla después.
   window.allRoutesLayer = allRoutesLayer;
 }
 
@@ -540,7 +550,7 @@ function limpiarFiltros() {
   document.getElementById("destino-input").value = "";
   document.getElementById("rutas-seguras").checked = false;
   document.getElementById("rutas-cercanas").checked = false;
-
+  
   const resultEl = document.getElementById("filtered-routes");
   resultEl.innerHTML = "";
   resultEl.style.display = "none";
@@ -548,14 +558,24 @@ function limpiarFiltros() {
   routesListEl.style.display = "block";
   routeInfoEl.style.display = "block";
 
-  Object.keys(routeLayers).forEach((id) => {
-    map.removeLayer(routeLayers[id]);
-  });
-
-  if (activeRoute) {
-    selectRoute(activeRoute, routesIndex[activeRoute][0].properties);
+  if (window.allRoutesLayer && map.hasLayer(window.allRoutesLayer)) {
+        map.removeLayer(window.allRoutesLayer);
+        window.allRoutesLayer = null;
   }
-}
+
+  if (activeRoute && routeLayers[activeRoute]) {
+    routeLayers[activeRoute].remove();
+
+    // Buscar TODAS las tarjetas con ese id y limpiarlas
+    document.querySelectorAll(`.route-card[data-id="${activeRoute}"]`).forEach(prevCard => {
+      prevCard.classList.remove("active");
+      // Eliminar el route-info anterior si existe
+      const prevInfo = prevCard.nextElementSibling;
+      if (prevInfo && prevInfo.classList.contains('route-info')) {
+        prevInfo.remove();
+      }
+    })}
+} 
 
 document.getElementById("show-all-routes-btn").addEventListener("click", mostrarTodasLasRutas);
 document.querySelector(".btn-clear2").addEventListener("click", limpiarFiltros);
